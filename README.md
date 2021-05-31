@@ -3,4 +3,4 @@
 </p>
  
 # Ultimate Pilates Engine
-Common core tests.
+Common core testing.
