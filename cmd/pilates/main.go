@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	if err := pilates.R().Run(); err != nil {
+	if err := pilates.Cli().Run(); err != nil {
 		fmt.Println(err)
 	}
 }
