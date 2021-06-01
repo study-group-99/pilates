@@ -36,14 +36,7 @@ const (
 //go:embed libft/*
 var libtTests embed.FS
 
-func Cli() *clir.Cli {
-	cli := clir.NewCli("pilates", "Ultimate Pilates Machine", "v0.0.1")
-	libft(cli)
-	// gnl(cli)
-	return cli
-}
-
-func libft(cli *clir.Cli) {
+func Libft(cli *clir.Cli) {
 	libft := cli.NewSubCommand("libft", libftDescription)
 	libftInit(libft)
 	libftRun(libft)
@@ -140,18 +133,14 @@ func libftRun(libft *clir.Command) {
 
 		if unit {
 			cmd := exec.Command("cmake", "-S", ".", "-B", "build")
-			// cmd.Stdout = os.Stdout
-			fmt.Println("Rebuilding C++ files")
-			cmd.Stderr = os.Stderr
+			fmt.Println("Generating build")
 			cmd.Env = os.Environ()
 			if err := cmd.Run(); err != nil {
 				fmt.Println("failed to run cmake: ", err)
 			}
 
 			cmd = exec.Command("cmake", "--build", "build")
-			// cmd.Stdout = os.Stdout
-			fmt.Println("Rebuilding C files")
-			cmd.Stderr = os.Stderr
+			fmt.Println("Building C++ files")
 			cmd.Env = os.Environ()
 			if err := cmd.Run(); err != nil {
 				fmt.Println("failed to run cmake: ", err)
@@ -191,8 +180,8 @@ func libftRun(libft *clir.Command) {
 			fmt.Println("make all")
 			cmd.Env = os.Environ()
 			if report {
-				cmd.Stderr = io.MultiWriter(os.Stderr, file)
 				file.WriteString("Makefile checks\nmake all\n")
+				cmd.Stderr = io.MultiWriter(os.Stderr, file)
 			} else {
 				cmd.Stderr = os.Stderr
 			}
@@ -207,8 +196,8 @@ func libftRun(libft *clir.Command) {
 			fmt.Println("make clean")
 			cmd.Env = os.Environ()
 			if report {
-				cmd.Stderr = io.MultiWriter(os.Stderr, file)
 				file.WriteString("make clean\n")
+				cmd.Stderr = io.MultiWriter(os.Stderr, file)
 			} else {
 				cmd.Stderr = os.Stderr
 			}
@@ -223,8 +212,8 @@ func libftRun(libft *clir.Command) {
 			fmt.Println("make libft.a")
 			cmd.Env = os.Environ()
 			if report {
-				cmd.Stderr = io.MultiWriter(os.Stderr, file)
 				file.WriteString("make libft.a\n")
+				cmd.Stderr = io.MultiWriter(os.Stderr, file)
 			} else {
 				cmd.Stderr = os.Stderr
 			}
@@ -239,8 +228,8 @@ func libftRun(libft *clir.Command) {
 			fmt.Println("make re")
 			cmd.Env = os.Environ()
 			if report {
-				cmd.Stderr = io.MultiWriter(os.Stderr, file)
 				file.WriteString("make re\n")
+				cmd.Stderr = io.MultiWriter(os.Stderr, file)
 			} else {
 				cmd.Stderr = os.Stderr
 			}
@@ -255,8 +244,8 @@ func libftRun(libft *clir.Command) {
 			fmt.Println("make fclean")
 			cmd.Env = os.Environ()
 			if report {
-				cmd.Stderr = io.MultiWriter(os.Stderr, file)
 				file.WriteString("make fclean\n")
+				cmd.Stderr = io.MultiWriter(os.Stderr, file)
 			} else {
 				cmd.Stderr = os.Stderr
 			}
@@ -292,7 +281,27 @@ func libftRun(libft *clir.Command) {
 func libftClean(libft *clir.Command) {
 	libftClean := libft.NewSubCommand("clean", libftCleanDescription)
 	libftClean.Action(func() error {
-		fmt.Println("Clean folder")
+
+		files := [6]string{"CMakeLists.txt", "CMakeLists.txt.in", "report.txt", "build", "pilates", "Testing"}
+		for i, file := range files {
+			if i < 3 {
+				i++
+				fmt.Printf("deleting file %s\n", file)
+				err := os.Remove(file)
+				if err != nil {
+					if !strings.Contains(err.Error(), "no such file or directory") {
+						fmt.Println(err)
+					}
+				}
+			} else {
+				fmt.Printf("deleting folder %s\n", file)
+				err := os.RemoveAll(file)
+				if err != nil {
+					fmt.Println(err)
+				}
+			}
+		}
+
 		return nil
 	})
 }
