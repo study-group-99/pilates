@@ -3,14 +3,20 @@ package pilates
 import (
 	"embed"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"log"
 	"os"
+	"os/exec"
+	"strings"
 
 	"github.com/leaanthony/clir"
 )
 
 const (
 	libftDescription = "Install and run unit tests, benchmarks, linter check, makefile check.\n"
+
+	libftFiles = "ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c ft_memcmp.c ft_strlen.c ft_strlcpy.c ft_strlcat.c ft_strchr.c ft_strrchr.c ft_strnstr.c ft_strncmp.c ft_atoi.c ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c ft_calloc.c ft_strdup.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c"
 
 	libftInitDescription = "Generates the unit tests under default folder 'pilates' and two CMake files on root level. You can edit the tests but DO NOT rename or delete anything unless you know what you do. You can run 'pilates libft clean' to clean the generated files."
 	libftInitForce       = "Forces files gerenation."
@@ -49,19 +55,14 @@ func libftInit(libft *clir.Command) {
 	libftInit := libft.NewSubCommand("init", libftInitDescription)
 	var forceInitFlag bool
 	libftInit.BoolFlag("force", "f", libftInitForce, &forceInitFlag)
-	var path string
-	libftInit.StringFlag("dir", "d", libftInitDir, &path)
 	libftInit.Action(func() error {
-
-		if path == "" {
-			path = "pilates"
-		}
+		var path string = "pilates"
 		_, err := os.Stat(path)
 		if !os.IsNotExist(err) && !forceInitFlag {
 			return fmt.Errorf("directory %s already exists. If know what you are doing try the -f, --force option", path)
 		}
 
-		os.Mkdir("./pilates", 0744)
+		os.Mkdir(path, 0744)
 		dir, err := libtTests.ReadDir("libft")
 		if err != nil {
 			return err
@@ -74,18 +75,35 @@ func libftInit(libft *clir.Command) {
 			}
 
 			if file.Name() == "CMakeLists.txt.test" {
-				err = ioutil.WriteFile(fmt.Sprintf("%s", "CMakeLists.txt"), data, 0744)
+				err = ioutil.WriteFile(fmt.Sprintf("%s/%s", path, "CMakeLists.txt"), data, 0755)
 				if err != nil {
 					return err
 				}
 				continue
 			}
 
-			err = ioutil.WriteFile(fmt.Sprintf("%s/%s", path, file.Name()), data, 0744)
+			if file.Name() == "CMakeLists.txt" || file.Name() == "CMakeLists.txt.in" {
+				err = ioutil.WriteFile(file.Name(), data, 0755)
+				if err != nil {
+					return err
+				}
+				continue
+			}
+
+			err = ioutil.WriteFile(fmt.Sprintf("%s/%s", path, file.Name()), data, 0755)
 			if err != nil {
 				return err
 			}
 		}
+
+		cmd := exec.Command("cmake", "-S", ".", "-B", "build")
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Env = os.Environ()
+		if err := cmd.Run(); err != nil {
+			log.Println("failed to run cmake: ", err)
+		}
+
 		return nil
 	})
 }
@@ -110,11 +128,91 @@ func libftRun(libft *clir.Command) {
 		if !unit && !coverage && !bench && !makefile && !linter && !report {
 			return fmt.Errorf("error: must specify at least one flag\nrun 'pilates libft run -h' for help")
 		}
-		fmt.Println("Runinning tests")
-		fmt.Println(unit)
+		var file *os.File
+		var err error
+		if report {
+			file, err = os.OpenFile("report.txt", os.O_RDWR|os.O_CREATE, 0755)
+			if err != nil {
+				return err
+			}
+
+			defer file.Close()
+		}
+
+		if unit {
+			cmd := exec.Command("cmake", "--build", "build")
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cmd.Env = os.Environ()
+			if err := cmd.Run(); err != nil {
+				log.Println("failed to run cmake: ", err)
+			}
+
+			os.Chdir("build")
+			cmd = exec.Command("ctest", "--output-on-failure")
+			cmd.Stderr = os.Stderr
+			cmd.Env = os.Environ()
+			if report {
+				cmd.Stdout = io.MultiWriter(os.Stdout, file)
+			} else {
+				cmd.Stdout = os.Stdout
+			}
+			if err := cmd.Run(); err != nil {
+				log.Println("failed to run ctest: ", err)
+			}
+			os.Chdir("..")
+		}
+
+		if coverage {
+			cmd := exec.Command("gcovr", "--exclude", "'.*test.*'", "--root", ".")
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cmd.Env = os.Environ()
+			if report {
+				cmd.Stdout = io.MultiWriter(os.Stdout, file)
+			} else {
+				cmd.Stdout = os.Stdout
+			}
+			if err := cmd.Run(); err != nil {
+				log.Println("failed to run gcovr: ", err)
+			}
+		}
+
+		if makefile {
+			cmd := exec.Command("makefile")
+			cmd.Args = strings.Split(libftFiles, " ")
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cmd.Env = os.Environ()
+			if report {
+				cmd.Stdout = io.MultiWriter(os.Stdout, file)
+			} else {
+				cmd.Stdout = os.Stdout
+			}
+			if err := cmd.Run(); err != nil {
+				log.Println("failed to run gcovr: ", err)
+			}
+		}
+
+		if linter {
+			cmd := exec.Command("norminette")
+			cmd.Args = strings.Split(libftFiles, " ")
+			cmd.Args = append(cmd.Args, "libft.h")
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cmd.Env = os.Environ()
+			if report {
+				cmd.Stdout = io.MultiWriter(os.Stdout, file)
+			} else {
+				cmd.Stdout = os.Stdout
+			}
+			if err := cmd.Run(); err != nil {
+				log.Println("failed to run norminette: ", err)
+			}
+		}
+
 		return nil
 	})
-
 }
 
 func libftClean(libft *clir.Command) {
