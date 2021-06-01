@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -97,11 +96,11 @@ func libftInit(libft *clir.Command) {
 		}
 
 		cmd := exec.Command("cmake", "-S", ".", "-B", "build")
-		cmd.Stdout = os.Stdout
+		// cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		cmd.Env = os.Environ()
 		if err := cmd.Run(); err != nil {
-			log.Println("failed to run cmake: ", err)
+			fmt.Println("failed to run cmake: ", err)
 		}
 
 		return nil
@@ -131,7 +130,7 @@ func libftRun(libft *clir.Command) {
 		var file *os.File
 		var err error
 		if report {
-			file, err = os.OpenFile("report.txt", os.O_RDWR|os.O_CREATE, 0755)
+			file, err = os.Create("report.txt")
 			if err != nil {
 				return err
 			}
@@ -140,12 +139,22 @@ func libftRun(libft *clir.Command) {
 		}
 
 		if unit {
-			cmd := exec.Command("cmake", "--build", "build")
-			cmd.Stdout = os.Stdout
+			cmd := exec.Command("cmake", "-S", ".", "-B", "build")
+			// cmd.Stdout = os.Stdout
+			fmt.Println("Rebuilding C++ files")
 			cmd.Stderr = os.Stderr
 			cmd.Env = os.Environ()
 			if err := cmd.Run(); err != nil {
-				log.Println("failed to run cmake: ", err)
+				fmt.Println("failed to run cmake: ", err)
+			}
+
+			cmd = exec.Command("cmake", "--build", "build")
+			// cmd.Stdout = os.Stdout
+			fmt.Println("Rebuilding C files")
+			cmd.Stderr = os.Stderr
+			cmd.Env = os.Environ()
+			if err := cmd.Run(); err != nil {
+				fmt.Println("failed to run cmake: ", err)
 			}
 
 			os.Chdir("build")
@@ -158,14 +167,13 @@ func libftRun(libft *clir.Command) {
 				cmd.Stdout = os.Stdout
 			}
 			if err := cmd.Run(); err != nil {
-				log.Println("failed to run ctest: ", err)
+				fmt.Println("failed to run ctest: ", err)
 			}
 			os.Chdir("..")
 		}
 
 		if coverage {
 			cmd := exec.Command("gcovr", "--exclude", "'.*test.*'", "--root", ".")
-			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			cmd.Env = os.Environ()
 			if report {
@@ -174,23 +182,89 @@ func libftRun(libft *clir.Command) {
 				cmd.Stdout = os.Stdout
 			}
 			if err := cmd.Run(); err != nil {
-				log.Println("failed to run gcovr: ", err)
+				fmt.Println("failed to run gcovr: ", err)
 			}
 		}
 
 		if makefile {
-			cmd := exec.Command("makefile")
-			cmd.Args = strings.Split(libftFiles, " ")
-			cmd.Stdout = os.Stdout
-			cmd.Stderr = os.Stderr
+			cmd := exec.Command("make", "all")
+			fmt.Println("make all")
 			cmd.Env = os.Environ()
 			if report {
-				cmd.Stdout = io.MultiWriter(os.Stdout, file)
+				cmd.Stderr = io.MultiWriter(os.Stderr, file)
+				file.WriteString("Makefile checks\nmake all\n")
 			} else {
-				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
 			}
 			if err := cmd.Run(); err != nil {
-				log.Println("failed to run gcovr: ", err)
+				fmt.Println("failed to run make all: ", err)
+			} else {
+				fmt.Println("make all - Pass")
+				file.WriteString("make all - Pass\n")
+			}
+
+			cmd = exec.Command("make", "clean")
+			fmt.Println("make clean")
+			cmd.Env = os.Environ()
+			if report {
+				cmd.Stderr = io.MultiWriter(os.Stderr, file)
+				file.WriteString("make clean\n")
+			} else {
+				cmd.Stderr = os.Stderr
+			}
+			if err := cmd.Run(); err != nil {
+				fmt.Println("failed to run make clean: ", err)
+			} else {
+				fmt.Println("make clean - Pass")
+				file.WriteString("make clean - Pass\n")
+			}
+
+			cmd = exec.Command("make", "libft.a")
+			fmt.Println("make libft.a")
+			cmd.Env = os.Environ()
+			if report {
+				cmd.Stderr = io.MultiWriter(os.Stderr, file)
+				file.WriteString("make libft.a\n")
+			} else {
+				cmd.Stderr = os.Stderr
+			}
+			if err := cmd.Run(); err != nil {
+				fmt.Println("failed to run make libft.a: ", err)
+			} else {
+				fmt.Println("make libft.a - Pass")
+				file.WriteString("make libft.a - Pass\n")
+			}
+
+			cmd = exec.Command("make", "re")
+			fmt.Println("make re")
+			cmd.Env = os.Environ()
+			if report {
+				cmd.Stderr = io.MultiWriter(os.Stderr, file)
+				file.WriteString("make re\n")
+			} else {
+				cmd.Stderr = os.Stderr
+			}
+			if err := cmd.Run(); err != nil {
+				fmt.Println("failed to run make re: ", err)
+			} else {
+				fmt.Println("make re - Pass")
+				file.WriteString("make re - Pass\n")
+			}
+
+			cmd = exec.Command("make", "fclean")
+			fmt.Println("make fclean")
+			cmd.Env = os.Environ()
+			if report {
+				cmd.Stderr = io.MultiWriter(os.Stderr, file)
+				file.WriteString("make fclean\n")
+			} else {
+				cmd.Stderr = os.Stderr
+			}
+			if err := cmd.Run(); err != nil {
+				fmt.Println("failed to run make fclean: ", err)
+			} else {
+				fmt.Println("make fclean - Pass")
+				file.WriteString("make fclean - Pass\n")
 			}
 		}
 
@@ -207,7 +281,7 @@ func libftRun(libft *clir.Command) {
 				cmd.Stdout = os.Stdout
 			}
 			if err := cmd.Run(); err != nil {
-				log.Println("failed to run norminette: ", err)
+				fmt.Println("failed to run norminette: ", err)
 			}
 		}
 
