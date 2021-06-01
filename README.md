@@ -4,3 +4,22 @@
  
 # Ultimate Pilates Engine
 Common core testing.
+
+### Contents
+
+- [Installation](#installation)
+	- [Script](#linux)
+	- [Manual](#linux)
+	- [Docker](#linux)
+	- [Github Actions](#linux)
+	- [Build Source](#linux)
+- [Usage](#installation)
+	- [libft](#linux)
+		- [??](#linux)
+	- [get_next_line](#linux)
+- [Contributing](#installation)
+	- [Process](#linux)
+
+## Installation
+
+### Linux
