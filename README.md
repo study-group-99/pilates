@@ -3,4 +3,28 @@
 </p>
  
 # Ultimate Pilates Engine
-Common core tests.
+Common core testing.
+
+### Contents
+
+- [Installation](#installation)
+	- [Script](#script)
+	- [Manual](#manual)
+	- [Docker](#docker)
+	- [Github Actions](#github-actions)
+	- [Build Source](#build-source)
+- [Usage](#usage)
+	- [libft](#libft)
+	- [get_next_line](#)
+- [Contributing](#installation)
+
+## Installation
+### Script
+### Manual
+### Docker
+### Github Actions
+### Build Source
+## Usage
+### libft
+### get_next_line
+## Contributing
