@@ -37,22 +37,19 @@ const (
 var libftTests embed.FS
 
 type libft struct {
-	c     *clir.Command
-	tests *embed.FS
+	*clir.Command
 }
 
+// LibftCommand takes a *clir.Cli argument and setsup 'libft' subcommand.
 func LibftCommand(cli *clir.Cli) {
-	libft := new(libft)
-	libft.c = cli.NewSubCommand("libft", libftDescription)
-	libft.tests = &libftTests
+	libft := &libft{cli.NewSubCommand("libft", libftDescription)}
 	libft.libftInit()
 	libft.libftRun()
 	libft.libftClean()
 }
 
-// func libftInit(libft *clir.Command) {
 func (libft *libft) libftInit() {
-	libftInit := libft.c.NewSubCommand("init", libftInitDescription)
+	libftInit := libft.NewSubCommand("init", libftInitDescription)
 	var forceInitFlag bool
 	libftInit.BoolFlag("force", "f", libftInitForce, &forceInitFlag)
 	libftInit.Action(func() error {
@@ -63,14 +60,13 @@ func (libft *libft) libftInit() {
 		}
 
 		os.Mkdir(path, 0744)
-		// dir, err := libftTests.ReadDir("libft")
-		dir, err := libft.tests.ReadDir("libft")
+		dir, err := libftTests.ReadDir("libft")
 		if err != nil {
 			return err
 		}
 
 		for _, file := range dir {
-			data, err := libft.tests.ReadFile(fmt.Sprintf("libft/%s", file.Name()))
+			data, err := libftTests.ReadFile(fmt.Sprintf("libft/%s", file.Name()))
 			if err != nil {
 				return err
 			}
@@ -98,7 +94,6 @@ func (libft *libft) libftInit() {
 		}
 
 		cmd := exec.Command("cmake", "-S", ".", "-B", "build")
-		// cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		cmd.Env = os.Environ()
 		if err := cmd.Run(); err != nil {
@@ -110,7 +105,7 @@ func (libft *libft) libftInit() {
 }
 
 func (libft *libft) libftRun() {
-	libftRun := libft.c.NewSubCommand("run", libftRunDescription)
+	libftRun := libft.NewSubCommand("run", libftRunDescription)
 	var unit bool
 	libftRun.BoolFlag("unit", "u", libftRunUnit, &unit)
 	var coverage bool
@@ -123,8 +118,6 @@ func (libft *libft) libftRun() {
 	libftRun.BoolFlag("linter", "l", libftRunLinter, &linter)
 	var report bool
 	libftRun.BoolFlag("report", "r", libftRunReport, &report)
-	// var bonus bool
-	// libftRun.BoolFlag("bonus", "", libftRunBonus, &bonus)
 	libftRun.Action(func() error {
 		if !unit && !coverage && !bench && !makefile && !linter && !report {
 			return fmt.Errorf("error: must specify at least one flag\nrun 'pilates libft run -h' for help")
@@ -233,7 +226,7 @@ func (libft *libft) libftRun() {
 }
 
 func (libft *libft) libftClean() {
-	libftClean := libft.c.NewSubCommand("clean", libftCleanDescription)
+	libftClean := libft.NewSubCommand("clean", libftCleanDescription)
 	libftClean.Action(func() error {
 
 		files := []string{"CMakeLists.txt", "CMakeLists.txt.in", "report.txt", "build", "pilates", "Testing"}
