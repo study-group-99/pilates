@@ -28,4 +28,3 @@ Common core testing.
 ### libft
 ### get_next_line
 ## Contributing
-

@@ -50,7 +50,6 @@ func LibftCommand(cli *clir.Cli) {
 	libft.libftClean()
 }
 
-// func libftInit(libft *clir.Command) {
 func (libft *libft) libftInit() {
 	libftInit := libft.c.NewSubCommand("init", libftInitDescription)
 	var forceInitFlag bool
@@ -63,7 +62,6 @@ func (libft *libft) libftInit() {
 		}
 
 		os.Mkdir(path, 0744)
-		// dir, err := libftTests.ReadDir("libft")
 		dir, err := libft.tests.ReadDir("libft")
 		if err != nil {
 			return err
@@ -98,7 +96,6 @@ func (libft *libft) libftInit() {
 		}
 
 		cmd := exec.Command("cmake", "-S", ".", "-B", "build")
-		// cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		cmd.Env = os.Environ()
 		if err := cmd.Run(); err != nil {
@@ -123,8 +120,6 @@ func (libft *libft) libftRun() {
 	libftRun.BoolFlag("linter", "l", libftRunLinter, &linter)
 	var report bool
 	libftRun.BoolFlag("report", "r", libftRunReport, &report)
-	// var bonus bool
-	// libftRun.BoolFlag("bonus", "", libftRunBonus, &bonus)
 	libftRun.Action(func() error {
 		if !unit && !coverage && !bench && !makefile && !linter && !report {
 			return fmt.Errorf("error: must specify at least one flag\nrun 'pilates libft run -h' for help")
