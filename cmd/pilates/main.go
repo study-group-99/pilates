@@ -9,7 +9,7 @@ import (
 
 func cli() *clir.Cli {
 	cli := clir.NewCli("pilates", "Ultimate Pilates Machine", "v0.0.1")
-	pilates.Libft(cli)
+	pilates.LibftCommand(cli)
 	// pilates.Gnl(cli)
 	return cli
 }

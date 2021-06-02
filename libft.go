@@ -34,17 +34,25 @@ const (
 )
 
 //go:embed libft/*
-var libtTests embed.FS
+var libftTests embed.FS
 
-func Libft(cli *clir.Cli) {
-	libft := cli.NewSubCommand("libft", libftDescription)
-	libftInit(libft)
-	libftRun(libft)
-	libftClean(libft)
+type libft struct {
+	c     *clir.Command
+	tests *embed.FS
 }
 
-func libftInit(libft *clir.Command) {
-	libftInit := libft.NewSubCommand("init", libftInitDescription)
+func LibftCommand(cli *clir.Cli) {
+	libft := new(libft)
+	libft.c = cli.NewSubCommand("libft", libftDescription)
+	libft.tests = &libftTests
+	libft.libftInit()
+	libft.libftRun()
+	libft.libftClean()
+}
+
+// func libftInit(libft *clir.Command) {
+func (libft *libft) libftInit() {
+	libftInit := libft.c.NewSubCommand("init", libftInitDescription)
 	var forceInitFlag bool
 	libftInit.BoolFlag("force", "f", libftInitForce, &forceInitFlag)
 	libftInit.Action(func() error {
@@ -55,13 +63,14 @@ func libftInit(libft *clir.Command) {
 		}
 
 		os.Mkdir(path, 0744)
-		dir, err := libtTests.ReadDir("libft")
+		// dir, err := libftTests.ReadDir("libft")
+		dir, err := libft.tests.ReadDir("libft")
 		if err != nil {
 			return err
 		}
 
 		for _, file := range dir {
-			data, err := libtTests.ReadFile(fmt.Sprintf("libft/%s", file.Name()))
+			data, err := libft.tests.ReadFile(fmt.Sprintf("libft/%s", file.Name()))
 			if err != nil {
 				return err
 			}
@@ -100,8 +109,8 @@ func libftInit(libft *clir.Command) {
 	})
 }
 
-func libftRun(libft *clir.Command) {
-	libftRun := libft.NewSubCommand("run", libftRunDescription)
+func (libft *libft) libftRun() {
+	libftRun := libft.c.NewSubCommand("run", libftRunDescription)
 	var unit bool
 	libftRun.BoolFlag("unit", "u", libftRunUnit, &unit)
 	var coverage bool
@@ -177,7 +186,7 @@ func libftRun(libft *clir.Command) {
 
 		if makefile {
 			fmt.Println("make checks")
-			makeVariations := [5]string{"all", "clean", "libft.a", "re", "fclean"}
+			makeVariations := []string{"all", "clean", "libft.a", "re", "fclean"}
 			for _, val := range makeVariations {
 				cmd := exec.Command("make", val)
 				fmt.Printf("make %s\n", val)
@@ -218,11 +227,11 @@ func libftRun(libft *clir.Command) {
 	})
 }
 
-func libftClean(libft *clir.Command) {
-	libftClean := libft.NewSubCommand("clean", libftCleanDescription)
+func (libft *libft) libftClean() {
+	libftClean := libft.c.NewSubCommand("clean", libftCleanDescription)
 	libftClean.Action(func() error {
 
-		files := [6]string{"CMakeLists.txt", "CMakeLists.txt.in", "report.txt", "build", "pilates", "Testing"}
+		files := []string{"CMakeLists.txt", "CMakeLists.txt.in", "report.txt", "build", "pilates", "Testing"}
 		for i, file := range files {
 			if i < 3 {
 				i++
