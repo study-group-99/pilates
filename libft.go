@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/leaanthony/clir"
+	"github.com/leaanthony/spinner"
 )
 
 const (
@@ -142,12 +143,14 @@ func (libft *libft) libftRun() {
 			}
 
 			cmd = exec.Command("cmake", "--build", "build")
-			fmt.Println("Building C++ files")
+			// fmt.Println("Building C++ files")
+			myspinner := spinner.New("Building C++ files")
+			myspinner.Start()
 			cmd.Env = os.Environ()
 			if err := cmd.Run(); err != nil {
 				fmt.Println("failed to run cmake: ", err)
 			}
-
+			myspinner.Success()
 			os.Chdir("build")
 			cmd = exec.Command("ctest", "--output-on-failure")
 			cmd.Stderr = os.Stderr
