@@ -9,6 +9,11 @@ import (
 
 func cli() *clir.Cli {
 	cli := clir.NewCli("pilates", "Ultimate Pilates Machine", "v0.0.1")
+	cli.Action(func() error {
+		w := cli.OtherArgs()
+		return fmt.Errorf(`error: unknown command %#q for %#q
+Run '%[2]s --help' for usage`, w[0], cli.Name())
+	})
 	pilates.LibftCommand(cli)
 	// pilates.Gnl(cli)
 	return cli

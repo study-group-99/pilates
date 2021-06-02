@@ -15,7 +15,7 @@ import (
 const (
 	libftDescription = "Install and run unit tests, benchmarks, linter check, makefile check.\n"
 
-	libftFiles = "ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c ft_memcmp.c ft_strlen.c ft_strlcpy.c ft_strlcat.c ft_strchr.c ft_strrchr.c ft_strnstr.c ft_strncmp.c ft_atoi.c ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c ft_calloc.c ft_strdup.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c"
+	libftFiles = "ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c ft_memcmp.c ft_strlen.c ft_strlcpy.c ft_strlcat.c ft_strchr.c ft_strrchr.c ft_strnstr.c ft_strncmp.c ft_atoi.c ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c ft_calloc.c ft_strdup.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c"
 
 	libftInitDescription = "Generates the unit tests under default folder 'pilates' and two CMake files on root level. You can edit the tests but DO NOT rename or delete anything unless you know what you do. You can run 'pilates libft clean' to clean the generated files."
 	libftInitForce       = "Forces files gerenation."
@@ -123,8 +123,8 @@ func (libft *libft) libftRun() {
 	libftRun.BoolFlag("linter", "l", libftRunLinter, &linter)
 	var report bool
 	libftRun.BoolFlag("report", "r", libftRunReport, &report)
-	var bonus bool
-	libftRun.BoolFlag("bonus", "", libftRunBonus, &bonus)
+	// var bonus bool
+	// libftRun.BoolFlag("bonus", "", libftRunBonus, &bonus)
 	libftRun.Action(func() error {
 		if !unit && !coverage && !bench && !makefile && !linter && !report {
 			return fmt.Errorf("error: must specify at least one flag\nrun 'pilates libft run -h' for help")
@@ -186,7 +186,7 @@ func (libft *libft) libftRun() {
 
 		if makefile {
 			fmt.Println("make checks")
-			makeVariations := []string{"all", "clean", "libft.a", "re", "fclean"}
+			makeVariations := []string{"all", "clean", "libft.a", "re", "fclean", "bonus", "rebonus"}
 			for _, val := range makeVariations {
 				cmd := exec.Command("make", val)
 				fmt.Printf("make %s\n", val)
@@ -204,6 +204,11 @@ func (libft *libft) libftRun() {
 					file.WriteString("make all - Pass\n")
 				}
 			}
+
+			// clean everything in the end
+			cmd := exec.Command("make", "fclean")
+			cmd.Env = os.Environ()
+			cmd.Run()
 		}
 
 		if linter {

@@ -8,20 +8,23 @@ Common core testing.
 ### Contents
 
 - [Installation](#installation)
-	- [Script](#linux)
-	- [Manual](#linux)
-	- [Docker](#linux)
-	- [Github Actions](#linux)
-	- [Build Source](#linux)
-- [Usage](#installation)
-	- [libft](#linux)
-		- [??](#linux)
-	- [get_next_line](#linux)
+	- [Script](#script)
+	- [Manual](#manual)
+	- [Docker](#docker)
+	- [Github Actions](#github-actions)
+	- [Build Source](#build-source)
+- [Usage](#usage)
+	- [libft](#libft)
+	- [get_next_line](#)
 - [Contributing](#installation)
-	- [Process](#linux)
 
 ## Installation
-
-### Linux
-
-##
+### Script
+### Manual
+### Docker
+### Github Actions
+### Build Source
+## Usage
+### libft
+### get_next_line
+## Contributing
