@@ -29,10 +29,6 @@ changelog:
       - '^test:'
 
 release:
-  github:
-    owner: study-group-99
-    name: pilates
-
   prerelease: true
 
   name_template: "{{.ProjectName}}-v{{.Version}} {{.Env.USER}}"
