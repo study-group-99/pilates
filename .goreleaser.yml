@@ -30,11 +30,9 @@ changelog:
 
 release:
   github:
-    owner: study-group-pp
+    owner: study-group-99
     name: pilates
 
   prerelease: true
 
-  # You can change the name of the release.
-  # Default is `{{.Tag}}` on OSS and `{{.PrefixedTag}}` on Pro.
   name_template: "{{.ProjectName}}-v{{.Version}} {{.Env.USER}}"
