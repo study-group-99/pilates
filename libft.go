@@ -16,18 +16,20 @@ import (
 const (
 	libftDescription = "Install and run unit tests, benchmarks, linter check, makefile check.\n"
 
-	libftInitDescription = "Generates the unit tests under default folder 'pilates' and two CMake files on root level. You can edit the tests but DO NOT rename or delete anything unless you know what you do. You can run 'pilates libft clean' to clean the generated files."
-	libftInitForce       = "Forces files gerenation."
-	libftInitDir         = "Custom directory name other than default 'pilates'."
+	libftInitDescription     = "Generates the unit tests under default folder 'pilates' and two CMake files on root level. You can edit the tests but DO NOT rename or delete anything unless you know what you do. You can run 'pilates libft clean' to clean the generated files."
+	libftInitLongDescription = libftInitDescription + "\n\nExamples:\n   # Run init\n   pilates libft init\n\n   # Run init with -f, --force option\n   pilates libft init -f\n"
+	libftInitForce           = "Forces files gerenation."
 
-	libftRunDescription = "Builds and runs unit tests.\n\nExamples:\n   # Run unit tests with benchmarks.\n   pilates libft -ub\n\n   # Run unit tests with linter and report.\n   pilates libft -ulr\n"
-	libftRunUnit        = "Run unit tests. Cmake is necessary."
-	libftRunCoverage    = "Print coverage for your library. Gcov is necessary."
-	libftRunBenchmark   = "Run bernchamarks against your library. Cmake is necessary."
-	libftRunMakefile    = "Checks 'Makefile' for compliance."
-	libftRunLinter      = "Runs linter check. Norminette is necessary."
-	libftRunReport      = "Generates a 'report.txt' with the results."
-	libftRunBonus       = "Includes bonus functions in testing."
+	libftRunDescription     = "Runs tests with the options provided via flags."
+	libftRunLongDescription = libftRunDescription + "\n\nExamples:\n   # Run unit tests with benchmarks.\n   pilates libft -ub\n\n   # Run unit tests with linter and report.\n   pilates libft -ulr\n"
+	libftRunAll             = "Run all tests."
+	libftRunUnit            = "Run unit tests. Cmake is necessary."
+	libftRunCoverage        = "Print coverage for your library. Gcov is necessary."
+	libftRunBenchmark       = "Run bernchamarks against your library. Cmake is necessary."
+	libftRunMakefile        = "Checks 'Makefile' for compliance."
+	libftRunLinter          = "Runs linter check. Norminette is necessary."
+	libftRunReport          = "Generates a 'report.txt' with the results."
+	libftRunBonus           = "Includes bonus functions in testing."
 
 	libftCleanDescription = "Cleans your folder from 'pilates' generated files."
 
@@ -51,6 +53,7 @@ func LibftCommand(cli *clir.Cli) {
 
 func (libft *libft) libftInit() {
 	libftInit := libft.NewSubCommand("init", libftInitDescription)
+	libftInit.LongDescription(libftInitLongDescription)
 	var forceInitFlag bool
 	libftInit.BoolFlag("force", "f", libftInitForce, &forceInitFlag)
 	libftInit.Action(func() error {
@@ -107,6 +110,9 @@ func (libft *libft) libftInit() {
 
 func (libft *libft) libftRun() {
 	libftRun := libft.NewSubCommand("run", libftRunDescription)
+	libftRun.LongDescription(libftRunLongDescription)
+	var all bool
+	libftRun.BoolFlag("all", "a", libftRunAll, &all)
 	var unit bool
 	libftRun.BoolFlag("unit", "u", libftRunUnit, &unit)
 	var coverage bool
