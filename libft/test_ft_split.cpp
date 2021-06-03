@@ -132,7 +132,20 @@ TEST(TestFtSplit, ZeroStr) {
 	free(c1);
 }
 
-// TEST(TestFtSplit, Null) {
-// 	char	**expected = ft_split(NULL, ' ');
-// 	ASSERT_TRUE(NULL == expected);
-// }
+
+TEST(TestFtZeroAlt, Null) {
+	char s1[] = "";
+	char delim = 0;
+
+	char	**expected = ft_split(s1, delim);
+	EXPECT_EQ(NULL, expected[0]);
+}
+
+TEST(TestFtZeroAlt2, Null) {
+	char s1[] = "ONE_TWO_THREE";
+	char delim = 0;
+
+	char	**expected = ft_split(s1, delim);
+	EXPECT_EQ(*s1, *expected[0]) << expected[0];
+	EXPECT_EQ(NULL, expected[1]) << expected[1];
+}

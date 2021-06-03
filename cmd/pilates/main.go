@@ -18,6 +18,7 @@ func cli() *clir.Cli {
 		return fmt.Errorf(`error: unknown command %#q for %#q
 Run '%[2]s --help' for usage`, w[0], cli.Name())
 	})
+
 	pilates.LibftCommand(cli)
 	// pilates.Gnl(cli)
 	return cli
