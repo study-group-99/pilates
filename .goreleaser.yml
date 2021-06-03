@@ -32,5 +32,5 @@ release:
   github:
     owner: study-group-99
     name: pilates
-  prerelease: true
+  prerelease: auto
   name_template: "{{.ProjectName}}-v{{.Version}}"

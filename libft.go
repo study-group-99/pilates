@@ -1,6 +1,7 @@
 package pilates
 
 import (
+	"bufio"
 	"embed"
 	"fmt"
 	"io"
@@ -91,6 +92,40 @@ func (libft *libft) libftInit() {
 				continue
 			}
 
+			if file.Name() == "gitignore" {
+				_, err := os.Stat(".gitignore")
+				if os.IsNotExist(err) {
+					err = ioutil.WriteFile(fmt.Sprintf(".%s", file.Name()), data, 0755)
+					if err != nil {
+						return err
+					}
+					continue
+				}
+
+				gitignore, err := os.OpenFile(".gitignore", os.O_APPEND|os.O_RDWR, os.ModeAppend)
+				if err != nil {
+					return err
+				}
+				ignoreList := []string{"build", "pilates", "*.txt", "*.in", "*.cpp"}
+			loop:
+				for _, key := range ignoreList {
+
+					scanner := bufio.NewScanner(gitignore)
+					for !scanner.Scan() || strings.Contains(scanner.Text(), key) {
+						continue loop
+					}
+
+					if _, err := gitignore.WriteString(fmt.Sprintf("%s\n", key)); err != nil {
+						return err
+					}
+				}
+				if err := gitignore.Close(); err != nil {
+					return err
+				}
+
+				continue
+			}
+
 			err = ioutil.WriteFile(fmt.Sprintf("%s/%s", path, file.Name()), data, 0755)
 			if err != nil {
 				return err
@@ -138,6 +173,7 @@ func (libft *libft) libftRun() {
 			}
 
 			defer file.Close()
+			defer fmt.Println("Report 'report.txt' generated.")
 		}
 
 		if unit {

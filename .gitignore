@@ -2,3 +2,8 @@ pilates
 CMakeLists.txt
 CMakeLists.txt.in
 dist/
+build
+pilates
+*.txt
+*.in
+*.cpp
