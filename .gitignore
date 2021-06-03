@@ -1,3 +1,4 @@
 pilates
 CMakeLists.txt
 CMakeLists.txt.in
+dist/
