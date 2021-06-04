@@ -20,7 +20,6 @@ Run '%[2]s --help' for usage`, w[0], cli.Name())
 	})
 
 	pilates.LibftCommand(cli)
-	// pilates.Gnl(cli)
 	return cli
 }
 

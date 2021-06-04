@@ -8,7 +8,7 @@ foreach(file_name ${Ft_Sources})
     get_filename_component(short_file_name ${file_name} NAME_WE)
     set(test_src ${CMAKE_CURRENT_SOURCE_DIR}/test_${short_file_name}.cpp)
     set(executable_name test_${short_file_name})
-    string(REPLACE "ft_" "" test_name ${short_file_name})
+    string(REPLACE "ft_" "ft_" test_name ${short_file_name})
     
     if (EXISTS ${test_src})
         add_executable(${executable_name} ${test_src})
