@@ -44,8 +44,6 @@ https://stackoverflow.com/questions/20653245/error-in-compiling-c-code-with-vari
 	libftRunNorm            = "Runs linter checks. Norminette is necessary."
 	libftRunLeaks           = "Runs memory leaks tests. Valgrind is necessary."
 	libftRunReport          = "Generates a 'report.txt' with the results."
-
-	libftFiles = "ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c ft_memcmp.c ft_strlen.c ft_strlcpy.c ft_strlcat.c ft_strchr.c ft_strrchr.c ft_strnstr.c ft_strncmp.c ft_atoi.c ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c ft_calloc.c ft_strdup.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c"
 )
 
 //go:embed libft/*
@@ -59,6 +57,8 @@ type libft struct {
 func LibftCommand(cli *clir.Cli) {
 	libft := &libft{cli.NewSubCommand("libft", libftDescription)}
 	libft.LongDescription(libftLongDescription)
+
+	// pilates libft subcommands
 	libft.init()
 	libft.run()
 }
@@ -66,10 +66,13 @@ func LibftCommand(cli *clir.Cli) {
 func (l *libft) init() {
 	init := l.NewSubCommand("init", libftInitDescription)
 	init.LongDescription(libftInitLongDescription)
+
+	// pilates libft init --flags
 	var forceInit bool
 	init.BoolFlag("force", "f", libftInitForce, &forceInit)
 	var fixNew bool
 	init.BoolFlag("fix-new", "", "If your 'libft.h' contains any parameter named 'new' this option will change it to 'n' along with the corresponding 'ft_*.c' file.", &fixNew)
+
 	init.Action(func() error {
 		var path string = "pilates"
 		switch {
@@ -113,7 +116,7 @@ func (l *libft) init() {
 					// actually run the regex query then trim the '(' on the right and append a '.c' to the name
 					name = fmt.Sprintf("%s.c", strings.TrimRight(r.FindAllString(v, -1)[0], "("))
 				}
-				// open function file
+				// open file
 				ft, err := ioutil.ReadFile(name)
 				if err != nil {
 					return err
@@ -219,14 +222,6 @@ func (l *libft) init() {
 			}
 		}
 
-		// generate build files
-		cmd := exec.Command("cmake", "-S", ".", "-B", "build")
-		cmd.Stderr = os.Stderr
-		cmd.Env = os.Environ()
-		if err := cmd.Run(); err != nil {
-			return err
-		}
-
 		// check for 'new' in header
 		newPresense, err := newExists()
 		if err != nil {
@@ -244,6 +239,8 @@ func (l *libft) init() {
 func (l *libft) run() {
 	run := l.NewSubCommand("run", libftRunDescription)
 	run.LongDescription(libftRunLongDescription)
+
+	// pilates libft run --flags
 	var all bool
 	run.BoolFlag("all", "a", libftRunAll, &all)
 	var unit bool
@@ -260,6 +257,7 @@ func (l *libft) run() {
 	run.BoolFlag("leaks", "l", libftRunLeaks, &leaks)
 	var report bool
 	run.BoolFlag("report", "r", libftRunReport, &report)
+
 	run.Action(func() error {
 
 		// check for 'new' in header
@@ -267,10 +265,12 @@ func (l *libft) run() {
 		if err != nil {
 			return err
 		}
+
 		if newPresense {
 			return fmt.Errorf(libftInitError)
 		}
 
+		// if --all flag is used set true every other var/flag
 		switch {
 		case all:
 			unit = true
@@ -279,6 +279,7 @@ func (l *libft) run() {
 			leaks = true
 			makefile = true
 			norm = true
+		// if no flags are used return error
 		case !unit && !coverage && !bench && !leaks && !makefile && !norm:
 			return fmt.Errorf("error: must specify at least one flag\nrun 'pilates libft run -h' for help")
 		}
@@ -332,8 +333,17 @@ func (l *libft) run() {
 
 		if norm {
 			cmd := exec.Command("norminette")
-			cmd.Args = strings.Split(libftFiles, " ")
 			cmd.Args = append(cmd.Args, "libft.h")
+			dir, err := os.ReadDir("./")
+			if err != nil {
+				return err
+			}
+
+			for _, file := range dir {
+				if strings.Contains(file.Name(), "ft_") {
+					cmd.Args = append(cmd.Args, file.Name())
+				}
+			}
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			cmd.Env = os.Environ()
@@ -395,8 +405,8 @@ func (l *libft) run() {
 	})
 }
 
+// check for 'new' in ft_*.c + header
 func newExists() (bool, error) {
-	// check for 'new' in ft_.*c + header
 	var newPresense bool
 	header, err := os.Open("libft.h")
 	if err != nil {
