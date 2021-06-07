@@ -22,6 +22,17 @@ const (
 	libftInitDescription     = "Generates the unit tests under default folder 'pilates', two CMake files on root level and a .gitignore. You can edit the tests but DO NOT rename or delete anything unless you know what you are doing."
 	libftInitLongDescription = "\nExamples:\n   # Run init\n   pilates libft init\n\n   # Run init with -f, --force option\n   pilates libft init -f"
 	libftInitForce           = "Forces files gerenation."
+	libftInitError           = `initialization is not complete!
+
+pilates detected the usage of parameter name 'new' in the above functions.
+Our unit testing is written in C++ thus keyword 'new' can not be be used as argument name.
+Changing the above lines and equivalent functions is OK with Moulinette.
+
+If you try to run the tests anyway you will get an error. Please change 'new' to 'n' or anything else.
+pilates can do this for you automagically by passing the '--fix-new' option like so 'pilates libft init --fix-new'
+	
+https://stackoverflow.com/questions/20653245/error-in-compiling-c-code-with-variable-name-new-with-g
+`
 
 	libftRunDescription     = "Runs tests with the options provided via flags. You need to include at least one (-r, --report flag not included)."
 	libftRunLongDescription = "\nExamples:\n   # Run unit tests with benchmarks.\n   pilates libft run -ub\n\n   # Run unit tests with linter test and generates a report.\n   pilates libft run -ulr\n\n   # Pass verbose options.\n   pilates libft run --unit --norm"
@@ -65,7 +76,7 @@ func (l *libft) init() {
 		case forceInit && fixNew:
 			return fmt.Errorf("the --fix-new option is indented to be used alone")
 		case fixNew:
-			fmt.Println("Checking your libft.h")
+			fmt.Println("checking your libft.h")
 			header, err := os.OpenFile("libft.h", os.O_APPEND, os.ModeAppend)
 			if err != nil {
 				return err
@@ -76,7 +87,7 @@ func (l *libft) init() {
 			for scanner.Scan() {
 				if strings.Contains(scanner.Text(), " new") || strings.Contains(scanner.Text(), "*new") ||
 					strings.Contains(scanner.Text(), "\tnew") {
-					fmt.Println("Found function", scanner.Text())
+					fmt.Println("found function", scanner.Text())
 					changeLines = append(changeLines, scanner.Text())
 				}
 			}
@@ -89,7 +100,7 @@ func (l *libft) init() {
 
 			changeLines = append(changeLines, "libft.h")
 
-			fmt.Println("\"Cleaning\" your files")
+			fmt.Println("\"cleaning\" your files")
 			for _, v := range changeLines {
 				var name string
 				// extract function's name
@@ -123,13 +134,13 @@ func (l *libft) init() {
 			return nil
 		}
 
-		fmt.Println("pilates initialization")
-
 		// check if folder pilates exists
 		_, err := os.Stat(path)
 		if !os.IsNotExist(err) && !forceInit {
 			return fmt.Errorf("directory %s already exists. If know what you are doing try the -f, --force option", path)
 		}
+
+		fmt.Println("pilates initialization")
 
 		// if not, or if -f option is used create it
 		os.Mkdir(path, 0744)
@@ -216,36 +227,13 @@ func (l *libft) init() {
 			return err
 		}
 
-		// check for 'new' in ft_.*c + header
-		var newPresense bool
-		header, err := os.Open("libft.h")
+		// check for 'new' in header
+		newPresense, err := newExists()
 		if err != nil {
 			return err
 		}
-
-		defer header.Close()
-
-		scanner := bufio.NewScanner(header)
-		for scanner.Scan() {
-			if strings.Contains(scanner.Text(), "*new") || strings.Contains(scanner.Text(), " new") ||
-				strings.Contains(scanner.Text(), "\tnew") {
-				fmt.Println("problem with init: funtion contaning 'new':", scanner.Text())
-				newPresense = true
-			}
-		}
-
 		if newPresense {
-			return fmt.Errorf(`initialization is not complete!
-
-pilates detected the usage of parameter name 'new' in the above functions.
-Our unit testing is written in C++ thus keyword 'new' can not be be used as argument name.
-Changing the above lines and equivalent functions is OK with Moulinette.
-
-If you try to run the tests anyway you will get an error. Please change 'new' to 'n' or anything else.
-pilates can do this for you automagically by passing the '--fix-new' option like so 'pilates libft init --fix-new'
-
-https://stackoverflow.com/questions/20653245/error-in-compiling-c-code-with-variable-name-new-with-g
-`)
+			return fmt.Errorf(libftInitError)
 		}
 
 		fmt.Println("Ready!")
@@ -263,18 +251,25 @@ func (l *libft) run() {
 	var coverage bool
 	run.BoolFlag("coverage", "c", libftRunCoverage, &coverage)
 	var bench bool
-	// run.BoolFlag("benchmark", "b", libftRunBenchmark, &bench)
+	run.BoolFlag("benchmark", "b", libftRunBenchmark, &bench)
 	var makefile bool
 	run.BoolFlag("makefile", "m", libftRunMakefile, &makefile)
 	var norm bool
 	run.BoolFlag("norm", "n", libftRunNorm, &norm)
 	var leaks bool
-	// run.BoolFlag("leaks", "l", libftRunLeaks, &leaks)
+	run.BoolFlag("leaks", "l", libftRunLeaks, &leaks)
 	var report bool
 	run.BoolFlag("report", "r", libftRunReport, &report)
 	run.Action(func() error {
 
 		// check for 'new' in header
+		newPresense, err := newExists()
+		if err != nil {
+			return err
+		}
+		if newPresense {
+			return fmt.Errorf(libftInitError)
+		}
 
 		switch {
 		case all:
@@ -289,7 +284,6 @@ func (l *libft) run() {
 		}
 
 		var file *os.File
-		var err error
 		if report {
 			file, err = os.Create("report.txt")
 			if err != nil {
@@ -297,7 +291,7 @@ func (l *libft) run() {
 			}
 
 			defer file.Close()
-			defer fmt.Println("Report 'report.txt' generated.")
+			defer fmt.Println("generated report file 'report.txt' successfully.")
 		}
 
 		if unit {
@@ -336,8 +330,11 @@ func (l *libft) run() {
 			os.Chdir("..")
 		}
 
-		if coverage {
-			cmd := exec.Command("gcovr", "--exclude", "'.*test.*'", "--root", ".")
+		if norm {
+			cmd := exec.Command("norminette")
+			cmd.Args = strings.Split(libftFiles, " ")
+			cmd.Args = append(cmd.Args, "libft.h")
+			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			cmd.Env = os.Environ()
 			if report {
@@ -348,9 +345,6 @@ func (l *libft) run() {
 			if err := cmd.Run(); err != nil {
 				fmt.Printf("error: %s\n", err)
 			}
-		}
-
-		if leaks {
 		}
 
 		if makefile {
@@ -379,11 +373,12 @@ func (l *libft) run() {
 			cmd.Run()
 		}
 
-		if norm {
-			cmd := exec.Command("norminette")
-			cmd.Args = strings.Split(libftFiles, " ")
-			cmd.Args = append(cmd.Args, "libft.h")
-			cmd.Stdout = os.Stdout
+		if leaks || bench {
+			fmt.Println("WIP. We need your help implementing memory leaks and benchmarks! go to https://github.com/study-group-99/pilates/discussions for more information.")
+		}
+
+		if coverage {
+			cmd := exec.Command("gcovr", "--exclude", "'.*test.*'", "--root", ".")
 			cmd.Stderr = os.Stderr
 			cmd.Env = os.Environ()
 			if report {
@@ -398,4 +393,26 @@ func (l *libft) run() {
 
 		return nil
 	})
+}
+
+func newExists() (bool, error) {
+	// check for 'new' in ft_.*c + header
+	var newPresense bool
+	header, err := os.Open("libft.h")
+	if err != nil {
+		return false, err
+	}
+
+	defer header.Close()
+
+	scanner := bufio.NewScanner(header)
+	for scanner.Scan() {
+		if strings.Contains(scanner.Text(), "*new") || strings.Contains(scanner.Text(), " new") ||
+			strings.Contains(scanner.Text(), "\tnew") {
+			fmt.Println("problem with init: function contaning 'new':", scanner.Text())
+			newPresense = true
+		}
+	}
+
+	return newPresense, nil
 }

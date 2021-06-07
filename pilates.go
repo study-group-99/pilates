@@ -7,7 +7,7 @@ import (
 )
 
 func RootCommand(cli *clir.Cli) {
-	// cli.LongDescription("Examples:\n   # Update the CLI\n   pilates -u\n\n   # Pilates c++ new moulinette\n   pilates --fix-new")
+	cli.LongDescription("pilates is an educational devops tool designed to help you along you curriculum.")
 	var version bool
 	cli.BoolFlag("version", "v", "Pilates CLI version.", &version)
 	var update bool
@@ -20,7 +20,7 @@ func RootCommand(cli *clir.Cli) {
 			fmt.Println(cli.Name(), "version", cli.Version())
 			return nil
 		case update:
-			return fmt.Errorf("WIP")
+			return fmt.Errorf("WIP. We need your help implementing the update function! go to https://github.com/study-group-99/pilates/discussions for more information.")
 		}
 
 		w := cli.OtherArgs()
