@@ -4,7 +4,7 @@ extern "C" {
 #include "../libft.h"
 }
 
-TEST(TestFtToupper, AlfaChars) {
+TEST(TestFtTolower, AlfaChars) {
     EXPECT_TRUE(tolower('a') == ft_tolower('a'));
     EXPECT_TRUE(tolower('f') == ft_tolower('f'));
     EXPECT_TRUE(tolower('z') == ft_tolower('z'));
@@ -12,7 +12,7 @@ TEST(TestFtToupper, AlfaChars) {
     EXPECT_TRUE(tolower('Z') == ft_tolower('Z'));
 }
 
-TEST(TestFtToupper, AsciiChars) {
+TEST(TestFtTolower, AsciiChars) {
     EXPECT_TRUE(tolower('-') == ft_tolower('-'));
     EXPECT_TRUE(tolower('0') == ft_tolower('0'));
     EXPECT_TRUE(tolower('\n') == ft_tolower('\n'));

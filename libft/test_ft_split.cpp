@@ -5,147 +5,135 @@ extern "C" {
 #include "../libft.h"
 }
 
-TEST(TestFtSplit, BasicSplit) {
-    char s1[] = "apple,car,door,lamp";
-    char **c1;
-	char delim;
+TEST(TestFtSplit, Basic) {
+    char *s = "ONE_TWO_THREE";
+	char delim = '_';
 
-	delim = ',';
-    c1 = ft_split(s1, delim);
-    ASSERT_TRUE(c1 != 0);
-    ASSERT_STREQ("apple", c1[0]);
-    ASSERT_STREQ("car", c1[1]);
-    ASSERT_STREQ("door", c1[2]);
-    ASSERT_STREQ("lamp", c1[3]);
-	EXPECT_EQ(0, c1[4]);
-    free(c1[0]);
-    free(c1[1]);
-    free(c1[2]);
-    free(c1[3]);
-	free(c1);
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ("ONE", *got) << "";
+    EXPECT_STREQ("TWO", *++got) << "";
+    EXPECT_STREQ("THREE", *++got) << "Input: ft_split(\"ONE_TWO_THREE\", '_');";
 }
 
-TEST(TestFtSplit, BasicSplitSpace) {
-    char s1[] = "      split       this for   me  !       ";
-    char **c1;
-	char delim;
+TEST(TestFtSplit, Basic2) {
+    char *s = "O_N_E_T_W_O_T_H_R_E_E";
+	char delim = '_';
 
-	delim = ' ';
-    c1 = ft_split(s1, delim);
-    ASSERT_TRUE(c1 != 0);
-    ASSERT_STREQ("split", c1[0]);
-    ASSERT_STREQ("this", c1[1]);
-    ASSERT_STREQ("for", c1[2]);
-    ASSERT_STREQ("me", c1[3]);
-    ASSERT_STREQ("!", c1[4]);
-    ASSERT_STREQ(NULL, c1[5]);
-	free(c1);
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ("O", *got) << "";
+    EXPECT_STREQ("N", *++got) << *got;
+    EXPECT_STREQ("E", *++got) << *got;
+    EXPECT_STREQ("T", *++got) << *got;
+    EXPECT_STREQ("W", *++got) << *got;
+    EXPECT_STREQ("O", *++got) << *got;
+    EXPECT_STREQ("T", *++got) << *got;
+    EXPECT_STREQ("H", *++got) << *got;
+    EXPECT_STREQ("R", *++got) << *got;
+    EXPECT_STREQ("E", *++got) << *got;
+    EXPECT_STREQ("E", *++got) << "Input: ft_split(\"O_N_E_T_W_O_T_H_R_E_E\", '_');";
 }
 
-TEST(TestFtSplit, BasicSplitSpace2) {
-    char s1[] = "split  ||this|for|me|||||!|";
-    char **c1;
-	char delim;
+TEST(TestFtSplit, Basic3) {
+    char *s = "_ONETWOTHREE";
+	char delim = '_';
 
-	delim = '|';
-    c1 = ft_split(s1, delim);
-    ASSERT_TRUE(c1 != 0);
-    ASSERT_STREQ("split  ", c1[0]);
-    ASSERT_STREQ("this", c1[1]);
-    ASSERT_STREQ("for", c1[2]);
-    ASSERT_STREQ("me", c1[3]);
-    ASSERT_STREQ("!", c1[4]);
-    ASSERT_STREQ(NULL, c1[5]);
-	free(c1);
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ("ONETWOTHREE", *got) << "Input: ft_split(\"_ONETWOTHREE\", '_');";
 }
 
-TEST(TestFtSplit, AdvancedSplitSpace) {
-    char s1[] = "   lorem   ipsum dolor     sit amet, consectetur   adipiscing elit. Sed non risus. Suspendisse   ";
-    char **c1;
-	char delim;
+TEST(TestFtSplit, Basic4) {
+    char *s = "ONETWOTHREE_";
+	char delim = '_';
 
-	delim = ' ';
-    c1 = ft_split(s1, delim);
-    ASSERT_TRUE(c1 != 0);
-    ASSERT_STREQ("lorem", c1[0]);
-    ASSERT_STREQ("ipsum", c1[1]);
-    ASSERT_STREQ("dolor", c1[2]);
-    ASSERT_STREQ("sit", c1[3]);
-    ASSERT_STREQ("amet,", c1[4]);
-	free(c1);
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ("ONETWOTHREE", *got) << "Input: ft_split(\"ONETWOTHREE_\", '_');";
 }
 
-TEST(TestFtSplit, BasicSplitZ) {
-    char s1[] = "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultricies diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.";
-    char **c1;
-	char delim;
+TEST(TestFtSplit, Basic5) {
+    char *s = "ONE_____TWO______THREE";
+	char delim = '_';
 
-	delim = 'z';
-    c1 = ft_split(s1, delim);
-    ASSERT_TRUE(c1 != 0);
-    ASSERT_STREQ(s1, c1[0]);
-    ASSERT_STREQ(NULL, c1[1]);
-	free(c1);
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ("ONE", *got) << *got;
+    EXPECT_STREQ("TWO", *++got) << *got;
+    EXPECT_STREQ("THREE", *++got) << "Input: ft_split(\"ONE_____TWO______THREE\", '_');";
 }
 
-TEST(TestFtSplit, SimpleStr) {
-    char s1[] = "apple,,,car,door,";
-    char s2[] = ",apple,,,";
-    char **c1;
-	char delim;
+TEST(TestFtSplit, Basic6) {
+    char *s = "_ONE_____TWO______THREE_";
+	char delim = '_';
 
-	delim = ',';
-    c1 = ft_split(s1, delim);
-    ASSERT_TRUE(c1 != 0) << "0";
-    ASSERT_STREQ("apple", c1[0]) << "1";
-    ASSERT_STREQ("car", c1[1]) << "2";
-    ASSERT_STREQ("door", c1[2]) << "3";
-    free(c1);
-	c1 = ft_split(s2, delim);
-    ASSERT_TRUE(c1 != 0) << "4";
-	free(c1);
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ("ONE", *got) << *got;
+    EXPECT_STREQ("TWO", *++got) << *got;
+    EXPECT_STREQ("THREE", *++got) << "Input: ft_split(\"_ONE_____TWO______THREE_\", '_');";
 }
 
-TEST(TestFtSplit, NoSplit) {
-    char s1[] = "The weather is nice.";
-    char **c1;
-	char delim;
+TEST(TestFtSplit, Basic7) {
+    char *s = "_ONETWOTHREE_";
+	char delim = '_';
 
-	delim = ',';
-    c1 = ft_split(s1, delim);
-    ASSERT_TRUE(c1 != 0);
-    EXPECT_EQ(0, strcmp(c1[0], s1));
-	EXPECT_EQ(0, c1[1]);
-    free(c1[0]);
-	free(c1);
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ("ONETWOTHREE", *got) << "Input: ft_split(\"_ONETWOTHREE_\", '_');";
 }
 
-TEST(TestFtSplit, ZeroStr) {
-    char s1[] = "";
-    char **c1;
-	char delim;
+TEST(TestFtSplit, Basic8) {
+    char *s = "U";
+	char delim = '_';
 
-	delim = '.';
-    c1 = ft_split(s1, delim);
-    ASSERT_TRUE(c1 != 0);
-    EXPECT_EQ(NULL, c1[0]);
-	free(c1);
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ("U", *got) << "Input: ft_split(\"U\", '_');";
 }
 
+TEST(TestFtSplit, Advanced) {
+    char *s = "_";
+	char delim = '_';
 
-TEST(TestFtZeroAlt, Null) {
-	char s1[] = "";
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ(NULL, *got) << "Input: ft_split(\"_\", '_');";
+}
+
+TEST(TestFtSplit, Advanced2) {
+    char *s = "___________________";
+	char delim = '_';
+
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ(NULL, *got) << "Input: ft_split(\"___________________\", '_');";
+}
+
+TEST(TestFtSplit, Advanced3) {
+    char *s = "_";
 	char delim = 0;
 
-	char	**expected = ft_split(s1, delim);
-	EXPECT_EQ(NULL, expected[0]);
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ("_", *got) << "Input: ft_split(\"_\", 0);";
 }
 
-TEST(TestFtZeroAlt2, Null) {
-	char s1[] = "ONE_TWO_THREE";
+TEST(TestFtSplit, Advanced4) {
+    char *s = "ONE_TWO_THREE";
 	char delim = 0;
 
-	char	**expected = ft_split(s1, delim);
-	EXPECT_EQ(*s1, *expected[0]) << expected[0];
-	EXPECT_EQ(NULL, expected[1]) << expected[1];
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ("ONE_TWO_THREE", *got) << "Input: ft_split(\"ONE_THE_THREE\", 0);";
+}
+
+TEST(TestFtSplit, Advanced5) {
+    char *s = "";
+	char delim = 0;
+
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ(NULL, *got) << "Input: ft_split(\"\", 0);";
+}
+
+TEST(TestFtSplit, Advanced6) {
+    char *s = "";
+	char delim = '_';
+
+	char **got = ft_split(s, delim);
+    EXPECT_STREQ(NULL, *got) << "Input: ft_split(\"\", '_');";
+}
+
+TEST(TestFtSplit, MustSegfault) {
+	EXPECT_EXIT((ft_split(NULL, '_'), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_split(NULL, '_');\n";
+	EXPECT_EXIT((ft_split(NULL, NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_split(NULL, NULL);\n";
 }

@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 
 	"github.com/leaanthony/clir"
@@ -54,14 +55,79 @@ func LibftCommand(cli *clir.Cli) {
 func (l *libft) init() {
 	init := l.NewSubCommand("init", libftInitDescription)
 	init.LongDescription(libftInitLongDescription)
-	var forceInitFlag bool
-	init.BoolFlag("force", "f", libftInitForce, &forceInitFlag)
+	var forceInit bool
+	init.BoolFlag("force", "f", libftInitForce, &forceInit)
+	var fixNew bool
+	init.BoolFlag("fix-new", "", "If your 'libft.h' contains any parameter named 'new' this option will change it to 'n' along with the corresponding 'ft_*.c' file.", &fixNew)
 	init.Action(func() error {
 		var path string = "pilates"
+		switch {
+		case forceInit && fixNew:
+			return fmt.Errorf("the --fix-new option is indented to be used alone")
+		case fixNew:
+			fmt.Println("Checking your libft.h")
+			header, err := os.OpenFile("libft.h", os.O_APPEND, os.ModeAppend)
+			if err != nil {
+				return err
+			}
+
+			changeLines := make([]string, 0)
+			scanner := bufio.NewScanner(header)
+			for scanner.Scan() {
+				if strings.Contains(scanner.Text(), " new") || strings.Contains(scanner.Text(), "*new") ||
+					strings.Contains(scanner.Text(), "\tnew") {
+					fmt.Println("Found function", scanner.Text())
+					changeLines = append(changeLines, scanner.Text())
+				}
+			}
+
+			header.Close()
+
+			if len(changeLines) == 0 {
+				return fmt.Errorf("found no 'new' use. nothing to be done all clean")
+			}
+
+			changeLines = append(changeLines, "libft.h")
+
+			fmt.Println("\"Cleaning\" your files")
+			for _, v := range changeLines {
+				var name string
+				// extract function's name
+				if v == "libft.h" {
+					name = "libft.h"
+				} else {
+					// create a regular expresion to retrieve the name of the function
+					// in the form 'ft_some_function('
+					r := regexp.MustCompile(`([a-zA-Z]+(_[a-zA-Z]+)+)\(`)
+					// actually run the regex query then trim the '(' on the right and append a '.c' to the name
+					name = fmt.Sprintf("%s.c", strings.TrimRight(r.FindAllString(v, -1)[0], "("))
+				}
+				// open function file
+				ft, err := ioutil.ReadFile(name)
+				if err != nil {
+					return err
+				}
+				// replace 'new'
+				new := strings.ReplaceAll(string(ft), " new", " n")
+				new = strings.ReplaceAll(new, "*new", "*n")
+				new = strings.ReplaceAll(new, "\tnew", "\tn")
+				// write it
+				err = ioutil.WriteFile(name, []byte(new), 0)
+				if err != nil {
+					return err
+				}
+				fmt.Println(name, "done.")
+			}
+
+			fmt.Println("All done! Now you can run 'pilates libft run -u'")
+			return nil
+		}
+
+		fmt.Println("pilates initialization")
 
 		// check if folder pilates exists
 		_, err := os.Stat(path)
-		if !os.IsNotExist(err) && !forceInitFlag {
+		if !os.IsNotExist(err) && !forceInit {
 			return fmt.Errorf("directory %s already exists. If know what you are doing try the -f, --force option", path)
 		}
 
@@ -150,6 +216,39 @@ func (l *libft) init() {
 			return err
 		}
 
+		// check for 'new' in ft_.*c + header
+		var newPresense bool
+		header, err := os.Open("libft.h")
+		if err != nil {
+			return err
+		}
+
+		defer header.Close()
+
+		scanner := bufio.NewScanner(header)
+		for scanner.Scan() {
+			if strings.Contains(scanner.Text(), "*new") || strings.Contains(scanner.Text(), " new") ||
+				strings.Contains(scanner.Text(), "\tnew") {
+				fmt.Println("problem with init: funtion contaning 'new':", scanner.Text())
+				newPresense = true
+			}
+		}
+
+		if newPresense {
+			return fmt.Errorf(`initialization is not complete!
+
+pilates detected the usage of parameter name 'new' in the above functions.
+Our unit testing is written in C++ thus keyword 'new' can not be be used as argument name.
+Changing the above lines and equivalent functions is OK with Moulinette.
+
+If you try to run the tests anyway you will get an error. Please change 'new' to 'n' or anything else.
+pilates can do this for you automagically by passing the '--fix-new' option like so 'pilates libft init --fix-new'
+
+https://stackoverflow.com/questions/20653245/error-in-compiling-c-code-with-variable-name-new-with-g
+`)
+		}
+
+		fmt.Println("Ready!")
 		return nil
 	})
 }
@@ -174,6 +273,9 @@ func (l *libft) run() {
 	var report bool
 	run.BoolFlag("report", "r", libftRunReport, &report)
 	run.Action(func() error {
+
+		// check for 'new' in header
+
 		switch {
 		case all:
 			unit = true
@@ -203,6 +305,7 @@ func (l *libft) run() {
 			genSpinner := spinner.New("Generating build")
 			genSpinner.Start()
 			cmd.Env = os.Environ()
+			cmd.Stderr = os.Stderr
 			if err := cmd.Run(); err != nil {
 				fmt.Printf("error: %s\n", err)
 			}
@@ -211,6 +314,7 @@ func (l *libft) run() {
 			cmd = exec.Command("cmake", "--build", "build", "--", "-j", "20")
 			buildSpinner := spinner.New("Building C++ files")
 			buildSpinner.Start()
+			cmd.Stderr = os.Stderr
 			cmd.Env = os.Environ()
 			if err := cmd.Run(); err != nil {
 				fmt.Printf("error: %s\n", err)
@@ -251,7 +355,7 @@ func (l *libft) run() {
 
 		if makefile {
 			fmt.Println("makefile checks")
-			makeVariations := []string{"all", "clean", "libft.a", "re", "fclean", "bonus", "rebonus"}
+			makeVariations := []string{"all", "clean", "libft.a", "re", "fclean", "bonus"}
 			for _, val := range makeVariations {
 				cmd := exec.Command("make", val)
 				fmt.Printf("make: %s\n", val)

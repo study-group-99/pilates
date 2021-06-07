@@ -31,7 +31,6 @@ _note: new c++ google test (linked lists functions)_
 ### get_next_line
 ## Contributing
 ### Credits
-#### Coders
-#### Reviewers
+
 #### Shoulders of giants
 Test cases for libft unit tests also came from: <a href="https://github.com/Ysoroko">@Ysoroko</a>, <a href="https://github.com/alelievr">@alelievr</a> & <a href="https://github.com/ska42">@ska42</a>.
