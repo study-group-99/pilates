@@ -13,6 +13,7 @@ import (
 
 	"github.com/leaanthony/clir"
 	"github.com/leaanthony/spinner"
+	"github.com/study-group-99/pilates/internal"
 )
 
 const (
@@ -77,7 +78,7 @@ func (l *libft) init() {
 		var path string = "pilates"
 		switch {
 		case forceInit && fixNew:
-			return fmt.Errorf("the --fix-new option is indented to be used alone")
+			return fmt.Errorf("the -f, --force and --fix-new options are indented to be used separately")
 		case fixNew:
 			fmt.Println("checking your libft.h")
 			header, err := os.OpenFile("libft.h", os.O_APPEND, os.ModeAppend)
@@ -104,17 +105,17 @@ func (l *libft) init() {
 			changeLines = append(changeLines, "libft.h")
 
 			fmt.Println("\"cleaning\" your files")
-			for _, v := range changeLines {
+			for _, value := range changeLines {
 				var name string
 				// extract function's name
-				if v == "libft.h" {
+				if value == "libft.h" {
 					name = "libft.h"
 				} else {
 					// create a regular expresion to retrieve the name of the function
 					// in the form 'ft_some_function('
 					r := regexp.MustCompile(`([a-zA-Z]+(_[a-zA-Z]+)+)\(`)
 					// actually run the regex query then trim the '(' on the right and append a '.c' to the name
-					name = fmt.Sprintf("%s.c", strings.TrimRight(r.FindAllString(v, -1)[0], "("))
+					name = fmt.Sprintf("%s.c", strings.TrimRight(r.FindAllString(value, -1)[0], "("))
 				}
 				// open file
 				ft, err := ioutil.ReadFile(name)
@@ -122,9 +123,9 @@ func (l *libft) init() {
 					return err
 				}
 				// replace 'new'
-				new := strings.ReplaceAll(string(ft), " new", " n")
-				new = strings.ReplaceAll(new, "*new", "*n")
-				new = strings.ReplaceAll(new, "\tnew", "\tn")
+				new := strings.ReplaceAll(string(ft), " new", " neww")
+				new = strings.ReplaceAll(new, "*new", "*neww")
+				new = strings.ReplaceAll(new, "\tnew", "\tneww")
 				// write it
 				err = ioutil.WriteFile(name, []byte(new), 0)
 				if err != nil {
@@ -223,7 +224,7 @@ func (l *libft) init() {
 		}
 
 		// check for 'new' in header
-		newPresense, err := newExists()
+		newPresense, err := internal.NewExists()
 		if err != nil {
 			return err
 		}
@@ -261,7 +262,7 @@ func (l *libft) run() {
 	run.Action(func() error {
 
 		// check for 'new' in header
-		newPresense, err := newExists()
+		newPresense, err := internal.NewExists()
 		if err != nil {
 			return err
 		}
@@ -403,26 +404,4 @@ func (l *libft) run() {
 
 		return nil
 	})
-}
-
-// check for 'new' in ft_*.c + header
-func newExists() (bool, error) {
-	var newPresense bool
-	header, err := os.Open("libft.h")
-	if err != nil {
-		return false, err
-	}
-
-	defer header.Close()
-
-	scanner := bufio.NewScanner(header)
-	for scanner.Scan() {
-		if strings.Contains(scanner.Text(), "*new") || strings.Contains(scanner.Text(), " new") ||
-			strings.Contains(scanner.Text(), "\tnew") {
-			fmt.Println("problem with init: function contaning 'new':", scanner.Text())
-			newPresense = true
-		}
-	}
-
-	return newPresense, nil
 }
