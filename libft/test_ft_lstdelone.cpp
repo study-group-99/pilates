@@ -6,21 +6,17 @@ extern "C" {
 #include "../libft.h"
 }
 
-void	del(void *ptr)
+void	del(void *s)
 {
-	free(ptr);
+	free(s);
 }
 
-TEST(TestFtLstdelone, BasicCase) {
-	t_list	*e1;
-	int		*ptr;
-
-	ptr = (int *)malloc(sizeof(int));
-	*ptr = 99;
-	e1 = (t_list *)malloc(sizeof(t_list));
-	e1->content = ptr;
-	ft_lstdelone(e1, &del);
+TEST(TestFtLstdelone, Basic) {
+	int	*l = (int *)malloc(sizeof(int));
+	*l = 99;
+	t_list *s = (t_list *)malloc(sizeof(t_list));
+	s->content = l;
+	ft_lstdelone(s, &del);
 
 	EXPECT_TRUE(1);
-	// Trust me, it works...42 times
 }

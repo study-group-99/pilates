@@ -6,7 +6,7 @@ extern "C" {
 }
 
 TEST(TestFtMemmove, Basic) {
-	char *s = "This is some text.";
+	char s[] = "This is some text.";
     char want[50] = {'0'};
     char got[50] = {'0'};
     
@@ -16,7 +16,7 @@ TEST(TestFtMemmove, Basic) {
 }
 
 TEST(TestFtMemmove, Return) {
-	char *s = "This is some text.";
+	char s[] = "This is some text.";
     char s1[50] = {'0'};
     char s2[50] = {'0'};
     
@@ -27,7 +27,7 @@ TEST(TestFtMemmove, Return) {
 }
 
 TEST(TestFtMemmove, ZeroCheck) {
-	char *s = "This is some text.";
+	char s[] = "This is some text.";
     char want[50] = {'0'};
     char got[50] = {'0'};
 
@@ -37,7 +37,7 @@ TEST(TestFtMemmove, ZeroCheck) {
 }
 
 TEST(TestFtMemmove, ZeroCheckReturn) {
-	char *s = "This is some text.";
+	char s[] = "This is some text.";
 	char s1[50] = {'0'};
     char s2[50] = {'0'};
 
@@ -48,7 +48,7 @@ TEST(TestFtMemmove, ZeroCheckReturn) {
 }
 
 TEST(TestFtMemmove, Unsigned) {
-	char *s = "thi\xffs i\xfas \0a g\xde\xadood \0nonono\0dog\0 !\r\n";
+	char s[] = "thi\xffs i\xfas \0a g\xde\xadood \0nonono\0dog\0 !\r\n";
 	char want[0xF0], got[0xF0];
 
 	memmove(want, s, 33); ft_memmove(got, s, 33);
@@ -68,7 +68,7 @@ TEST(TestFtMemmove, IntegerCopy) {
 }
 
 TEST(TestFtMemmove, Overlap1) {
-	char *s = "++++++++++";
+	char s[] = "++++++++++";
 	char want[240], got[240];
 	int	size = 240 - 15;
 
@@ -84,7 +84,7 @@ TEST(TestFtMemmove, Overlap1) {
 }
 
 TEST(TestFtMemmove, Overlap2) {
-	char *s = "thiß ß\xde\xad\xbe\xeftriñg will be øvérlapéd !\r\n";
+	char s[] = "thiß ß\xde\xad\xbe\xeftriñg will be øvérlapéd !\r\n";
 	char got[0xF0], want[0xF0];
 	int	size = 0xF0 - 0xF;
 
@@ -114,12 +114,6 @@ TEST(TestFtMemmove, MustSegfault) {
 	char b[0xF0];
 	EXPECT_EXIT((ft_memmove(NULL, b, 5), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memccpy((void *)\"\", \"it should segfault\", '\0', 17);\n";
 	EXPECT_EXIT((ft_memmove(b, NULL, 5), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memccpy((void *)\"\", \"it should segfault\", '\0', 17);\n";
-}
-
-TEST(TestFtMemmove, DoubleNull) {
-	void *got = ft_memmove(NULL, NULL, 0);
-	EXPECT_EQ(NULL, got) << "Input: void *got = ft_memmove(NULL, NULL, 0);";
-
-	got = ft_memmove(NULL, NULL, 5);
-	EXPECT_EQ(NULL, got) << "Input: void *got = ft_memmove(NULL, NULL, 5);";
+	// EXPECT_EXIT((ft_memmove(NULL, NULL, 0), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memmove(NULL, NULL, 0);\n";
+	EXPECT_EXIT((ft_memmove(NULL, NULL, 5), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memmove(NULL, NULL, 5);\n";
 }

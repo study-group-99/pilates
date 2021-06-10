@@ -6,7 +6,7 @@ extern "C" {
 }
 
 TEST(TestFtStrchr, CharInString) {
-    char *s = "This is Some\ntext.\0    ";
+    char s[] = "This is Some\ntext.\0    ";
 
     char *want = strchr(s, 'o');
     char *got = ft_strchr(s, 'o');
@@ -26,7 +26,7 @@ TEST(TestFtStrchr, CharInString) {
 }
 
 TEST(TestFtStrchr, FindTerminatoChar) {
-    char *s = "This is Some\ntext.\0    ";
+    char s[] = "This is Some\ntext.\0    ";
 
     char *want = strchr(s,  '\0');
     char *got = ft_strchr(s, '\0');
@@ -35,7 +35,7 @@ TEST(TestFtStrchr, FindTerminatoChar) {
 }
 
 TEST(TestFtStrchr, CharAfterTerminator) {
-    char    *s = "ghreuh gkF\tEs1e24j7 k9jF?U+h+5k\0rfwfeefkkkkk";
+    char s[] = "ghreuh gkF\tEs1e24j7 k9jF?U+h+5k\0rfwfeefkkkkk";
 
     char *want = strchr(s, '0');
     char *got = ft_strchr(s, '0');
@@ -47,7 +47,7 @@ TEST(TestFtStrchr, CharAfterTerminator) {
 }
 
 TEST(TestFtStrchr, CharNotInString) {
-    char *s = "no pqrs tuv wxyz aABC DEF";
+    char s[] = "no pqrs tuv wxyz aABC DEF";
 
     char *want = strchr(s, ':');
     char *got = ft_strchr(s, ':');
@@ -59,7 +59,7 @@ TEST(TestFtStrchr, CharNotInString) {
 }
 
 TEST(TestFtStrchr, Zero) {
-    char *s = "\0";
+    char s[] = "\0";
 
 	char *want = strchr(s, 'a');
 	char *got = ft_strchr(s, 'a');
@@ -68,7 +68,7 @@ TEST(TestFtStrchr, Zero) {
 }
 
 TEST(TestFtStrchr, Unicode) {
-	char *s = "īœ˙ˀ˘¯ˇ¸¯.œ«‘––™ª•¡¶¢˜ˀ";
+	char s[] = "īœ˙ˀ˘¯ˇ¸¯.œ«‘––™ª•¡¶¢˜ˀ";
 
 	char *want = strchr(s, L'–');
 	char *got = ft_strchr(s, L'–');

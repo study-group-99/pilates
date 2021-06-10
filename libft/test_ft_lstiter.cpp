@@ -6,37 +6,41 @@ extern "C" {
 #include "../libft.h"
 }
 
-// void	Incrementing(t_list *elem)
-// {
-// 	*(int *)elem->content *= 2;
-// }
+void	incrementing(void *content)
+{
+	*(int *)content += 1;
+}
 
-// TEST(TestFtLstiter, CheckThreeElem) {
-// 	t_list e1, e2, e3;
-// 	int cont1 = 1;
-// 	int cont2 = 2;
-// 	int cont3 = 3;
+TEST(TestFtLstiter, Basic) {
+	t_list got1, got2, got3;
+	int cont1 = 1;
+	int cont2 = 2;
+	int cont3 = 3;
 
-// 	e1.next = &e2;
-// 	e1.content = &cont1;
-// 	e2.next = &e3;
-// 	e2.content = &cont2;
-// 	e3.next = NULL;
-// 	e3.content = &cont3;
+	got1.next = &got2;
+	got1.content = &cont1;
+	got2.next = &got3;
+	got2.content = &cont2;
+	got3.next = NULL;
+	got3.content = &cont3;
 
-// 	ft_lstiter(&e1, &Incrementing);
-// 	EXPECT_TRUE(*(int *)e1.content == 2);
-// 	EXPECT_TRUE(*(int *)e2.content == 4);
-// 	EXPECT_TRUE(*(int *)e3.content == 6);
-// }
+	ft_lstiter(&got1, incrementing);
+	EXPECT_EQ(2, *(int *)got1.content);
+	EXPECT_EQ(3,*(int *)got2.content);
+	EXPECT_EQ(4, *(int *)got3.content);
+}
 
-// TEST(TestFtLstiter, CheckOneElem) {
-// 	t_list e1;
-// 	int cont1 = 1;
+TEST(TestFtLstiter, Basic2) {
+	t_list got;
+	int cont1 = 1;
 
-// 	e1.next = NULL;
-// 	e1.content = &cont1;
+	got.next = NULL;
+	got.content = &cont1;
 
-// 	ft_lstiter(&e1, &Incrementing);
-// 	EXPECT_TRUE(*(int *)e1.content == 2);
+	ft_lstiter(&got, incrementing);
+	EXPECT_EQ(2, *(int *)got.content);
+}
+
+// TEST(TestFtlstiter, MustSegfault) {
+// 	EXPECT_EXIT((ft_lstiter(NULL, incrementing), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_lstiter(NULL, lstiter_f);\n";
 // }

@@ -7,94 +7,109 @@ extern "C" {
 }
 
 TEST(TestFtStrncmp, CompEmpty) {
-    size_t  n = 0;
-    char    *c1;
-    char    *c2;
-    int     res1;
-    int     res2;
+    char *s1;
+    char *s2;
     
-    res1 = strncmp(c1, c2, 0);
-    res2 = ft_strncmp(c1, c2, 0);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = strncmp(c2, c1, 0);
-    res2 = ft_strncmp(c2, c1, 0);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
+    int want = strncmp(s1, s2, 0);
+    int got = ft_strncmp(s1, s2, 0);
+    EXPECT_TRUE(want == got);
+}
+
+TEST(TestFtStrncmp, Empty) {
+    char s1[] = "";
+    char s2[] = "";
+    
+    int want = strncmp(s1, s2, 0);
+    int got = ft_strncmp(s1, s2, 0);
+    EXPECT_TRUE(want == got);
+}
+
+TEST(TestFtStrncmp, EmptyDest) {
+    char s1[] = "";
+    char s2[] = "test";
+    
+    int want = strncmp(s1, s2, 0);
+    int got = ft_strncmp(s1, s2, 0);
+    EXPECT_TRUE(want == got);
+}
+
+TEST(TestFtStrncmp, EmptySource) {
+    char s1[] = "";
+    char s2[] = "test";
+
+    int want = strncmp(s1, s2, 0);
+    int got = ft_strncmp(s1, s2, 0);
+    EXPECT_TRUE(want == got);
 }
 
 TEST(TestFtStrncmp, CompStr) {
-    size_t  n = 4;
-    char    c1[8] = "Somethi";
-    char    c2[8] = "Sometht";
-    int     res1;
-    int     res2;
-    
-    res1 = strncmp(c1, c2, 8);
-    res2 = ft_strncmp(c1, c2, 8);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = strncmp(c2, c1, 8);
-    res2 = ft_strncmp(c2, c1, 8);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = strncmp(c1, c2, 7);
-    res2 = ft_strncmp(c1, c2, 7);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = strncmp(c2, c1, 7);
-    res2 = ft_strncmp(c2, c1, 7);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = strncmp(c1, c2, 0);
-    res2 = ft_strncmp(c1, c2, 0);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = strncmp(c2, c1, 0);
-    res2 = ft_strncmp(c2, c1, 0);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
+    char s1[8] = "Somethi";
+    char s2[8] = "Sometht";
+
+    int want = strncmp(s1, s2, 8);
+    int got = ft_strncmp(s1, s2, 8);
+    EXPECT_TRUE(want == got);
 }
 
 TEST(TestFtStrncmp, CompLongerStr) {
-    size_t  n = 4;
-    char    c1[8] = "Sometht";
-    char    c2[11] = "Somethting";
-    char    c3[12] = "Sometht\0ing";
-    int     res1;
-    int     res2;
-    
-    res1 = strncmp(c1, c2, 10);
-    res2 = ft_strncmp(c1, c2, 10);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = strncmp(c2, c1, 10);
-    res2 = ft_strncmp(c2, c1, 10);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    
-    res1 = strncmp(c1, c3, 10);
-    res2 = ft_strncmp(c1, c3, 10);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0)) << "Sometht vs Sometht\\0ing -> n = 10 -> strncmp: " << res1 << "; ft_strncmp: " << res2;
-    res1 = strncmp(c3, c1, 10);
-    res2 = ft_strncmp(c3, c1, 10);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0)) << "Sometht\\0ing vs Sometht -> n = 10 -> strncmp: " << res1 << "; ft_strncmp: " << res2;
+    char s1[8] = "Sometht";
+    char s2[11] = "Somethting";
+
+    int want = strncmp(s1, s2, 10);
+    int got = ft_strncmp(s1, s2, 10);
+    EXPECT_TRUE(want == got);
 }
 
 TEST(TestFtStrncmp, CompExtra) {
-    size_t  n = 4;
-    char    c1[] = "Tex_klkj;%,m\tl!3,t1";
-    char    c2[] = "Tex_klkj;%,m\tl!3,t1";
-    char    c3[] = "";
-    char    c4[] = "t";
-    char    c5[] = "Sometht\0ing...";
-    char    c6[] = "Sometht\0ing...";
-    int     res1;
-    int     res2;
+    char s1[] = "Tex_klkj;%,m\tl!3,t1";
+    char s2[] = "Tex_klkj;%,m\tl!3,t1";
     
-    res1 = strncmp(c1, c2, 15);
-    res2 = ft_strncmp(c1, c2, 15);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0)) << "Tex_klkj;%,m\\tl!3,t1 vs Tex_klkj;%,m\\tl!3,t1 -> n = 15 -> strncmp: " << res1 << "; ft_strncmp: " << res2;
-    
-    res1 = strncmp(c1, c3, 10);
-    res2 = ft_strncmp(c1, c3, 10);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0)) << "Tex_klkj;%,m\\tl!3,t1 vs \"\" -> n = 10 -> strncmp: " << res1 << "; ft_strncmp: " << res2; 
+    int want = strncmp(s1, s2, 15);
+    int got = ft_strncmp(s1, s2, 15);
+    EXPECT_TRUE(want == got);
+}
 
-    res1 = strncmp(c3, c4, 3);
-    res2 = ft_strncmp(c3, c4, 3);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0)) << "\"\" vs \"\" -> n = 3 -> strncmp: " << res1 << "; ft_strncmp: " << res2;
-    
-    res1 = strncmp(c5, c6, 14);
-    res2 = ft_strncmp(c5, c6, 14);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0)) << "Sometht\\0ing... vs Sometht\\0in!g.. -> n = 14 -> strncmp: " << res1 << "; ft_strncmp: " << res2;
+TEST(TestFtStrncmp, UnsignedChar) {
+	char s1[] = "\200";
+	char s2[] = "\0";
+
+	int want = strncmp(s1, s2, 1);
+	int got = ft_strncmp(s1, s2, 1);
+	EXPECT_TRUE(want == got);
+}
+
+TEST(TestFtStrncmp, StopAtZero) {
+	char s1[] = "atoms\0\0\0\0";
+	char s2[] = "atoms\0abc";
+	size_t  size = 8;
+
+	int want = strncmp(s1, s2, 1);
+	int got = ft_strncmp(s1, s2, 1);
+	EXPECT_TRUE(want == got);
+}
+
+TEST(TestFtStrncmp, NonAscii) {
+	char s1[] = "\x12\xff\x65\x12\xbd\xde\xad";
+	char s2[] = "\x12\x02";
+	size_t size = 6;
+
+	int want = strncmp(s1, s2, size);
+	int got = ft_strncmp(s1, s2, size);
+	EXPECT_TRUE(want == got);
+}
+
+TEST(TestFtStrncmp, Contained) {
+	char s1[] = "abcdef";
+	char s2[] = "abcdefghijklmnop";
+	size_t size = 6;
+
+	int want = strncmp(s1, s2, size);
+	int got = ft_strncmp(s1, s2, size);
+	EXPECT_TRUE(want == got);
+}
+
+TEST(TestFtStrncmp, MustSegfault) {
+	EXPECT_EXIT((ft_strncmp(NULL, "segfault", 3), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strncmp(NULL, \"segfault\", 3);\n";
+	EXPECT_EXIT((ft_strncmp("segfault", NULL, 3), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strncmp(\"segfault\", NULL, 3);\n";
+	EXPECT_EXIT((ft_strncmp(NULL, NULL, 3), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strncmp(NULL, NULL, 3);\n";
 }

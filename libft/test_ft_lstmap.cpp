@@ -6,36 +6,30 @@ extern "C" {
 #include "../libft.h"
 }
 
-// t_list	*cpy_Tlist_elem(t_list *elem)
-// {
-// 	t_list	*result;
+void *lstmap_f(void *content) {
+	return ((void *)"OK !");
+}
 
-// 	result = ft_lstnew(elem->content);
-// 	return (result);
-// }
+TEST(TestFtLstmap, Basic) {
+	t_list e1, e2, e3;
+	char cont1[] = "test";
+	char cont2[] = "nuhhh";
+	char cont3[] = "^^^555";
 
-// TEST(TestFtLstmap, CheckThreeElem) {
-// 	t_list e1, e2, e3;
-// 	t_list *result;
-// 	int cont1 = 1;
-// 	int cont2 = 2;
-// 	int cont3 = 3;
+	e1.next = &e2;
+	e1.content = &cont1;
+	e2.next = &e3;
+	e2.content = &cont2;
+	e3.next = NULL;
+	e3.content = &cont3;
 
-// 	e1.next = &e2;
-// 	e1.content = &cont1;
-// 	e2.next = &e3;
-// 	e2.content = &cont2;
-// 	e3.next = NULL;
-// 	e3.content = &cont3;
+	t_list *result = ft_lstmap(&e1, lstmap_f, NULL);
+	EXPECT_STREQ("OK !", (char *)result->content);
+	EXPECT_STREQ("OK !", (char *)result->next->content);
+	EXPECT_STREQ("OK !", (char *)result->next->next->content);
+	EXPECT_EQ(NULL, result->next->next->next);
+}
 
-// 	result = ft_lstmap(&e1, &cpy_Tlist_elem);
-// 	ASSERT_TRUE(result != NULL);
-// 	EXPECT_TRUE(result->content == &cont1);
-// 	EXPECT_TRUE(result->next->content == &cont2);
-// 	EXPECT_TRUE(result->next->next->content == &cont3);
-// 	EXPECT_TRUE(result->next->next->next == NULL);
-
-// 	free(result->next->next);
-// 	free(result->next);
-// 	free(result);
+// TEST(TestFtStrlcat, MustSegfault) {
+// 	EXPECT_EXIT((ft_lstmap(NULL, lstmap_f, NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_lstmap(NULL, lstmap_f, NULL);\n";
 // }

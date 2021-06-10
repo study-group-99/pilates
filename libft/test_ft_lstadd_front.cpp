@@ -6,19 +6,39 @@ extern "C" {
 #include "../libft.h"
 }
 
-TEST(TestFtLstadd_front, CheckOfSizeT) {
-	t_list example1;
-	t_list newOne;
-	t_list *head;
-	int var = 99;
-	char c = 'X';
+TEST(TestFtLstadd_front, Basic) {
+	t_list	*got = ft_lstnew(strdup("test"));
+	t_list	*want = ft_lstnew(strdup("OK"));
 
-	example1.content = &var;
-	newOne.content = &c;
-	head = &example1;
-	ft_lstadd_front(&head, &newOne);
-	EXPECT_TRUE(newOne.next == &example1);
-	EXPECT_TRUE(head == &newOne);
-	EXPECT_TRUE(*(char*)head->content == 'X');
-	EXPECT_TRUE(*(int*)head->next->content == 99);
+	ft_lstadd_front(&got, want);
+
+    EXPECT_STREQ("test", (char *)got->next->content);
+    EXPECT_STREQ("OK", (char *)got->content);
+}
+
+TEST(TestFtLstadd_front, Null) {
+	t_list	*got = ft_lstnew(NULL);
+	t_list	*want = ft_lstnew(strdup("OK"));
+
+	ft_lstadd_front(&got, want);
+
+    EXPECT_TRUE(want->content == got->content);
+}
+
+TEST(TestFtLstadd_front, Null2) {
+	t_list	*got = ft_lstnew(strdup("test"));
+	t_list	*want = ft_lstnew(NULL);
+
+	ft_lstadd_front(&got, want);
+
+    EXPECT_TRUE(want->content == got->content);
+}
+
+TEST(TestFtLstadd_front, DoubleNull) {
+	t_list	*got = ft_lstnew(NULL);
+	t_list	*want = ft_lstnew(NULL);
+
+	ft_lstadd_front(&got, want);
+
+    EXPECT_TRUE(want->content == got->content);
 }

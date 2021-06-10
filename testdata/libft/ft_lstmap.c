@@ -6,7 +6,7 @@
 /*   By: bchristo <bchristo@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 17:42:18 by bchristo          #+#    #+#             */
-/*   Updated: 2021/05/29 18:23:23 by bchristo         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:25:23 by bchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,20 @@
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
+	t_list	*r;
+	t_list	*t;
+
+	r = 0;
 	while (lst)
 	{
-		f(lst->content);
-		del(lst);
+		t = ft_lstnew(f(lst->content));
+		if (!t)
+		{
+			ft_lstclear(&r, del);
+			return (0);
+		}
+		ft_lstadd_back(&r, t);
 		lst = lst->next;
 	}
-	return (NULL);
+	return (r);
 }

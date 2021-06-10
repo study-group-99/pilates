@@ -6,7 +6,7 @@
 /*   By: bchristo <bchristo@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 00:03:42 by bchristo          #+#    #+#             */
-/*   Updated: 2021/05/28 04:49:18 by bchristo         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:25:23 by bchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 {
 	size_t	n;
 
-	if (!s1)
-		return (NULL);
 	while (*s1 && ft_strchr(set, *s1))
 		s1++;
 	n = ft_strlen(s1);

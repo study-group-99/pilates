@@ -6,18 +6,18 @@ extern "C" {
 }
 
 TEST(TestFtMemcmp, Basic) {
-    char    *s1 = "Somethi";
-    char    *s2 = "Sometht";
+    char s1[] = "Somethi";
+    char s2[] = "Sometht";
 
     int want = memcmp(s1, s2, 8);
     int got = ft_memcmp(s1, s2, 8);
     EXPECT_EQ(got < 0, want < 0) << "Input: ft_memcmp(\"Somethi\", \"Sometht\", 8);\n";
 
-	s1 = "\xff\0\0\xaa\0\xde\xffMACOSX\xff";
-	s2 = "\xff\0\0\xaa\0\xde\x00MBS";
+	char s3[] = "\xff\0\0\xaa\0\xde\xffMACOSX\xff";
+	char s4[] = "\xff\0\0\xaa\0\xde\x00MBS";
 
-	want = memcmp(s1, s2, 9);
-	got = ft_memcmp(s1, s2, 9);
+	want = memcmp(s1, s3, 9);
+	got = ft_memcmp(s1, s4, 9);
 	EXPECT_EQ(got > 0, want > 0) << "Input: ft_memcmp(\"\\xff\\0\\0\\xaa\\0\\xde\\xffMACOSX\\xff\", \"\\xff\\0\\0\\xaa\\0\\xde\\x00MBS\", 9);\n";
 }
 
@@ -61,8 +61,8 @@ TEST(TestFtMemcmp, CharInt) {
 }
 
 TEST(TestFtMemcmp, Zero) {
-    char *s1 = "atoms\0\0\0\0";
-	char *s2 = "atoms\0abc";
+    char s1[] = "atoms\0\0\0\0";
+	char s2[] = "atoms\0abc";
 
 	int want = memcmp(s1, s2, 8);
 	int	got = ft_memcmp(s1, s2, 8);
@@ -71,8 +71,8 @@ TEST(TestFtMemcmp, Zero) {
 }
 
 TEST(TestFtMemcmp, Unsigned) {
-    char *s1 = "\xff\xaa\xde\200";
-	char *s2 = "\xff\xaa\xde\0";
+    char s1[] = "\xff\xaa\xde\200";
+	char s2[] = "\xff\xaa\xde\0";
 
 	int want = memcmp(s1, s2, 8);
 	int	got = ft_memcmp(s1, s2, 8);

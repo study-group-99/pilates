@@ -6,31 +6,28 @@ extern "C" {
 #include "../libft.h"
 }
 
-TEST(TestFtLstlast, CheckThreeElem) {
-	t_list e1, e2, e3;
-	e1.next = &e2;
-	e2.next = &e3;
-	e3.next = NULL;
-	t_list	*result;
+TEST(TestFtLstlast, Basic) {
+	t_list s1, s2, want;
+	s1.next = &s2;
+	s2.next = &want;
+	want.next = NULL;
 
-	result = ft_lstlast(&e1);
-	EXPECT_TRUE(result == &e3);
+	t_list *got = ft_lstlast(&s1);
+	EXPECT_TRUE(&want == got);
 }
 
-TEST(TestFtLstlast, CheckNull) {
-	t_list *ptr;
-	ptr = NULL;
-	t_list	*result;
-
-	result = ft_lstlast(ptr);
-	EXPECT_TRUE(result == NULL);
+TEST(TestFtLstlast, Null) {
+	t_list *s;
+	s = NULL;
+	t_list *got = ft_lstlast(s);
+	EXPECT_TRUE(NULL == got);
 }
 
-TEST(TestFtLstlast, CheckOneElem) {
-	t_list e1;
-	e1.next = NULL;
-	t_list	*result;
+TEST(TestFtLstlast, Basic2) {
+	t_list want;
+	want.next = NULL;
+	
+	t_list *got = ft_lstlast(&want);
 
-	result = ft_lstlast(&e1);
-	EXPECT_TRUE(result == &e1);
+	EXPECT_TRUE(&want == got);
 }

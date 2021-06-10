@@ -6,42 +6,40 @@ extern "C" {
 #include "../libft.h"
 }
 
-TEST(TestFtLstback, AddAtEndOfThreeElem) {
-	t_list e1, e2, e3, last;
-	e1.next = &e2;
-	e2.next = &e3;
-	e3.next = NULL;
-	t_list	*head;
+TEST(TestFtLstadd_back, Basic) {
+	t_list	*got = ft_lstnew(strdup("test"));
+	t_list	*want = ft_lstnew(strdup("OK"));
 
-	head = &e1;
-	ft_lstadd_back(&head, &last);
-	EXPECT_TRUE(e3.next == &last);
+	ft_lstadd_back(&got, want);
+
+    EXPECT_TRUE(want == got->next);
+    EXPECT_STREQ("OK", (char *)got->next->content);
 }
 
-TEST(TestFtLstback, CheckNull) {
-	t_list *ptr;
-	ptr = NULL;
-	t_list	last;
+TEST(TestFtLstadd_back, Null) {
+	t_list	*got = ft_lstnew(NULL);
+	t_list	*want = ft_lstnew(strdup("OK"));
 
-	ft_lstadd_back(&ptr, &last);
-	EXPECT_TRUE(ptr == &last);
+	ft_lstadd_back(&got, want);
+
+    EXPECT_TRUE(want->content == got->next->content);
 }
 
-TEST(TestFtLstback, CheckDoubleNull) {
-	t_list *ptr, *last;
-	ptr = NULL;
-	last = NULL;
+TEST(TestFtLstadd_back, Null2) {
+	t_list	*got = ft_lstnew(strdup("test"));
+	t_list	*want = ft_lstnew(NULL);
 
-	ft_lstadd_back(&ptr, last);
-	EXPECT_TRUE(ptr == NULL);
+	ft_lstadd_back(&got, want);
+
+    EXPECT_TRUE(want->content == got->next->content);
 }
 
-TEST(TestFtLstback, CheckOneElem) {
-	t_list e1, last;
-	e1.next = NULL;
-	t_list	*head;
+TEST(TestFtLstadd_back, DoubleNull) {
+	t_list	*got = ft_lstnew(NULL);
+	t_list	*want = ft_lstnew(NULL);
 
-	head = &e1;
-	ft_lstadd_back(&head, &last);
-	EXPECT_TRUE(head->next == &last);
+	ft_lstadd_back(&got, want);
+
+	EXPECT_TRUE(NULL == got->content);
+	EXPECT_TRUE(want == got->next);
 }

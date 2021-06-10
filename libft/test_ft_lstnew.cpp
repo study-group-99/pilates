@@ -6,52 +6,41 @@ extern "C" {
 #include "../libft.h"
 }
 
-TEST(TestFtLstnew, CheckOfSizeT) {
-	size_t	n = 4;
-	t_list	*testObj;
-	size_t	*out;
-	
-	testObj = ft_lstnew(&n);
-	out = (size_t*)testObj->content;
-	EXPECT_EQ(*out, n);
-	ASSERT_TRUE(testObj->next == NULL);
-	ASSERT_TRUE(testObj->content == &n);
+TEST(TestFtLstnew, Size) {
+	size_t n = 4;
+	t_list *got = ft_lstnew(&n);
 
-	free(testObj);
+	EXPECT_TRUE(got->next == NULL);
+	EXPECT_TRUE(got->content == &n);
 }
 
-TEST(TestFtLstnew, CheckOfChar) {
-	char	c[] = "lkjlk";
-	t_list	*testObj;
-	
-	testObj = ft_lstnew(c);
-	EXPECT_EQ(0, strcmp((const char*)(testObj->content), c));
-	ASSERT_TRUE(testObj->next == NULL);
-	ASSERT_TRUE(testObj->content == c);
+TEST(TestFtLstnew, Char) {
+	char want[] = "this is a test";
+	t_list *got = ft_lstnew(want);
 
-	free(testObj);
+	EXPECT_TRUE(NULL == got->next);
+	EXPECT_TRUE(&want == got->content);
 }
 
-TEST(TestFtLstnew, CheckOfInt) {
-	int		c = 1585;
-	t_list	*testObj;
-	
-	testObj = ft_lstnew(&c);
-	EXPECT_EQ(*(int*)(testObj->content), c);
-	ASSERT_TRUE(testObj->next == NULL);
-	ASSERT_TRUE(testObj->content == &c);
+TEST(TestFtLstnew, Integer) {
+	int	want = 1585;
+	t_list *got = ft_lstnew(&want);
 
-	free(testObj);
+	EXPECT_TRUE(NULL == got->next);
+	EXPECT_TRUE(&want == got->content);
 }
 
-TEST(TestFtLstnew, CheckOfLong) {
-	long long int	c = 42147483647;
-	t_list	*testObj;
-	
-	testObj = ft_lstnew(&c);
-	EXPECT_EQ(*(long long int*)(testObj->content), c);
-	ASSERT_TRUE(testObj->next == NULL);
-	ASSERT_TRUE(testObj->content == &c);
+TEST(TestFtLstnew, Long) {
+	long long int want = 42147483647;
+	t_list *got = ft_lstnew(&want);
 
-	free(testObj);
+	EXPECT_TRUE(NULL == got->next);
+	EXPECT_TRUE(&want == got->content);
+}
+
+TEST(TestFtLstnew, Null) {
+	t_list *got = ft_lstnew(NULL);
+	
+	EXPECT_TRUE(NULL == got->next);
+	EXPECT_TRUE(NULL == got->content);
 }
