@@ -11,7 +11,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/leaanthony/clir"
+	"github.com/bh90210/clir"
 	"github.com/leaanthony/spinner"
 	"github.com/study-group-99/pilates/internal"
 )

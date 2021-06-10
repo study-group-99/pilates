@@ -3,7 +3,7 @@ package pilates
 import (
 	"fmt"
 
-	"github.com/leaanthony/clir"
+	"github.com/bh90210/clir"
 )
 
 func RootCommand(cli *clir.Cli) {

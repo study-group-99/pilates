@@ -1,5 +1,5 @@
-github.com/bh90210/clir v1.2.4 h1:66nn7X0dfqIDHYNu0/RGw2aCW0dXaJi3VDDDiPuxyGQ=
-github.com/bh90210/clir v1.2.4/go.mod h1:qcajDyE8XFDTbhIMG63+Wa0oisXDQgotAOvZDcNnFmo=
+github.com/bh90210/clir v1.2.5 h1:DHh/0EnY1Jrz19tm0KB/5zaP0bXCgrC8P82K+jzk+LQ=
+github.com/bh90210/clir v1.2.5/go.mod h1:rAvaTZL37lggPIU4pRtFmvvV9JJkB10/m17xTWWyDeQ=
 github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/leaanthony/spinner v0.5.3 h1:IMTvgdQCec5QA4qRy0wil4XsRP+QcG1OwLWVK/LPZ5Y=
