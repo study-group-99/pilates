@@ -17,15 +17,15 @@ jobs:
      - name: Make pilates dir inside test data folder and copy unit tests
        if: contains(github.event.comment.body, '/libft')
        run: |
-        mkdir ${{ github.workspace }}/testdata/libft/pilates
-        cp -r libft ${{ github.workspace }}/testdata/libft/pilates
-        cp ${{ github.workspace }}/libft/CMakeLists.txt.test ${{ github.workspace }}/testdata/libft/CMakeLists.txt
-     - name: Clean temp directory
+        mkdir ./testdata/libft/pilates
+        cp -r libft ./testdata/libft/pilates
+        cp ./libft/CMakeLists.txt.test ./testdata/libft/CMakeLists.txt
+     - name: Cmake
        run: |
         cmake -S . -B build
         cmake --build build
-       working-directory: cd ${{ github.workspace }}/testdata/libft
+       working-directory: cd ./testdata/libft
      - name: Run tests
        run: |
         ctest --output-on-failure
-       working-directory: ${{ github.workspace }}/testdata/libft/build
+       working-directory: ./testdata/libft/build
