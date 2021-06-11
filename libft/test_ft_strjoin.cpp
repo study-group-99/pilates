@@ -70,28 +70,3 @@ TEST(TestFtStrjoin, MustSegfault) {
 	EXPECT_EXIT((ft_strjoin("where is my ", NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(\"where is my \", NULL);\n";
 	EXPECT_EXIT((ft_strjoin(NULL, NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(NULL, NULL);\n";
 }
-
-TEST(TestFtStrjoin, Free) {
-	char *s1 = "my favorite animal is";
-	char *s2 = " ";
-	char *s3 = "the nyancat";
-
-	char*tmp = ft_strjoin(s1, s2);
-	char *got = ft_strjoin(tmp, s3);
-	free(tmp);
-	EXPECT_STREQ("my favorite animal is the nyancat", got);
-}
-
-TEST(TestFtStrjoin, Overlap) {
-	char *want = "my favorite animal is ";
-	char *s = want + 20;
-
-	char *got = ft_strjoin(s, want);
-	EXPECT_STREQ("s my favorite animal is ", got);
-}
-
-TEST(TestFtStrjoin, MustSegfault) {
-	EXPECT_EXIT((ft_strjoin(NULL, "where is my "), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(NULL, \"where is my \");\n";
-	EXPECT_EXIT((ft_strjoin("where is my ", NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(\"where is my \", NULL);\n";
-	EXPECT_EXIT((ft_strjoin(NULL, NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(NULL, NULL);\n";
-}

@@ -58,8 +58,8 @@ TEST(TestFtAtoi, HandleCombinations) {
 }
 
 TEST(TestFtAtoi, ReadMaxAndMinInt) {
-    char *s1 = "-2147483648";
-    char *s2 = "2147483647";
+    char s1[] = "-2147483648";
+    char s2[] = "2147483647";
     
 	int	want = atoi(s1);
 	int	got = ft_atoi(s1);
