@@ -297,7 +297,7 @@ func (l *libft) run() {
 		}
 
 		if unit {
-			cmd := exec.Command("cmake", "-S", ".", "-B", "build", "--", "-j", "20")
+			cmd := exec.Command("cmake", "-j", "20", "-S", ".", "-B", "build")
 			genSpinner := spinner.New("Generating build")
 			genSpinner.Start()
 			cmd.Env = os.Environ()
@@ -307,7 +307,7 @@ func (l *libft) run() {
 			}
 			genSpinner.Success()
 
-			cmd = exec.Command("cmake", "--build", "build", "--", "-j", "20")
+			cmd = exec.Command("cmake", "-j", "20", "--build", "build")
 			buildSpinner := spinner.New("Building C++ files")
 			buildSpinner.Start()
 			cmd.Stderr = os.Stderr
