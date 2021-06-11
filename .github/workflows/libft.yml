@@ -25,7 +25,7 @@ jobs:
         ls
         cmake -S . -B build
         cmake --build build
-       working-directory: cd ./testdata/libft
+       working-directory: ./testdata/libft
      - name: Run tests
        run: |
         ctest --output-on-failure
