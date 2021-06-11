@@ -20,6 +20,7 @@ jobs:
         mkdir ${{ github.workspace }}/testdata/libft/pilates && 
         cp -r libft ${{ github.workspace }}/testdata/libft/pilates && 
         cp ${{ github.workspace }}/libft/CMakeLists.txt.test ${{ github.workspace }}/testdata/libft/CMakeLists.txt && 
+        ls &&
         cd ${{ github.workspace }}/testdata/libft/ && cmake -S . -B build && 
         cd ${{ github.workspace }}/testdata/libft/ && cmake --build build && 
         cd ${{ github.workspace }}/testdata/libft/build && ctest --output-on-failure
