@@ -1,19 +1,23 @@
-name: libft
+name: libft unit tests
 
 on:
   issue_comment:                                     
     types: [created, edited, deleted]
 
+  pull_request:
+    branches:
+      - main
+
 jobs:
- job01:
+ libft:
    if: contains(github.event.comment.html_url, '/pull/')    # check if the comments come from pull request, exclude those from issue.
-   runs-on: [ubuntu-latest]
+   runs-on: ubuntu-latest
    steps:
-     - name: say hello
-       if: contains(github.event.comment.body, '/support')   # check the comment if it contains the keywords
+     - uses: actions/checkout@v2
+       if: contains(github.event.comment.body, '/libft')   # check the comment if it contains the keywords
        run: |
-         echo say hello
-     - name: test
-       if: contains(github.event.comment.body, '/test')  # check the comment if it contains the keywords
-       run: |
-         echo test
+        cp -r libft ./testdata/libft/pilates \
+        cp ./libft/CMakeLists.txt.test ./testdata/libft/CMakeLists.txt \
+        cmake -S . -B build \
+        cmake --build build \
+        cd build && ctest --output-on-failure
