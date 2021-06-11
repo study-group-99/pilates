@@ -17,19 +17,19 @@ jobs:
      - name: Make pilates dir inside test data folder and copy unit tests
        if: contains(github.event.comment.body, '/libft')
        run: |
-        mkdir ./testdata/libft/pilates
-        cp -r ./libft ./testdata/libft/pilates
-        ls ./testdata/libft/pilates
-        rm ./testdata/libft/pilates/CMakeLists.txt
-        cp ./libft/CMakeLists.txt.test ./testdata/libft/pilates/CMakeLists.txt
-        cp ./libft/CMakeLists.txt.in ./testdata/libft/CMakeLists.txt.in
-        cp ./libft/CMakeLists.txt ./testdata/libft/CMakeLists.txt
+        mkdir ${{ github.workspace }}/testdata/libft/pilates
+        cp -r ${{ github.workspace }}/libft ${{ github.workspace }}/testdata/libft/pilates
+        ls ${{ github.workspace }}/testdata/libft/pilates
+        rm ${{ github.workspace }}/testdata/libft/pilates/CMakeLists.txt
+        cp ${{ github.workspace }}/libft/CMakeLists.txt.test ${{ github.workspace }}/testdata/libft/pilates/CMakeLists.txt
+        cp ${{ github.workspace }}/libft/CMakeLists.txt.in ${{ github.workspace }}/testdata/libft/CMakeLists.txt.in
+        cp ${{ github.workspace }}/libft/CMakeLists.txt ${{ github.workspace }}/testdata/libft/CMakeLists.txt
      - name: Cmake
        run: |
         cmake -S . -B build
         cmake --build build
-       working-directory: ./testdata/libft
+       working-directory: ${{ github.workspace }}/testdata/libft
      - name: Run tests
        run: |
         ctest --output-on-failure
-       working-directory: ./testdata/libft/build
+       working-directory: ${{ github.workspace }}/testdata/libft/build
