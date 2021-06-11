@@ -10,17 +10,22 @@ on:
 
 jobs:
  libft:
-   if: contains(github.event.comment.html_url, '/pull/')    # check if the comments come from pull request, exclude those from issue.
+   if: contains(github.event.comment.html_url, '/pull/')
    runs-on: ubuntu-latest
    steps:
      - uses: actions/checkout@v2
-     - name: build and run unit tests on /libft command
-       if: contains(github.event.comment.body, '/libft')   # check the comment if it contains the keywords
+     - name: Make pilates dir inside test data folder and copy unit tests
+       if: contains(github.event.comment.body, '/libft')
        run: |
         mkdir ${{ github.workspace }}/testdata/libft/pilates
         cp -r libft ${{ github.workspace }}/testdata/libft/pilates
         cp ${{ github.workspace }}/libft/CMakeLists.txt.test ${{ github.workspace }}/testdata/libft/CMakeLists.txt
-        ls ${{ github.workspace }}/testdata/libft/
-        cd ${{ github.workspace }}/testdata/libft/ && cmake -S . -B build
-        cd ${{ github.workspace }}/testdata/libft/ && cmake --build build
-        cd ${{ github.workspace }}/testdata/libft/build && ctest --output-on-failure
+     - name: Clean temp directory
+       run: |
+        cmake -S . -B build
+        cmake --build build
+       working-directory: cd ${{ github.workspace }}/testdata/libft
+     - name: Run tests
+       run: |
+        ctest --output-on-failure
+       working-directory: ${{ github.workspace }}/testdata/libft/build
