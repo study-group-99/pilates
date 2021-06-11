@@ -146,6 +146,10 @@ func (l *libft) init() {
 
 		fmt.Println("pilates initialization")
 
+		// try remove the 'build' folder
+		// this needs to be done to remove previous builds artifacts
+		os.Remove("build")
+
 		// if not, or if -f option is used create it
 		os.Mkdir(path, 0744)
 		dir, err := libftTests.ReadDir("libft")
