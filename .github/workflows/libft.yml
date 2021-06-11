@@ -17,8 +17,8 @@ jobs:
      - name: build and run unit tests on /libft command
        if: contains(github.event.comment.body, '/libft')   # check the comment if it contains the keywords
        run: |
-        cp -r libft ./testdata/libft/pilates \
-        cp ./libft/CMakeLists.txt.test ./testdata/libft/CMakeLists.txt \
-        cmake -S . -B build \
-        cmake --build build \
+        cp -r libft ./testdata/libft/pilates && \
+        cp ./libft/CMakeLists.txt.test ./testdata/libft/CMakeLists.txt && \
+        cmake -S . -B build && \
+        cmake --build build && \
         cd build && ctest --output-on-failure
