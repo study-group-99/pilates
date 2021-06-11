@@ -18,7 +18,7 @@ jobs:
        if: contains(github.event.comment.body, '/libft')
        run: |
         mkdir ${{ github.workspace }}/testdata/libft/pilates
-        cp -R ${{ github.workspace }}/libft/* ${{ github.workspace }}/testdata/libft/pilates/*
+        cp -R ${{ github.workspace }}/libft/ ${{ github.workspace }}/testdata/libft/pilates/
         ls ${{ github.workspace }}/testdata/libft/pilates
         rm ${{ github.workspace }}/testdata/libft/pilates/CMakeLists.txt
         cp ${{ github.workspace }}/libft/CMakeLists.txt.test ${{ github.workspace }}/testdata/libft/pilates/CMakeLists.txt
