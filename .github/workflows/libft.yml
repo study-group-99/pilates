@@ -22,6 +22,7 @@ jobs:
         cp ./libft/CMakeLists.txt.test ./testdata/libft/CMakeLists.txt
      - name: Cmake
        run: |
+        ls
         cmake -S . -B build
         cmake --build build
        working-directory: cd ./testdata/libft
