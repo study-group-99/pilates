@@ -5,32 +5,103 @@
 # Ultimate Pilates Engine
 Common core testing.
 
-### Contents
+## Contents
 
 - [Installation](#installation)
 	- [Script](#script)
 	- [Manual](#manual)
-	- [Docker](#docker)
-	- [Github Actions](#github-actions)
 	- [Build Source](#build-source)
 - [Usage](#usage)
 	- [libft](#libft)
-	- [get_next_line](#)
-- [Contributing](#installation)
+- [Development](#development)
+	- [Roadmap](#roadmap)
+	- [Contributing](#contributing)
 	- [Credits](#credits)
 
-## Installation
-### Script
-### Manual
-### Docker
-### Github Actions
-### Build Source
-## Usage
-### libft
-_note: new c++ google test (linked lists functions)_
-### get_next_line
-## Contributing
-### Credits
+# Installation
+## Script
+## Manual
+## Build Source
+# Usage
 
-#### Shoulders of giants
+general case, update, help etc
+
+## libft
+
+**Dependencies: Cmake, Gcovr, Norminette**
+
+_note: new c++ google test (linked lists functions)_
+
+# Development
+
+### Feature cycle
+
+### Bug cycle
+
+### Release
+
+#### Release Schedule 
+
+#### CI
+
+##### Main branch
+
+When a pull request against `main` branch is successfully merged a CI gets triggered that leads to release (see `/workflows/release.yml`).
+
+##### Comments
+
+Regardless the branch users can comment/trig certain actions (see `/workflows/comments.yml`).
+
+`/libft-ci` : Triggers cpp unit tests for libft. Comments back the result once actions is done.
+
+##### Pull requests defaults
+
+on all branches
+1. Go tests (see `/workflows/gotests.yml`)
+
+If branch is `main`
+
+2. Runs all c/cpp tests (see `/workflows/main.yml`)
+
+## Roadmap
+
+- [x] Libft
+- [ ] ft_printf
+- [ ] get_next_line
+- [ ] minitalk (?)
+- [ ] pipex (?)
+- [ ] so_long (?)
+- [ ] Fdf (?)
+- [ ] fract-ol (?)
+- [ ] push_swap (?)
+- [ ] minishell (?)
+- [ ] Philosophers (?)
+- [ ] cub3d (?)
+- [ ] miniRT (?)
+- [ ] ft_containers (?)
+- [ ] ft_services (?)
+- [ ] Inception (?)
+- [ ] ft_irc (?)
+- [ ] webserv (?)
+- [ ] cpp module (?)
+
+## Contributing
+
+All students and alumni are very welcome to contribute.
+
+* Code:
+
+* Bug reports:
+
+* Feature requests:
+
+* Reviews:
+
+## Credits
+
+[Contributors](https://github.com/study-group-99/pilates/graphs/contributors)
+
+<!-- Reviewers:  -->
+
+### Shoulders of giants
 Test cases for libft unit tests also came from: <a href="https://github.com/Ysoroko">@Ysoroko</a>, <a href="https://github.com/alelievr">@alelievr</a> & <a href="https://github.com/ska42">@ska42</a>.
