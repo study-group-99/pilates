@@ -4,18 +4,18 @@ on:
   issue_comment:                                     
     types: [created, edited, deleted]
 
-  pull_request:
+  # pull_request:
 
 jobs:
   libft:
-    # if: contains(github.event.comment.html_url, '/pull/')
+    if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     outputs:
       result: ${{ steps.run.outputs.result }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup test files
-        # if: contains(github.event.comment.body, '/libft')
+        if: contains(github.event.comment.body, '/libft')
         run: |
           mkdir ${{ github.workspace }}/testdata/libft/pilates
           cp -a ${{ github.workspace }}/libft/. ${{ github.workspace }}/testdata/libft/pilates/
@@ -25,13 +25,13 @@ jobs:
           cp ${{ github.workspace }}/libft/CMakeLists.txt.in ${{ github.workspace }}/testdata/libft/CMakeLists.txt.in
           cp ${{ github.workspace }}/libft/CMakeLists.txt ${{ github.workspace }}/testdata/libft/CMakeLists.txt
       - name: Build c++ tests
-        # if: contains(github.event.comment.body, '/libft')
+        if: contains(github.event.comment.body, '/libft')
         run: |
           cmake -S . -B build
           cmake --build build
         working-directory: ${{ github.workspace }}/testdata/libft
       - name: Run tests
-        # if: contains(github.event.comment.body, '/libft')
+        if: contains(github.event.comment.body, '/libft')
         id: run
         run: |
           REPORT="$(ctest --output-on-failure)"
@@ -45,3 +45,13 @@ jobs:
     needs: libft
     steps:
       - run: echo ${{needs.libft.outputs.result}}
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GORELEASER}}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ${{needs.libft.outputs.result}}
+            })
