@@ -1,4 +1,4 @@
-name: libft
+name: release
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   release:
-    # if: contains(github.event.pull_request.labels.*.name, 'Update')
+    if: contains(github.event.pull_request.labels.*.name, 'Update')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
