@@ -8,18 +8,18 @@ on:
 
 jobs:
   libft:
+    # if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
-    # Map a step output to a job output
     outputs:
-      res1: ${{ steps.step1.outputs.test }}
+      res: ${{ steps.step1.outputs.results }}
     steps:
       - id: step1
-        run: echo "::set-output name=test::hello world"
-  job2:
+        run: echo "::set-output name=results::hello world"
+  libftcomment:
     runs-on: ubuntu-latest
     needs: libft
     steps:
-      - run: echo ${{needs.libft.outputs.res1}} 
+      - run: echo ${{needs.libft.outputs.res}} 
 # jobs:
 #   libftunittest:
 #     # if: contains(github.event.comment.html_url, '/pull/')
