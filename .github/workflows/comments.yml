@@ -13,7 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup test files
-        # if: contains(github.event.comment.body, '/libft')
         run: |
           mkdir ${{ github.workspace }}/testdata/libft/pilates
           cp -a ${{ github.workspace }}/libft/. ${{ github.workspace }}/testdata/libft/pilates/
@@ -23,7 +22,6 @@ jobs:
           cp ${{ github.workspace }}/libft/CMakeLists.txt.in ${{ github.workspace }}/testdata/libft/CMakeLists.txt.in
           cp ${{ github.workspace }}/libft/CMakeLists.txt ${{ github.workspace }}/testdata/libft/CMakeLists.txt
       - name: Build c++ tests
-        # if: contains(github.event.comment.body, '/libft')
         run: |
           cmake -S . -B build
           cmake --build build
@@ -44,7 +42,6 @@ jobs:
     needs: libft
     steps:
       - uses: actions/github-script@v4
-        # if: contains(github.event.comment.body, '/libft')
         with:
           github-token: ${{secrets.GORELEASER}}
           script: |
