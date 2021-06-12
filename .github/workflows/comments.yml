@@ -2,9 +2,7 @@ name: comments
 
 on:
   issue_comment:                                     
-    types: [created, edited, deleted]
-
-  # pull_request:
+    types: [created]
 
 jobs:
   libft:
@@ -40,16 +38,12 @@ jobs:
           REPORT="${REPORT//$'\r'/'%0D'}"
           echo "::set-output name=result::$REPORT"
         working-directory: ${{ github.workspace }}/testdata/libft/build
-      # - name: Run tests
-      #   if: contains(github.event.comment.body, '/libft')
-      #   id: run
-      #   run: |
-      #     echo "::set-output name=result::test"
   libftcomment:
     runs-on: ubuntu-latest
     needs: libft
     steps:
       - uses: actions/github-script@v4
+        if: contains(github.event.comment.body, '/libft')
         with:
           github-token: ${{secrets.GORELEASER}}
           script: |
