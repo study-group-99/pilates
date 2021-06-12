@@ -9,7 +9,7 @@ jobs:
     if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     outputs:
-      testsresults: ${{ steps.step4.outputs.unit }}
+      output1: ${{ steps.step4.outputs.unit }}
     steps:
       - uses: actions/checkout@v2
       - name: Make pilates dir inside 'testdata/libft' folder and copy unit tests
@@ -38,4 +38,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        run: echo ${{needs.job1.outputs.testsresults}}
+        run: echo ${{needs.job1.outputs.output1}}
