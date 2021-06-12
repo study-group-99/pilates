@@ -11,7 +11,7 @@ jobs:
     # if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     outputs:
-      res: ${{ steps.run.outputs.results }}
+      result: ${{ steps.run.outputs.result }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup test files
@@ -34,10 +34,10 @@ jobs:
         # if: contains(github.event.comment.body, '/libft')
         id: run
         run: |
-          echo "::set-output name=results::$(echo ctest --output-on-failure)"
+          echo "::set-output name=result::$(ctest --output-on-failure)"
         working-directory: ${{ github.workspace }}/testdata/libft/build
   libftcomment:
     runs-on: ubuntu-latest
     needs: libft
     steps:
-      - run: echo ${{needs.libft.outputs.res}} 
+      - run: echo ${{needs.libft.outputs.result}} 
