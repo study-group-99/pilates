@@ -5,11 +5,10 @@ on:
     types: [created, edited, deleted]
 
   pull_request:
-    types: [assigned, opened, synchronize, reopened]
-
+    
 jobs:
   libftunittest:
-    if: contains(github.event.comment.html_url, '/pull/')
+    # if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     outputs:
       output1: ${{ steps.step4.outputs.unit }}
