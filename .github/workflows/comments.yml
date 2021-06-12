@@ -6,7 +6,7 @@ on:
 
 jobs:
   libft:
-    if: contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/libft')
+    if: contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/libft-ci')
     runs-on: ubuntu-latest
     outputs:
       result: ${{ steps.run.outputs.result }}
@@ -39,7 +39,7 @@ jobs:
           echo "::set-output name=result::$REPORT"
         working-directory: ${{ github.workspace }}/testdata/libft/build
   libftcomment:
-    if: contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/libft')
+    if: contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/libft-ci')
     runs-on: ubuntu-latest
     needs: libft
     steps:
