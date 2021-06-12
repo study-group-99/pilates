@@ -34,10 +34,10 @@ jobs:
         # if: contains(github.event.comment.body, '/libft')
         id: run
         run: |
-          echo "::set-output name=result::$(ctest --output-on-failure)"
+          echo "::set-output name=result::"$(ctest --output-on-failure)""
         working-directory: ${{ github.workspace }}/testdata/libft/build
   libftcomment:
     runs-on: ubuntu-latest
     needs: libft
     steps:
-      - run: echo ${{needs.libft.outputs.result}} 
+      - run: echo "${{needs.libft.outputs.result}}"
