@@ -34,7 +34,7 @@ jobs:
         if: contains(github.event.comment.body, '/libft')
         id: run
         run: |
-          REPORT=6
+          REPORT="$(ls ${{ github.workspace }}/testdata/libft/pilates)"
           REPORT="${REPORT//'%'/'%25'}"
           REPORT="${REPORT//$'\n'/'%0A'}"
           REPORT="${REPORT//$'\r'/'%0D'}"
