@@ -1,4 +1,4 @@
-name: main PR tests
+name: go unit tests
 
 on: pull_request
 
