@@ -14,7 +14,7 @@ jobs:
       output1: ${{ steps.step1.outputs.unit }}
     steps:
       # - uses: actions/checkout@v2
-      # - name: Make pilates dir inside 'testdata/libft' folder and copy unit tests
+      # - id: init
       #   if: contains(github.event.comment.body, '/libft')
       #   run: |
       #     mkdir ${{ github.workspace }}/testdata/libft/pilates
@@ -24,20 +24,21 @@ jobs:
       #     cp ${{ github.workspace }}/libft/CMakeLists.txt.test ${{ github.workspace }}/testdata/libft/pilates/CMakeLists.txt
       #     cp ${{ github.workspace }}/libft/CMakeLists.txt.in ${{ github.workspace }}/testdata/libft/CMakeLists.txt.in
       #     cp ${{ github.workspace }}/libft/CMakeLists.txt ${{ github.workspace }}/testdata/libft/CMakeLists.txt
-      # - name: Cmake
+      # - id: build
       #   run: |
       #     cmake -S . -B build
       #     cmake --build build
       #   working-directory: ${{ github.workspace }}/testdata/libft
-      - name: Run tests
+      - id: run
         # run: |
         #   ctest --output-on-failure
         run: |
           echo "::set-output name=unit::https://google.com"
-        working-directory: ${{ github.workspace }}/testdata/libft/build
+        # working-directory: ${{ github.workspace }}/testdata/libft/build
 
   libftcommentback:
     needs: libftunittest
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{needs.job1.outputs.output1}}
+
