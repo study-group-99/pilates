@@ -39,4 +39,4 @@ jobs:
     needs: libftunittest
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{needs.job1.outputs.output1}}
+      - run: echo ${{needs.job1.outputs.output1.unit}}
