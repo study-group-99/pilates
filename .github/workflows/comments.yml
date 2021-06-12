@@ -45,7 +45,6 @@ jobs:
         id: run
         run: |
           echo "::set-output name=result::test"
-        working-directory: ${{ github.workspace }}/testdata/libft/build
   libftcomment:
     runs-on: ubuntu-latest
     needs: libft
