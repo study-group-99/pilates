@@ -6,57 +6,49 @@ extern "C" {
 }
 
 TEST(TestFtStrrchr, CharInStr) {
-    char    s1[50] = {'0'};
-    char    *p1, *p2;
-    
-    memcpy(s1, "This is Some\ntext.\0    ", 19);
-    p1 = strrchr(s1, 'o');
-    p2 = ft_strrchr(s1, 'o');
-    EXPECT_EQ(p1, p2);
-    p1 = strrchr(s1, 'x');
-    p2 = ft_strrchr(s1, 'x');
-    EXPECT_EQ(p1, p2);
-    p1 = strrchr(s1, '\n');
-    p2 = ft_strrchr(s1, '\n');
-    EXPECT_EQ(p1, p2);
-    p1 = strrchr(s1, 'S');
-    p2 = ft_strrchr(s1, 'S');
-    EXPECT_EQ(p1, p2);
+    char    s[50] = {'0'};
+    memcpy(s, "This is Some\ntext.\0    ", 19);
+
+    EXPECT_EQ(strrchr(s, 'o'), ft_strrchr(s, 'o')) << "Input: char s[50] = {'0'}; memcpy(s, \"This is Some\\ntext.\\0    \", 19); ft_strrchr(s, 'o')";
+    EXPECT_EQ(strrchr(s, 'x'), ft_strrchr(s, 'x')) << "Input: char s[50] = {'0'}; memcpy(s, \"This is Some\\ntext.\\0    \", 19); ft_strrchr(s, 'x')";
+    EXPECT_EQ(strrchr(s, '\n'), ft_strrchr(s, '\n')) << "Input: char s[50] = {'0'}; memcpy(s, \"This is Some\\ntext.\\0    \", 19); ft_strrchr(s, '\n')";
+    EXPECT_EQ(strrchr(s, 'S'), ft_strrchr(s, 'S')) << "Input: char s[50] = {'0'}; memcpy(s, \"This is Some\\ntext.\\0    \", 19); ft_strrchr(s, 'S')";
 }
 
 TEST(TestFtStrrchr, FindTerminatoChar) {
-    char    s1[50] = {'0'};
-    char    *p1, *p2;
-    
-    memcpy(s1, "This is Some\ntext.\0    ", 19);
-    p1 = strrchr(s1,  0);
-    p2 = ft_strrchr(s1, 0);
-    EXPECT_EQ(p1, p2);
+    char s[50] = {'0'};
+    memcpy(s, "This is Some\ntext.\0    ", 19);
+
+    EXPECT_EQ(strrchr(s,  0), ft_strrchr(s,  0)) << "Input: char s[50] = {'0'}; memcpy(s, \"This is Some\\ntext.\\0    \", 19); ft_strrchr(s,  0)";
 }
 
 TEST(TestFtStrrchr, CharAfterTerminator) {
-    char    s1[50] = {'0'};
-    char    *p1, *p2;
-    
-    memcpy(s1, "ghreuh gkF\tEs1e24j7 k9jF?U+h+5k\0rfwfeefkkkkk", 40);
-    p1 = strrchr(s1, '0');
-    p2 = ft_strrchr(s1, '0');
-    EXPECT_EQ(p1, p2);
-    p1 = strrchr(s1, 'f');
-    p2 = ft_strrchr(s1, 'f');
-    EXPECT_EQ(p1, p2);
+    char s[50] = {'0'};
+    memcpy(s, "ghreuh gkF\tEs1e24j7 k9jF?U+h+5k\0rfwfeefkkkkk", 40);
+
+    EXPECT_EQ(strrchr(s, '0'), ft_strrchr(s, '0')) << "Input: char s[50] = {'0'}; memcpy(s, \"ghreuh gkF\\tEs1e24j7 k9jF?U+h+5k\\0rfwfeefkkkkk\", 40); ft_strrchr(s, '0')";
+    EXPECT_EQ(strrchr(s, 'f'), ft_strrchr(s, 'f')) << "Input: char s[50] = {'0'}; memcpy(s, \"ghreuh gkF\\tEs1e24j7 k9jF?U+h+5k\\0rfwfeefkkkkk\", 40); ft_strrchr(s, 'f')";
 }
 
 TEST(TestFtStrrchr, CharNotInStr) {
-    char    s1[50] = {'0'};
-    char    *p1, *p2;
-    
-    s1[50] = 0;
-    memcpy(s1, "no pqrs tuv wxyz aABC DEF", 20);
-    p1 = strrchr(s1, ':');
-    p2 = ft_strrchr(s1, ':');
-    EXPECT_EQ(p1, p2);
-    p1 = strrchr(s1, -49);
-    p2 = ft_strrchr(s1, -49);
-    EXPECT_EQ(p1, p2);
+    char s[50] = {'0'};
+    s[50] = 0;
+    memcpy(s, "no pqrs tuv wxyz aABC DEF", 20);
+
+    EXPECT_EQ(strrchr(s, ':'), ft_strrchr(s, ':')) << "Input: s[50] = 0; memcpy(s, \"no pqrs tuv wxyz aABC DEF\", 20); ft_strrchr(s, ':')";
+    EXPECT_EQ(strrchr(s, -49), ft_strrchr(s, -49)) << "Input: s[50] = 0; memcpy(s, \"no pqrs tuv wxyz aABC DEF\", 20); ft_strrchr(s, -49)";
+}
+
+TEST(TestFtStrrchr, Unicode) {
+	char *got = ft_strrchr("īœ˙ˀ˘¯ˇ¸¯.œ«‘––™ª•¡¶¢˜ˀ", L'–');
+	EXPECT_STREQ(NULL, got) << "Input: char *got = ft_strrchr(\"īœ˙ˀ˘¯ˇ¸¯.œ«‘––™ª•¡¶¢˜ˀ\", L'–');";
+}
+
+TEST(TestFtStrrchr, Empty) {
+	char *got = ft_strrchr("\0", 'a');
+	EXPECT_STREQ(NULL, got) << "Input: char *got = ft_strrchr(\"\\0\", 'a');";
+}
+
+TEST(TestFtStrrchr, MustSegfault) {
+	EXPECT_EXIT((ft_strrchr(NULL, '\0'), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strrchr(NULL, '\0');\n";
 }

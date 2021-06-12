@@ -6,59 +6,94 @@ extern "C" {
 #include "../libft.h"
 }
 
-TEST(TestFtMemset, SetNChar) {
-    size_t  n = 4;
-    char    *a1 = (char*)malloc(n * sizeof(char));
-    char    *a2 = (char*)malloc(n * sizeof(char));
-    void    *b1, *b2;
+TEST(TestFtMemset, NChar) {
+    char *want = (char*)malloc(4 * sizeof(char));
+    char *got = (char*)malloc(4 * sizeof(char));
     
-    b1 = ft_memset(a1, 'a', n);
-    b2 = memset(a2, 'a', n);
-    ASSERT_TRUE(b1 != 0);
-    EXPECT_EQ(a1, b1);
-    EXPECT_EQ(0, memcmp(a1, a2, n));
-    free(a1);
-    free(a2);
+ 	memset(want, 'a', 4); ft_memset(got, 'a', 4);
+
+    EXPECT_STREQ(want, got) << "Input: char *got = (char*)malloc(4 * sizeof(char)); ft_memset(got, 'a', 4);";
 }
 
-TEST(TestFtMemset, SetNthChar) {
-    size_t  n = 4;
-    void    *a1, *a2;
-    char    *b1 = (char*)malloc(n * sizeof(char));
-    *(b1) = 'a'; *(b1 + 1) = 'b'; *(b1 + 2) = 'c'; *(b1 + 3) = 'd';
-    char    *b2 = (char*)malloc(n * sizeof(char));
-    *(b2) = 'a'; *(b2 + 1) = 'b'; *(b2 + 2) = 'c'; *(b2 + 3) = 'd';
-    
-    a1 = ft_memset(b1 + 2, '$', 1);
-    a2 = memset(b2 + 2, '$', 1);
-    ASSERT_TRUE(a1 != 0);
-    EXPECT_EQ(a1, b1 + 2);
-    EXPECT_EQ(0, memcmp(b1, b2, n));
-    free(b1);
-    free(b2);
+TEST(TestFtMemset, NCharReturn) {
+    char *s1 = (char*)malloc(4 * sizeof(char));
+    char *s2 = (char*)malloc(4 * sizeof(char));
+
+    void *want = memset(s1, 'a', 4);
+    void *got = ft_memset(s2, 'a', 4);
+
+    EXPECT_STREQ((char *)want, (char *)got) << "Input: char    *s2 = (char*)malloc(4 * sizeof(char)); void *got = ft_memset(s2, 'a', 4);";
 }
 
-TEST(TestFtBzero, SetCharArr) {
-    char    c1[7] = "Someth";
-    char    c2[7] = "Someth";
-    
-    ft_memset(c1 + 2, 'a', 2);
-    memset(c2 + 2, 'a', 2);
-    EXPECT_EQ(0, memcmp(c1, c2, 7));
+TEST(TestFtMemset, NthChar) {
+    char *want = (char*)malloc(4 * sizeof(char));
+    *(want) = 'a'; *(want + 1) = 'b'; *(want + 2) = 'c'; *(want + 3) = 'd';
 
-    ft_memset(c1, '-', sizeof(c1) - 1);
-    memset(c2, '-', sizeof(c2) - 1);
-    EXPECT_EQ(0, memcmp(c1, c2, 7));
+    char *got = (char*)malloc(4 * sizeof(char));
+    *(got) = 'a'; *(got + 1) = 'b'; *(got + 2) = 'c'; *(got + 3) = 'd';
+    
+    memset(want + 2, '$', 1); ft_memset(got + 2, '$', 1);
+
+    EXPECT_STREQ(want, got) << "Input: char *got = (char*)malloc(4 * sizeof(char)); *(got) = 'a'; *(got + 1) = 'b'; *(got + 2) = 'c'; *(got + 3) = 'd'; ft_memset(got + 2, '$', 1);";
 }
 
-TEST(TestFtBzero, SetIntArr) {
-    int     d1[] = {10, 20, 30, 40, 50};
-    int     d2[] = {10, 20, 30, 40, 50};
-    void    *a1, *a2;
-    int     n = sizeof(d1)/sizeof(d1[0]);
+TEST(TestFtMemset, NthCharReturn) {
+    char *s1 = (char*)malloc(4 * sizeof(char));
+    *(s1) = 'a'; *(s1 + 1) = 'b'; *(s1 + 2) = 'c'; *(s1 + 3) = 'd';
+
+    char *s2 = (char*)malloc(4 * sizeof(char));
+    *(s2) = 'a'; *(s2 + 1) = 'b'; *(s2 + 2) = 'c'; *(s2 + 3) = 'd';
     
-    a1 = ft_memset(d1, 110, sizeof(d1));
-    a2 = memset(d2, 110, sizeof(d2));
-    ASSERT_TRUE(a1 != 0);
-    EXPECT_EQ(0, memcmp(a1, a2, n));
+    void *want = memset(s1 + 2, '$', 1); 
+	void *got = ft_memset(s2 + 2, '$', 1);
+
+    EXPECT_STREQ((char *)want, (char *)got) << "Input: char *s2 = (char*)malloc(4 * sizeof(char)); *(s2) = 'a'; *(s2 + 1) = 'b'; *(s2 + 2) = 'c'; *(s2 + 3) = 'd'; void *got = ft_memset(s2 + 2, '$', 1);";
+}
+
+TEST(TestFtBzero, CharArray) {
+    char want[7] = "Someth";
+    char got[7] = "Someth";
+    
+    memset(want + 2, 'a', 2); ft_memset(got + 2, 'a', 2);
+    
+    EXPECT_STREQ(want, got) << "Input: char got[7] = \"Someth\"; ft_memset(got + 2, 'a', 2);";
+
+	memset(want, '-', sizeof(got) - 1); ft_memset(got, '-', sizeof(want) - 1);
+
+    EXPECT_STREQ(want, got) << "Input: char got[7] = \"Someth\"; ft_memset(got, '-', sizeof(want) - 1);";
+}
+
+TEST(TestFtBzero, IntArray) {
+    int s1[] = {10, 20, 30, 40, 50};
+    int s2[] = {10, 20, 30, 40, 50};
+    
+	void *want = memset(s1, 110, sizeof(s1));
+    void *got = ft_memset(s2, 110, sizeof(s2));
+
+    EXPECT_STREQ((char *)want, (char *)got) << "Input: int s2[] = {10, 20, 30, 40, 50}; void *got = ft_memset(s2, 110, sizeof(s2));";
+}
+
+TEST(TestFtBzero, Unsigned) {
+	const int size = 22;
+	char want[32], got[32];
+	memset(want, 'B', 10);
+	memset(got, 'B', 10);
+
+	memset(want, '\200', size); ft_memset(got, '\200', size);
+
+	EXPECT_STREQ(want, got) << "Input: char got[32]; memset(got, 'B', 10); ft_memset(got, '\\200', 22);";
+}
+
+TEST(TestFtBzero, Zero) {
+	char want[10], got[10];
+	memset(want, 0, sizeof(want));
+	memset(got, 0, sizeof(got));
+
+	memset(want, '\xff', 0); ft_memset(got, '\xff', 0);
+
+	EXPECT_STREQ(want, got);
+}
+
+TEST(TestFtMemset, MustSegfault) {
+	EXPECT_EXIT((ft_memset(NULL, 'a', 12), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memset(NULL, 'a', 12);\n";
 }
