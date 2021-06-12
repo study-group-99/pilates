@@ -11,12 +11,10 @@ jobs:
     # if: contains(github.event.comment.html_url, '/pull/')
     runs-on: ubuntu-latest
     outputs:
-      res: ${{ steps.step1.outputs.results }}
+      res: ${{ steps.run.outputs.results }}
     steps:
-      - id: step1
-        run: echo "::set-output name=results::hello world"
       - uses: actions/checkout@v2
-      - name: init
+      - name: Setup test files
         # if: contains(github.event.comment.body, '/libft')
         run: |
           mkdir ${{ github.workspace }}/testdata/libft/pilates
@@ -26,14 +24,17 @@ jobs:
           cp ${{ github.workspace }}/libft/CMakeLists.txt.test ${{ github.workspace }}/testdata/libft/pilates/CMakeLists.txt
           cp ${{ github.workspace }}/libft/CMakeLists.txt.in ${{ github.workspace }}/testdata/libft/CMakeLists.txt.in
           cp ${{ github.workspace }}/libft/CMakeLists.txt ${{ github.workspace }}/testdata/libft/CMakeLists.txt
-      - name: build
+      - name: Build c++ tests
+        # if: contains(github.event.comment.body, '/libft')
         run: |
           cmake -S . -B build
           cmake --build build
         working-directory: ${{ github.workspace }}/testdata/libft
-      - name: run
+      - name: Run tests
+        # if: contains(github.event.comment.body, '/libft')
+        id: run
         run: |
-          ctest --output-on-failure
+          echo "::set-output name=results::$(echo ctest --output-on-failure)"
         working-directory: ${{ github.workspace }}/testdata/libft/build
   libftcomment:
     runs-on: ubuntu-latest
