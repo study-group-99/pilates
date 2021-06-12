@@ -33,7 +33,7 @@ jobs:
         working-directory: ${{ github.workspace }}/testdata/libft/build
 
   libftcommentback:
-    needs: libftUnitTest
+    needs: libftunittest
     runs-on: ubuntu-latest
     steps:
       - name: test
