@@ -30,8 +30,9 @@ jobs:
       #     cmake --build build
       #   working-directory: ${{ github.workspace }}/testdata/libft
       - name: Run tests
+        # run: |
+        #   ctest --output-on-failure
         run: |
-          ctest --output-on-failure
           echo "::set-output name=unit::https://google.com"
         working-directory: ${{ github.workspace }}/testdata/libft/build
 
@@ -39,4 +40,4 @@ jobs:
     needs: libftunittest
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{needs.job1.outputs.output1.unit}}
+      - run: echo ${{needs.job1.outputs.output1}}
