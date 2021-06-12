@@ -40,4 +40,4 @@ jobs:
     runs-on: ubuntu-latest
     needs: libft
     steps:
-      - run: echo "${{needs.libft.outputs.result}}"
+      - run: echo ${{needs.libft.outputs.result}}
