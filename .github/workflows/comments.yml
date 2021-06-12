@@ -3,7 +3,9 @@ name: comments
 on:
   issue_comment:                                     
     types: [created, edited, deleted]
+
   pull_request:
+    types: [assigned, opened, synchronize, reopened]
 
 jobs:
   libftunittest:
