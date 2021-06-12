@@ -17,11 +17,11 @@ _Cmake needs to be installed._
 ├── libft.h
 ├── Makefile
 ```
-2. Inside your libft create a new folder named `pilates` and above `.cpp` files inside.
+2. Inside your libft create a new folder named `pilates` and copy the above `.cpp` files inside.
 
 	You can use any other folder name but you have to also edit `CMakeLists.txt` line 63 `add_subdirectory(foldername)`.
 3. Copy `CMakeLists.txt.test` inside the above created folder. Remember to remove the `.test` from the end of the file.
-4. Run `cmake -S . -B build` ro generate the build.
+4. Run `cmake -S . -B build` to generate the build.
 5. Build the tests `cmake --build build`.
 6. `cd` in the `build` folder and run the actual tests `ctest --output-on-failure`.
 
