@@ -34,7 +34,11 @@ jobs:
         # if: contains(github.event.comment.body, '/libft')
         id: run
         run: |
-          echo "::set-output name=result::"$(ctest --output-on-failure)""
+          REPORT="$(ctest --output-on-failure)"
+          REPORT="${REPORT//'%'/'%25'}"
+          REPORT="${REPORT//$'\n'/'%0A'}"
+          REPORT="${REPORT//$'\r'/'%0D'}"
+          echo "::set-output name=result::$REPORT"
         working-directory: ${{ github.workspace }}/testdata/libft/build
   libftcomment:
     runs-on: ubuntu-latest
