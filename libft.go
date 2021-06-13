@@ -268,7 +268,7 @@ func (l *libft) run() {
 		// check for 'new' in header
 		newPresense, err := internal.NewExists()
 		if err != nil {
-			return err
+			return fmt.Errorf("wrong directory")
 		}
 
 		if newPresense {
@@ -284,6 +284,7 @@ func (l *libft) run() {
 			leaks = true
 			makefile = true
 			norm = true
+			report = true
 		// if no flags are used return error
 		case !unit && !coverage && !bench && !leaks && !makefile && !norm:
 			return fmt.Errorf("error: must specify at least one flag\nrun 'pilates libft run -h' for help")
