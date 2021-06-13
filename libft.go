@@ -201,11 +201,12 @@ func (l *libft) init() {
 				ignoreList := []string{"build", "pilates", "*.txt", "*.in", "*.cpp"}
 				for _, key := range ignoreList {
 					if !strings.Contains(string(gitignore), key) {
-						// log.Println(key)
 						gitignore = []byte(fmt.Sprintf("%s\n%s", string(gitignore), key))
-
 					}
 				}
+
+				// end file with a new line
+				gitignore = []byte(fmt.Sprintf("%s\n", string(gitignore)))
 
 				err = os.WriteFile(".gitignore", []byte(gitignore), os.ModeAppend)
 				if err != nil {

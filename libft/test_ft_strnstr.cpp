@@ -74,7 +74,7 @@ TEST(TestFtStrnstr, ZeroLength2) {
 	char s1[] = "";
 	char s2[] = "oh no not the empty string !";
 
-	EXPECT_TRUE(0 < ft_strnstr(s1, s2, 0));
+	EXPECT_TRUE(0 > ft_strnstr(s1, s2, 0));
 }
 
 TEST(TestFtStrnstr, Same) {

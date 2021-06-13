@@ -99,6 +99,12 @@ TEST(TestFtMemmove, Overlap2) {
 	EXPECT_STREQ(want, got) << "Input: overlap";
 }
 
+TEST(TestFtMemmove, Overlap3) {
+	char got[] = "memmove can be very useful......";
+  	ft_memmove(got + 20, got + 15, 11);
+	EXPECT_STREQ("memmove can be very very useful.", got);
+}
+
 TEST(TestFtMemmove, BigSize) {
 	int	size = 128 * 1024 * 1024;
 	char *got = (char *)malloc(sizeof(char) * size);
