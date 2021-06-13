@@ -3,7 +3,7 @@
 </p>
  
 # Ultimate Pilates Engine
-Common core testing.
+Common core tester.
 
 ## Contents
 
@@ -28,9 +28,11 @@ general case, update, help etc
 
 ## libft
 
-**Dependencies: Cmake, Gcovr, Norminette**
-
 _note: new c++ google test (linked lists functions)_
+
+### Dependencies: Cmake, Gcovr, Norminette
+
+Pilates needs Cmake in roder to build and run the unit tests. In addition Gcovr is needed if you you would like to use the -c, --coverage option. We assume Norminette is already installed but if not please do or option -n, --norm will return an err.
 
 # Development
 
