@@ -115,12 +115,8 @@ You can optionally see the coverage of you code by passing the -c --coverage opt
 
 #### All
 
-`pilates libft run -a`
+`pilates libft run -a` All option will turn all other options true. It is the equivalent of `pilates libft run -unmcr`.
 
-All option will turn all other options true. It is the equivalent of `pilates libft run -unmcr`.
-
-
-Report will generate 
 
 # Development
 
