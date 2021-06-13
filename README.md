@@ -177,6 +177,13 @@ On successful merge on `dev` branch automation fires a new `beta` release for te
 
 When a pull request against `main` branch is successfully merged automation will make a new release (see `/workflows/release.yml` & `./goreleaser.yml`). If commit messages contain `feat` a minor bump will run `v0.1.0` to `v0.2.0`, if commit messages contain `fix` a patch bump will run ie. `v0.1.0` to `v0.1.1`. If messages contain `breaking` a major bump will run `v0.1.0` to `v1.0.0`.
 
+### Local Dev
+
+When implementing a feature or patch for a bug the two ways to test what you did are 
+
+1. `go install ./cmd/pilates` which will build a binary inside `go/bin`. You can you use this binary against some test directory.
+2. `go test ./... -v` to run through all unit tests.
+
 #### CI
 
 ##### Comments

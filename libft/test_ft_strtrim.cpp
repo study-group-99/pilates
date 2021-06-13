@@ -36,8 +36,8 @@ TEST(TestFtStrtrim, TrimNothing) {
 }
 
 TEST(TestFtStrtrim, Empty) {
-	char *got = ft_strtrim("", " \n\t");
-	EXPECT_STREQ("", got) << "Input: char *got = ft_strtrim(\"\", \" \n\t\");";
+	char *got = ft_str	trim("", " \n\t");
+	EXPECT_STREQ("", got) << "Input: char *got = ft_strtrim(\"\", \" \\n\\t\");";
 }
 
 TEST(TestFtStrtrim, EmptyInput) {

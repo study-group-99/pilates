@@ -50,14 +50,9 @@ TEST(TestFtSubstr, ComplexStr) {
     EXPECT_STREQ("kF\tEs1eáéa24j7\v ß\\zk9jF?U+h", got) << "Input: char *got = ft_substr(\"ghreuh gkF\\tEs1eáéa24j7\\v ß\\zk9jF?U+h\\0x33+5krfwfeefkkkkk\", 8, 50);";
 }
 
-TEST(TestFtSubstr, Null) {
-    char *got = ft_substr(NULL, 0, 12);
-    ASSERT_STREQ("", got) << "Input: char *got = ft_substr(NULL, 0, 12);";
-}
-
 TEST(TestFtSubstr, StartBigger) {
 	char *got = ft_substr("01234", 10, 10);
-	ASSERT_STREQ("", got) << "Input: char *got = ft_substr(\"01234\", 10, 10);";
+	EXPECT_STREQ("", got) << "Input: char *got = ft_substr(\"01234\", 10, 10);";
 }
 
 TEST(TestFtSubstr, Basic) {

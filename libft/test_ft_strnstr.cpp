@@ -70,6 +70,13 @@ TEST(TestFtStrnstr, ZeroLength) {
 	EXPECT_TRUE(0 < ft_strnstr(s1, s2, max));
 }
 
+TEST(TestFtStrnstr, ZeroLength2) {
+	char s1[] = "";
+	char s2[] = "oh no not the empty string !";
+
+	EXPECT_TRUE(0 < ft_strnstr(s1, s2, 0));
+}
+
 TEST(TestFtStrnstr, Same) {
 	char s[] = "AAAAAAAAAAAAA";
 	size_t max = strlen(s);

@@ -118,7 +118,7 @@ func (l *libft) init() {
 					name = fmt.Sprintf("%s.c", strings.TrimRight(r.FindAllString(value, -1)[0], "("))
 				}
 				// open file
-				ft, err := ioutil.ReadFile(name)
+				ft, err := os.ReadFile(name)
 				if err != nil {
 					return err
 				}
@@ -193,31 +193,24 @@ func (l *libft) init() {
 
 				// if it exists open it check if what we want to exclude is already present
 				// if not append it.
-				gitignore, err := os.OpenFile(".gitignore", os.O_APPEND|os.O_RDWR, os.ModeAppend)
+				gitignore, err := os.ReadFile(".gitignore")
 				if err != nil {
 					return err
 				}
+
 				ignoreList := []string{"build", "pilates", "*.txt", "*.in", "*.cpp"}
-			appendNext:
 				for _, key := range ignoreList {
+					if !strings.Contains(string(gitignore), key) {
+						// log.Println(key)
+						gitignore = []byte(fmt.Sprintf("%s\n%s", string(gitignore), key))
 
-					scanner := bufio.NewScanner(gitignore)
-					// check in existing .gitignore if key exists
-					for !scanner.Scan() || strings.Contains(scanner.Text(), key) {
-						// if yes continue to next key
-						continue appendNext
-					}
-
-					// if not append it
-					if _, err := gitignore.WriteString(fmt.Sprintf("%s\n", key)); err != nil {
-						return err
 					}
 				}
 
-				if err := gitignore.Close(); err != nil {
+				err = os.WriteFile(".gitignore", []byte(gitignore), os.ModeAppend)
+				if err != nil {
 					return err
 				}
-
 				continue
 			}
 
