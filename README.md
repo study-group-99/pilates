@@ -9,37 +9,56 @@ Common core tester.
 
 - [Installation](#installation)
 	- [Windows](#windows)
-	- [Mac](#Mac)
+	- [Mac](#mac)
+	  - [Homebrew](#homebrew)
 	- [Linux](#linux)
+	  - [Package](#package)
+	    - [deb](#deb)
+	    - [rpm](#rpm)
+	    - [apk](#apk)
 	- [Go](#go)
+	  - [Install](#go-install)
+	  - [Build Source](#build-source)
+	- [Docker](#docker)
 	- [Script](#script)
 - [Usage](#usage)
 	- [libft](#libft)
+	  - [Init](#init)
+	  - [Run](#run)
 - [Development](#development)
-	- [Roadmap](#roadmap)
 	- [Contributing](#contributing)
-	- [Credits](#credits)
+- [Roadmap](#roadmap)
+- [Credits](#credits)
 
 # Installation
 
 ## Windows
 
-### Manual
+**Manual**
 
 ## Mac
 
-### Homebrew
+**Manual**
 
-### Manual
+### Homebrew
 
 ## Linux
 
+**Manual**
+
+`usr/local/bin`
+
 ### Package
 
-### Manual
+#### deb
+
+#### rpm
+
+#### apk
 
 ## Go
 
+### Go Install
 `go install github.com/study-group-99/pilates/cmd/pilates@v0.0.10-pre`
 
 ### Build Source
@@ -49,6 +68,8 @@ git clone
 cd
 
 go build ./cmd/pilates
+
+## Docker
 
 ## Script
 
@@ -111,11 +132,11 @@ You can optionally see the coverage of you code by passing the -c --coverage opt
 
 #### Report
 
-`pilates libft run -ar` generates a `report.txt` log file.
+`pilates libft run -ur` generates a `report.txt` log file.
 
 #### All
 
-`pilates libft run -a` All option will turn all other options true. It is the equivalent of `pilates libft run -unmcr`.
+`pilates libft run -a` option -a, --all will turn all other options true. It is the equivalent of `pilates libft run -unmcr`.
 
 
 # Development
@@ -134,17 +155,17 @@ All commit messages should adhere to [conventional commits](https://www.conventi
 
 ### Feature/bug cycles
 
-Open/assign your self to a ticket in discussions/issues.
+1. Open/assign your self to a ticket in discussions/issues.
 
-Fork/clone the repo, checkout `dev` branch and create and new branch named after the feature you are implementing/bug fixing, ie. `git checkout -b feat/libft_benchmarks` or `git checkout -b fix/libftmemeoryleaks`.
+2. Fork/clone the repo, checkout `dev` branch and create and new branch named after the feature you are implementing/bug fixing, ie. `git checkout -b feat/libft_benchmarks` or `git checkout -b fix/libftmemeoryleaks`.
 
-Push changes and open a pull request against `dev` branch.
+3. Push changes and open a pull request against `dev` branch.
 
-The title of the pull requests should be in the form of `feat: feature name (#19)`. #19 is the number of the issue/discussion.
+4. The title of the pull requests should be in the form of `feat: feature name (#19)`. #19 is the number of the issue/discussion.
 
-Wait for reviews to finish.
+5. Wait for reviews to finish.
 
-Once all `lgtm` **squash** merge. The message when squashing should look something like `feat: bug name (#19) (#25)` or `fix: feature name (#19) (#25)` with the second (#25) being the pull requests itself.
+6. Once all `lgtm` **squash** merge. The message when squashing should look something like `feat: bug name (#19) (#25)` or `fix: feature name (#19) (#25)` with the second (#25) being the pull requests itself.
 
 _note: org members do not need to fork but outside collaborators do._
 
@@ -172,7 +193,21 @@ Regardless the branch contributors can comment/trig certain actions (see `/workf
 
 * Individual c/cpp tests (see `/workflows/main.yml`) run only on `main`.
 
-## Roadmap
+## Contributing
+
+All active students and alumni are welcome to contribute.
+
+_We are especially interested in forming a small "core" team of maintainers._
+
+* **Code** ~ A good place to start is to check for open issues (bugs) or in discussions for  unassigned feature request tickets. Once you have identified what you would like to contribute to assign yourself and let others know.
+
+* **Bug reports** ~ Bug reports are **very** welcome. If you spot `pilates` misbehaving do open an issue describing the bug, your OS, and pilates version.
+
+* **Feature requests** ~ If `pilates` does not have the functionality you wish, open a ticket in discussions under `feature request` describing the clearest you can how the new feature should behave and what it accomplishes.
+
+* **Reviews** ~ If you would like to sharpen your code review skills contact someone that is already in org to send an invitation and start reviewing voluntarily any of the open pull requests.
+
+# Roadmap
 
 - [x] Libft
 - [ ] ft_printf
@@ -194,26 +229,11 @@ Regardless the branch contributors can comment/trig certain actions (see `/workf
 - [ ] webserv (?)
 - [ ] cpp module (?)
 
-## Contributing
+# Credits
 
-All active students and alumni are welcome to contribute.
-
-_We are especially interested in forming a small "core" team of maintainers._
-
-* **Code** ~ A good place to start is to check for open issues (bugs) or in discussions for  unassigned feature request tickets. Once you have identified what you would like to contribute to assign yourself and let others know.
-
-* **Bug reports** ~ Bug reports are **very** welcome. If you spot `pilates` misbehaving do open an issue describing the bug, your OS, and pilates version.
-
-* **Feature requests** ~ If `pilates` does not have the functionality you wish, open a ticket in discussions under `feature request` describing the clearest you can how the new feature should behave and what it accomplishes.
-
-* **Reviews** ~ If you would like to sharpen your code review skills contact someone that is already in org to send an invitation and start reviewing voluntarily any of the open pull requests.
-
-
-## Credits
-
-[Contributors](https://github.com/study-group-99/pilates/graphs/contributors)
+## [Contributors](https://github.com/study-group-99/pilates/graphs/contributors)
 
 <!-- Reviewers:  -->
 
-### Shoulders of giants
+## Shoulders of giants
 Test cases for libft unit tests also came from: <a href="https://github.com/Ysoroko">@Ysoroko</a>, <a href="https://github.com/alelievr">@alelievr</a> & <a href="https://github.com/ska42">@ska42</a>.
