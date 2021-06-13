@@ -3,7 +3,7 @@
 </p>
  
 # Ultimate Pilates Engine
-Common core tester.
+Common core CLI tester.
 
 ## Contents
 

@@ -7,10 +7,9 @@ import (
 	"github.com/bh90210/clir"
 )
 
-var cli = clir.NewCli("test", "long test", "v0.0.0")
-
 func TestLibftCommandInit(t *testing.T) {
 	os.Chdir("testdata/libft")
+	cli := clir.NewCli("test", "long test", "v0.0.0")
 	LibftCommand(cli)
 	err := cli.Run("libft", "init", "-f")
 	if err != nil {
@@ -19,6 +18,7 @@ func TestLibftCommandInit(t *testing.T) {
 }
 
 func TestLibftCommandRun(t *testing.T) {
+	cli := clir.NewCli("test", "long test", "v0.0.0")
 	LibftCommand(cli)
 	err := cli.Run("libft", "run", "-ar")
 	if err != nil {

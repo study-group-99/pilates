@@ -11,12 +11,12 @@ func TestNewExists(t *testing.T) {
 		t.Error(err)
 	}
 
-	exists, err := NewExists()
+	got, err := NewExists()
 	if err != nil {
 		t.Error(err)
 	}
 
-	if exists != false {
+	if got {
 		t.Error("unexpected output")
 	}
 }
@@ -27,12 +27,12 @@ func TestNewExistsNot(t *testing.T) {
 		t.Error(err)
 	}
 
-	exists, err := NewExists()
+	got, err := NewExists()
 	if err != nil {
 		t.Error(err)
 	}
 
-	if exists != true {
+	if !got {
 		t.Error("unexpected output")
 	}
 }
