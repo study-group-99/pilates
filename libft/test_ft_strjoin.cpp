@@ -64,9 +64,3 @@ TEST(TestFtStrjoin, Overlap) {
 	char *got = ft_strjoin(s, want);
 	EXPECT_STREQ("s my favorite animal is ", got);
 }
-
-TEST(TestFtStrjoin, MustSegfault) {
-	EXPECT_EXIT((ft_strjoin(NULL, "where is my "), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(NULL, \"where is my \");\n";
-	EXPECT_EXIT((ft_strjoin("where is my ", NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(\"where is my \", NULL);\n";
-	EXPECT_EXIT((ft_strjoin(NULL, NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(NULL, NULL);\n";
-}

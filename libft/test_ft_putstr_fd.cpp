@@ -33,7 +33,3 @@ TEST(TestFtPutStr_Fd, NonAscii) {
 
 	EXPECT_STREQ(want, got.c_str()) << "Input: ft_putstr_fd( \"よくやった\", 1);";
 }
-
-TEST(TestFtPutStr_Fd, MustSegfault) {
-	EXPECT_EXIT((ft_putstr_fd(NULL, 1), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_putstr_fd(NULL, 1);\n";
-}

@@ -151,8 +151,3 @@ TEST(TestFtSplit, Advanced6) {
 
     EXPECT_STREQ(NULL, *got) << "Input: ft_split(\"\", '_');";
 }
-
-TEST(TestFtSplit, MustSegfault) {
-	EXPECT_EXIT((ft_split(NULL, '_'), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_split(NULL, '_');\n";
-	EXPECT_EXIT((ft_split(NULL, 0), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_split(NULL, NULL);\n";
-}

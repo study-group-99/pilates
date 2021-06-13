@@ -82,8 +82,3 @@ TEST(TestFtSubstr, StartBiggerThanSize) {
 	char *got = ft_substr("01234", 10, 10);
 	EXPECT_STREQ("", got) << "Input: char *got = ft_substr(\"01234\", 10, 10);";
 }
-
-
-// TEST(TestFtSubstr, MustSegfault) {
-// 	EXPECT_EXIT((ft_substr(NULL, 0, 12), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_substr(NULL, 0, 12);\n";
-// }

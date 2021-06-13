@@ -83,8 +83,3 @@ TEST(TestFtStrlcat, Zero) {
 	ft_strlcat(got, s, max);
 	EXPECT_STREQ("n", got);
 }
-
-TEST(TestFtStrlcat, MustSegfault) {
-	EXPECT_EXIT((ft_strlcat(NULL, "segfault", 2), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strlcat(b, NULL, 2);\n";
-	EXPECT_EXIT((ft_strlcat((char *)"segfault", NULL, 2), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strlcat(b, NULL, 2);\n";
-}

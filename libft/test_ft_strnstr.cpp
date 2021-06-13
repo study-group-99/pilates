@@ -80,8 +80,3 @@ TEST(TestFtStrnstr, Same) {
 TEST(TestFtStrnstr, Zero2) {
 	EXPECT_TRUE(0 < ft_strnstr("A", "A", 2));
 }
-
-TEST(TestFtStrnstr, MustSegfault) {
-	EXPECT_EXIT((ft_strnstr(NULL, "segfault", 3), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strnstr(NULL, \"segfault\", 3);\n";
-	EXPECT_EXIT((ft_strnstr("segfault", NULL, 3), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strnstr(\"segfault\", NULL, 3);\n";
-}

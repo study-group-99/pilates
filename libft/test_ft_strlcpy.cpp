@@ -70,7 +70,3 @@ TEST(TestFtStrlcpy, ZeroLength) {
 	
 	EXPECT_STREQ("AAAAAAAAAAAAAAAAAAAA", got);
 }
-
-TEST(TestFtStrlcpy, MustSegfault) {
-	EXPECT_EXIT((ft_strlcpy(NULL, NULL, 10), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strlcpy(NULL, NULL, 10);\n";
-}

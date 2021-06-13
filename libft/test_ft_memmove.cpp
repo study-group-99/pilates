@@ -109,11 +109,3 @@ TEST(TestFtMemmove, BigSize) {
 
 	EXPECT_STREQ(want, got) << "Input: int size = 128 * 1024 * 1024; char *got = (char *)malloc(sizeof(char) * size); char *want = (char *)malloc(sizeof(char) * size); ft_memmove(got, want, size);";
 }
-
-TEST(TestFtMemmove, MustSegfault) {
-	char b[0xF0];
-	EXPECT_EXIT((ft_memmove(NULL, b, 5), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memccpy((void *)\"\", \"it should segfault\", '\0', 17);\n";
-	EXPECT_EXIT((ft_memmove(b, NULL, 5), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memccpy((void *)\"\", \"it should segfault\", '\0', 17);\n";
-	// EXPECT_EXIT((ft_memmove(NULL, NULL, 0), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memmove(NULL, NULL, 0);\n";
-	EXPECT_EXIT((ft_memmove(NULL, NULL, 5), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memmove(NULL, NULL, 5);\n";
-}

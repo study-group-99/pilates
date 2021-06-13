@@ -73,10 +73,3 @@ TEST(TestFtMemcpy, Struct) {
 TEST(TestFtMemcpy, ZeroDestination) {
 	EXPECT_EXIT((ft_memcpy((void *)"", "segfault", 20),exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memcpy(\"\", \"segfault\", 20;\n";
 }
-
-TEST(TestFtMemcpy, MustSegfault) {
-	EXPECT_EXIT((ft_memcpy(NULL, "segfault", 20),exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memcpy(NULL, \"segfault\", 20);\n";
-	EXPECT_EXIT((ft_memcpy((void *)"            ", NULL, 20),exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memcpy((void *)\"            \", NULL, 20);\n";
-	// EXPECT_EXIT((ft_memcpy(NULL, NULL, 0),exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memcpy(NULL, NULL, 0);\n";
-	EXPECT_EXIT((ft_memcpy(NULL, NULL, 5),exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memcpy(NULL, NULL, 5);\n";
-}

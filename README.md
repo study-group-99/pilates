@@ -95,9 +95,9 @@ Pilates needs Cmake for building the unit tests. In addition Gcovr is needed if 
 
 pilates is using the `google test` framework which is written in C++. Consequently `new` can not be used as argument in any of your C prototypes or tests wont even build.
 
-To circumvent this issue just rename any argument named `new` to something different in both `libft.h` and the equivalent `ft_*.c` file.
+To circumvent this issue rename all arguments named `new` to something different in both `libft.h` and the equivalent `ft_*.c` file.
 
-pilates can do this for you automagically but running `libft init --fix-new`. Behind the scenes pilates will edit your `libft.h` and all `ft_*.c` files necessary by replacing `new` with `neww`.
+pilates can do this for you automagically by running `libft init --fix-new`. Behind the scenes pilates will edit your `libft.h` and all `ft_*.c` files necessary, replacing `new` with `neww`.
 
 ### Init
 
@@ -170,14 +170,12 @@ All commit messages should adhere to [conventional commits](https://www.conventi
 _note: org members do not need to fork but outside collaborators do._
 
 #### Beta
-TODO: finish beta section
 
-When a successful merge on `dev` is finished automation fires a new `beta` release.
+On successful merge on `dev` branch automation fires a new `beta` release for testing purposes.
 
 ### Release
-TODO: finish release section
 
-When a pull request against `main` branch is successfully merged a CI gets triggered that leads to release (see `/workflows/release.yml`).
+When a pull request against `main` branch is successfully merged automation will make a new release (see `/workflows/release.yml` & `./goreleaser.yml`). If commit messages contain `feat` a minor bump will run `v0.1.0` to `v0.2.0`, if commit messages contain `fix` a patch bump will run ie. `v0.1.0` to `v0.1.1`. If messages contain `breaking` a major bump will run `v0.1.0` to `v1.0.0`.
 
 #### CI
 

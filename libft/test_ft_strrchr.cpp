@@ -48,7 +48,3 @@ TEST(TestFtStrrchr, Empty) {
 	char *got = ft_strrchr("\0", 'a');
 	EXPECT_STREQ(NULL, got) << "Input: char *got = ft_strrchr(\"\\0\", 'a');";
 }
-
-TEST(TestFtStrrchr, MustSegfault) {
-	EXPECT_EXIT((ft_strrchr(NULL, '\0'), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strrchr(NULL, '\0');\n";
-}

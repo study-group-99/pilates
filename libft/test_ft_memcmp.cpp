@@ -87,8 +87,3 @@ TEST(TestFtMemcmp, Empty) {
     int got = ft_memcmp(s1, s2, 0);
     EXPECT_EQ(got, want) << "Input: char    *s1, *s2; ft_memcmp(s1, s2, 0);";
 }
-
-TEST(TestFtMemcmp, MustSegfault) {
-	EXPECT_EXIT((ft_memcmp("test", NULL, 4), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memcmp(\"test\", NULL, 4);\n";
-	EXPECT_EXIT((ft_memcmp(NULL, "test", 4), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memcmp(NULL, s, 4);\n";
-}

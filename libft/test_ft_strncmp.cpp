@@ -107,9 +107,3 @@ TEST(TestFtStrncmp, Contained) {
 	int got = ft_strncmp(s1, s2, size);
 	EXPECT_TRUE(want == got);
 }
-
-TEST(TestFtStrncmp, MustSegfault) {
-	EXPECT_EXIT((ft_strncmp(NULL, "segfault", 3), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strncmp(NULL, \"segfault\", 3);\n";
-	EXPECT_EXIT((ft_strncmp("segfault", NULL, 3), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strncmp(\"segfault\", NULL, 3);\n";
-	EXPECT_EXIT((ft_strncmp(NULL, NULL, 3), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strncmp(NULL, NULL, 3);\n";
-}

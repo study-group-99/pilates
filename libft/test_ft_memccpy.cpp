@@ -90,9 +90,3 @@ TEST(TestFtMemccpy, Struct) {
 	ft_memccpy(got, s, '\x42', sizeof(s)); memccpy(want, s, '\x42', sizeof(s));
 	EXPECT_STREQ(want, got) << "Input: too complex to return, check the source\n";
 }
-
-TEST(TestFtMemccpy, MustSegfault) {
-	EXPECT_EXIT((ft_memccpy((void *)"", "segfault", '\0', 17), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memccpy((void *)\"\", \"it should segfault\", '\0', 17);\n";
-	EXPECT_EXIT((ft_memccpy(NULL, "segfault", 'e', 17), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memccpy(NULL, \"segfault\", 'e', 17);\n";
-	EXPECT_EXIT((ft_memccpy((void *)"            ", NULL, ' ', 17), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memccpy((void *)\"            \", NULL, ' ', 17);\n";
-}

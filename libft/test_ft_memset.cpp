@@ -93,7 +93,3 @@ TEST(TestFtBzero, Zero) {
 
 	EXPECT_STREQ(want, got);
 }
-
-TEST(TestFtMemset, MustSegfault) {
-	EXPECT_EXIT((ft_memset(NULL, 'a', 12), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memset(NULL, 'a', 12);\n";
-}

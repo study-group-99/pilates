@@ -40,7 +40,3 @@ TEST(TestFtLstiter, Basic2) {
 	ft_lstiter(&got, incrementing);
 	EXPECT_EQ(2, *(int *)got.content);
 }
-
-// TEST(TestFtlstiter, MustSegfault) {
-// 	EXPECT_EXIT((ft_lstiter(NULL, incrementing), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_lstiter(NULL, lstiter_f);\n";
-// }

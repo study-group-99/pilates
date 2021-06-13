@@ -69,7 +69,3 @@ TEST(TestFtAtoi, ReadMaxAndMinInt) {
 	got = ft_atoi(s2);
     EXPECT_EQ(got, want) << "Input: ft_atoi(\"-2147483648\")\n";
 }
-
-TEST(TestFtAtoi, MustSegfault) {
-	EXPECT_EXIT((ft_atoi(NULL),exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_atoi(NULL);\n";
-}

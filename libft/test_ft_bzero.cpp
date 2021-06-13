@@ -41,7 +41,3 @@ TEST(TestFtBzero, SetIntArr) {
 
     EXPECT_STREQ(want, got) << "Input: int got[] = {10, 20, 30, 40, 50}; ft_bzero(got,  sizeof(s1));\n";
 }
-
-TEST(TestFtBzero, MustSegfault) {
-	EXPECT_EXIT((ft_bzero(NULL, 0x12),exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_bzero(NULL, 0x12);\n";
-}

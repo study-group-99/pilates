@@ -36,7 +36,3 @@ TEST(TestFtStrdup, Complex) {
 	char *got = ft_strdup(s);
     EXPECT_STREQ(want, got);
 }
-
-TEST(TestFtStrdup, MustSegfault) {
-	EXPECT_EXIT((ft_strdup(NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strdup(NULL);\n";
-}

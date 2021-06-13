@@ -62,7 +62,3 @@ TEST(TestFtStrlen, NonAligned) {
 	
     EXPECT_EQ(want, got);
 }
-
-TEST(TestFtStrlen, MustSegfault) {
-	EXPECT_EXIT((ft_strlen(NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strlen(NULL);\n";
-}
