@@ -80,62 +80,8 @@ func (l *libft) init() {
 		case forceInit && fixNew:
 			return fmt.Errorf("the -f, --force and --fix-new options are indented to be used separately")
 		case fixNew:
-			fmt.Println("checking your libft.h")
-			header, err := os.OpenFile("libft.h", os.O_APPEND, os.ModeAppend)
-			if err != nil {
-				return err
-			}
-
-			changeLines := make([]string, 0)
-			scanner := bufio.NewScanner(header)
-			for scanner.Scan() {
-				if strings.Contains(scanner.Text(), " new") || strings.Contains(scanner.Text(), "*new") ||
-					strings.Contains(scanner.Text(), "\tnew") {
-					fmt.Println("found function", scanner.Text())
-					changeLines = append(changeLines, scanner.Text())
-				}
-			}
-
-			header.Close()
-
-			if len(changeLines) == 0 {
-				return fmt.Errorf("found no 'new' use. nothing to be done all clean")
-			}
-
-			changeLines = append(changeLines, "libft.h")
-
-			fmt.Println("\"cleaning\" your files")
-			for _, value := range changeLines {
-				var name string
-				// extract function's name
-				if value == "libft.h" {
-					name = "libft.h"
-				} else {
-					// create a regular expresion to retrieve the name of the function
-					// in the form 'ft_some_function('
-					r := regexp.MustCompile(`([a-zA-Z]+(_[a-zA-Z]+)+)\(`)
-					// actually run the regex query then trim the '(' on the right and append a '.c' to the name
-					name = fmt.Sprintf("%s.c", strings.TrimRight(r.FindAllString(value, -1)[0], "("))
-				}
-				// open file
-				ft, err := os.ReadFile(name)
-				if err != nil {
-					return err
-				}
-				// replace 'new'
-				new := strings.ReplaceAll(string(ft), " new", " neww")
-				new = strings.ReplaceAll(new, "*new", "*neww")
-				new = strings.ReplaceAll(new, "\tnew", "\tneww")
-				// write it
-				err = ioutil.WriteFile(name, []byte(new), 0)
-				if err != nil {
-					return err
-				}
-				fmt.Println(name, "done.")
-			}
-
-			fmt.Println("All done! Now you can run 'pilates libft run -u'")
-			return nil
+			// apply 'new' fix
+			return newFix()
 		}
 
 		// check if folder pilates exists
@@ -144,81 +90,10 @@ func (l *libft) init() {
 			return fmt.Errorf("directory %s already exists. If know what you are doing try the -f, --force option", path)
 		}
 
-		fmt.Println("pilates initialization")
-
-		// try remove the 'build' folder
-		// this needs to be done to remove previous builds artifacts
-		os.Remove("build")
-
-		// if not, or if -f option is used create it
-		os.Mkdir(path, 0744)
-		dir, err := libftTests.ReadDir("libft")
+		// initialize libft
+		err = libftInit(path)
 		if err != nil {
 			return err
-		}
-
-		for _, file := range dir {
-			data, err := libftTests.ReadFile(fmt.Sprintf("libft/%s", file.Name()))
-			if err != nil {
-				return err
-			}
-
-			if file.Name() == "CMakeLists.txt.test" {
-				err = ioutil.WriteFile(fmt.Sprintf("%s/%s", path, "CMakeLists.txt"), data, 0755)
-				if err != nil {
-					return err
-				}
-				continue
-			}
-
-			if file.Name() == "CMakeLists.txt" || file.Name() == "CMakeLists.txt.in" {
-				err = ioutil.WriteFile(file.Name(), data, 0755)
-				if err != nil {
-					return err
-				}
-				continue
-			}
-
-			if file.Name() == "gitignore" {
-				// check if .gitignore is already present
-				_, err := os.Stat(".gitignore")
-				// if not create one
-				if os.IsNotExist(err) {
-					err = ioutil.WriteFile(".gitignore", data, 0755)
-					if err != nil {
-						return err
-					}
-					continue
-				}
-
-				// if it exists open it check if what we want to exclude is already present
-				// if not append it.
-				gitignore, err := os.ReadFile(".gitignore")
-				if err != nil {
-					return err
-				}
-
-				ignoreList := []string{"build", "pilates", "*.txt", "*.in", "*.cpp"}
-				for _, key := range ignoreList {
-					if !strings.Contains(string(gitignore), key) {
-						gitignore = []byte(fmt.Sprintf("%s\n%s", string(gitignore), key))
-					}
-				}
-
-				// end file with a new line
-				gitignore = []byte(fmt.Sprintf("%s\n", string(gitignore)))
-
-				err = os.WriteFile(".gitignore", []byte(gitignore), os.ModeAppend)
-				if err != nil {
-					return err
-				}
-				continue
-			}
-
-			err = ioutil.WriteFile(fmt.Sprintf("%s/%s", path, file.Name()), data, 0755)
-			if err != nil {
-				return err
-			}
 		}
 
 		// check for 'new' in header
@@ -281,7 +156,7 @@ func (l *libft) run() {
 			report = true
 		// if no flags are used return error
 		case !unit && !coverage && !bench && !leaks && !makefile && !norm:
-			return fmt.Errorf("error: must specify at least one flag\nrun 'pilates libft run -h' for help")
+			return fmt.Errorf("error: must specify at least one option (not including --report))\nrun 'pilates libft run -h' for help")
 		}
 
 		var file *os.File
@@ -296,91 +171,15 @@ func (l *libft) run() {
 		}
 
 		if unit {
-			cmd := exec.Command("cmake", "-S", ".", "-B", "build")
-			genSpinner := spinner.New("Generating build")
-			genSpinner.Start()
-			cmd.Env = os.Environ()
-			cmd.Stderr = os.Stderr
-			if err := cmd.Run(); err != nil {
-				fmt.Printf("error: %s\n", err)
-			}
-			genSpinner.Success()
-
-			cmd = exec.Command("cmake", "--build", "build")
-			buildSpinner := spinner.New("Building C++ files")
-			buildSpinner.Start()
-			cmd.Stderr = os.Stderr
-			cmd.Env = os.Environ()
-			if err := cmd.Run(); err != nil {
-				fmt.Printf("error: %s\n", err)
-			}
-			buildSpinner.Success()
-
-			os.Chdir("build")
-			cmd = exec.Command("ctest", "--output-on-failure")
-			cmd.Stderr = os.Stderr
-			cmd.Env = os.Environ()
-			if report {
-				cmd.Stdout = io.MultiWriter(os.Stdout, file)
-			} else {
-				cmd.Stdout = os.Stdout
-			}
-			if err := cmd.Run(); err != nil {
-				fmt.Printf("error: %s\n", err)
-			}
-			os.Chdir("..")
-		}
-
-		if norm {
-			cmd := exec.Command("norminette")
-			cmd.Args = append(cmd.Args, "libft.h")
-			dir, err := os.ReadDir("./")
-			if err != nil {
-				return err
-			}
-
-			for _, file := range dir {
-				if strings.Contains(file.Name(), "ft_") {
-					cmd.Args = append(cmd.Args, file.Name())
-				}
-			}
-			cmd.Stdout = os.Stdout
-			cmd.Stderr = os.Stderr
-			cmd.Env = os.Environ()
-			if report {
-				cmd.Stdout = io.MultiWriter(os.Stdout, file)
-			} else {
-				cmd.Stdout = os.Stdout
-			}
-			if err := cmd.Run(); err != nil {
-				fmt.Printf("error: %s\n", err)
-			}
+			unitTest(report, file)
 		}
 
 		if makefile {
-			fmt.Println("makefile checks")
-			makeVariations := []string{"all", "clean", "libft.a", "re", "fclean", "bonus"}
-			for _, val := range makeVariations {
-				cmd := exec.Command("make", val)
-				fmt.Printf("make: %s\n", val)
-				cmd.Env = os.Environ()
-				if report {
-					file.WriteString(fmt.Sprintf("make: %s\n", val))
-					cmd.Stderr = io.MultiWriter(os.Stderr, file)
-				} else {
-					cmd.Stderr = os.Stderr
-				}
-				if err := cmd.Run(); err != nil {
-					fmt.Printf("error: %s\n", err)
-				} else {
-					fmt.Printf("make: %s - Passed\n", val)
-					file.WriteString(fmt.Sprintf("make: %s - Passed\n", val))
-				}
-			}
+			makefileCheck(report, file)
+		}
 
-			// clean everything in the end
-			cmd := exec.Command("make", "fclean")
-			cmd.Run()
+		if norm {
+			normCheck(report, file)
 		}
 
 		if leaks || bench {
@@ -388,19 +187,251 @@ func (l *libft) run() {
 		}
 
 		if coverage {
-			cmd := exec.Command("gcovr", "--exclude", "'.*test.*'", "--root", ".")
-			cmd.Stderr = os.Stderr
-			cmd.Env = os.Environ()
-			if report {
-				cmd.Stdout = io.MultiWriter(os.Stdout, file)
-			} else {
-				cmd.Stdout = os.Stdout
-			}
-			if err := cmd.Run(); err != nil {
-				fmt.Printf("error: %s\n", err)
-			}
+			coverageCheck(report, file)
 		}
 
 		return nil
 	})
+}
+
+func newFix() error {
+	fmt.Println("checking your libft.h")
+	header, err := os.OpenFile("libft.h", os.O_APPEND, os.ModeAppend)
+	if err != nil {
+		return err
+	}
+
+	changeLines := make([]string, 0)
+	scanner := bufio.NewScanner(header)
+	for scanner.Scan() {
+		if strings.Contains(scanner.Text(), " new") || strings.Contains(scanner.Text(), "*new") ||
+			strings.Contains(scanner.Text(), "\tnew") {
+			fmt.Println("found function", scanner.Text())
+			changeLines = append(changeLines, scanner.Text())
+		}
+	}
+
+	header.Close()
+
+	if len(changeLines) == 0 {
+		return fmt.Errorf("found no 'new' use. nothing to be done all clean")
+	}
+
+	changeLines = append(changeLines, "libft.h")
+
+	fmt.Println("\"cleaning\" your files")
+	for _, value := range changeLines {
+		var name string
+		// extract function's name
+		if value == "libft.h" {
+			name = "libft.h"
+		} else {
+			// create a regular expresion to retrieve the name of the function
+			// in the form 'ft_some_function('
+			r := regexp.MustCompile(`([a-zA-Z]+(_[a-zA-Z]+)+)\(`)
+			// actually run the regex query then trim the '(' on the right and append a '.c' to the name
+			name = fmt.Sprintf("%s.c", strings.TrimRight(r.FindAllString(value, -1)[0], "("))
+		}
+		// open file
+		ft, err := os.ReadFile(name)
+		if err != nil {
+			return err
+		}
+		// replace 'new'
+		new := strings.ReplaceAll(string(ft), " new", " neww")
+		new = strings.ReplaceAll(new, "*new", "*neww")
+		new = strings.ReplaceAll(new, "\tnew", "\tneww")
+		// write it
+		err = ioutil.WriteFile(name, []byte(new), 0)
+		if err != nil {
+			return err
+		}
+		fmt.Println(name, "done.")
+	}
+
+	fmt.Println("All done! Now you can run 'pilates libft run -u'")
+	return nil
+}
+
+func libftInit(path string) error {
+	fmt.Println("pilates libft initialization")
+
+	// try remove the 'build' folder
+	// this needs to be done to remove previous builds artifacts
+	os.Remove("build")
+
+	// if not, or if -f option is used create it
+	os.Mkdir(path, 0744)
+	dir, err := libftTests.ReadDir("libft")
+	if err != nil {
+		return err
+	}
+
+	for _, file := range dir {
+		data, err := libftTests.ReadFile(fmt.Sprintf("libft/%s", file.Name()))
+		if err != nil {
+			return err
+		}
+
+		if file.Name() == "CMakeLists.txt.test" {
+			err = ioutil.WriteFile(fmt.Sprintf("%s/%s", path, "CMakeLists.txt"), data, 0755)
+			if err != nil {
+				return err
+			}
+			continue
+		}
+
+		if file.Name() == "CMakeLists.txt" || file.Name() == "CMakeLists.txt.in" {
+			err = ioutil.WriteFile(file.Name(), data, 0755)
+			if err != nil {
+				return err
+			}
+			continue
+		}
+
+		if file.Name() == "gitignore" {
+			// check if .gitignore is already present
+			_, err := os.Stat(".gitignore")
+			// if not create one
+			if os.IsNotExist(err) {
+				err = ioutil.WriteFile(".gitignore", data, 0755)
+				if err != nil {
+					return err
+				}
+				continue
+			}
+
+			// if it exists open it check if what we want to exclude is already present
+			// if not append it.
+			gitignore, err := os.ReadFile(".gitignore")
+			if err != nil {
+				return err
+			}
+
+			ignoreList := []string{"build", "pilates", "*.txt", "*.in", "*.cpp"}
+			for _, key := range ignoreList {
+				if !strings.Contains(string(gitignore), key) {
+					gitignore = []byte(fmt.Sprintf("%s\n%s", string(gitignore), key))
+				}
+			}
+
+			// end file with a new line
+			gitignore = []byte(fmt.Sprintf("%s\n", string(gitignore)))
+
+			err = os.WriteFile(".gitignore", []byte(gitignore), os.ModeAppend)
+			if err != nil {
+				return err
+			}
+			continue
+		}
+
+		err = ioutil.WriteFile(fmt.Sprintf("%s/%s", path, file.Name()), data, 0755)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func unitTest(report bool, file *os.File) {
+	cmd := exec.Command("cmake", "-S", ".", "-B", "build")
+	genSpinner := spinner.New("Generating build")
+	genSpinner.Start()
+	cmd.Env = os.Environ()
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("error: %s\n", err)
+	}
+	genSpinner.Success()
+
+	cmd = exec.Command("cmake", "--build", "build")
+	buildSpinner := spinner.New("Building C++ files")
+	buildSpinner.Start()
+	cmd.Stderr = os.Stderr
+	cmd.Env = os.Environ()
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("error: %s\n", err)
+	}
+	buildSpinner.Success()
+
+	os.Chdir("build")
+	cmd = exec.Command("ctest", "--output-on-failure")
+	cmd.Stderr = os.Stderr
+	cmd.Env = os.Environ()
+	if report {
+		cmd.Stdout = io.MultiWriter(os.Stdout, file)
+	} else {
+		cmd.Stdout = os.Stdout
+	}
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("error: %s\n", err)
+	}
+	os.Chdir("..")
+}
+
+func normCheck(report bool, file *os.File) {
+	cmd := exec.Command("norminette")
+	cmd.Args = append(cmd.Args, "libft.h")
+	dir, err := os.ReadDir("./")
+	if err != nil {
+		fmt.Printf("error: %s\n", err)
+	}
+
+	for _, file := range dir {
+		if strings.Contains(file.Name(), "ft_") {
+			cmd.Args = append(cmd.Args, file.Name())
+		}
+	}
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Env = os.Environ()
+	if report {
+		cmd.Stdout = io.MultiWriter(os.Stdout, file)
+	} else {
+		cmd.Stdout = os.Stdout
+	}
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("error: %s\n", err)
+	}
+}
+
+func makefileCheck(report bool, file *os.File) {
+	fmt.Println("makefile checks")
+	makeVariations := []string{"all", "clean", "libft.a", "re", "fclean", "bonus"}
+	for _, val := range makeVariations {
+		cmd := exec.Command("make", val)
+		fmt.Printf("make: %s\n", val)
+		cmd.Env = os.Environ()
+		if report {
+			file.WriteString(fmt.Sprintf("make: %s\n", val))
+			cmd.Stderr = io.MultiWriter(os.Stderr, file)
+		} else {
+			cmd.Stderr = os.Stderr
+		}
+		if err := cmd.Run(); err != nil {
+			fmt.Printf("error: %s\n", err)
+		} else {
+			fmt.Printf("make: %s - Passed\n", val)
+			file.WriteString(fmt.Sprintf("make: %s - Passed\n", val))
+		}
+	}
+
+	// clean everything in the end
+	cmd := exec.Command("make", "fclean")
+	cmd.Run()
+}
+
+func coverageCheck(report bool, file *os.File) {
+	cmd := exec.Command("gcovr", "--exclude", "'.*test.*'", "--root", ".")
+	cmd.Stderr = os.Stderr
+	cmd.Env = os.Environ()
+	if report {
+		cmd.Stdout = io.MultiWriter(os.Stdout, file)
+	} else {
+		cmd.Stdout = os.Stdout
+	}
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("error: %s\n", err)
+	}
 }

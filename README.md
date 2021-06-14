@@ -15,7 +15,6 @@ Common core tester.
 	  - [Package](#package)
 	    - [deb](#deb)
 	    - [rpm](#rpm)
-	    - [apk](#apk)
 	- [Go](#go)
 	  - [Install](#go-install)
 	  - [Build Source](#build-source)
@@ -40,6 +39,8 @@ Common core tester.
 
 **Manual**
 
+/Applications (or a custom location)
+
 ### Homebrew
 
 ## Linux
@@ -54,26 +55,31 @@ Common core tester.
 
 #### rpm
 
-#### apk
-
 ## Go
 
+_Note: minimum go version required is 1.6+._
+
 ### Go Install
+
 `go install github.com/study-group-99/pilates/cmd/pilates@v0.0.10-pre`
 
 ### Build Source
 
-git clone
+`git clone https://github.com/study-group-99/pilates.git`
 
-cd
+`cd pilates`
 
-go build ./cmd/pilates
+`go build ./cmd/pilates`
 
 ## Docker
 
 ## Script
 
-`wget https://raw.githubusercontent.com/study-group-99/pilates/main/install.sh | sh`
+You can install `pilates` via an `install.sh` script.
+
+`curl -sfL https://raw.githubusercontent.com/study-group-99/pilates/main/install.sh | sh`
+
+This will download and install latest stable release. If you feel adventurous you can download the script and run locally pointing to latest beta ie. `sh install.sh pilates-v0.1.0-beta.1`. Please check [releases](https://github.com/study-group-99/pilates/releases) for latest beta version.
 
 # Usage
 
@@ -90,6 +96,27 @@ Each sub command has a more thorough help section available under the `-h` of th
 **Dependencies: Cmake, Gcovr, Norminette**
 
 Pilates needs Cmake for building the unit tests. In addition Gcovr is needed if you you would like to use the -c, --coverage option. We assume Norminette is already installed but if not please do or option -n, --norm will return an err.
+
+Linux:
+
+* Debian/Ubuntu `sudo apt-get install cmake gcovr`
+* RHEL/Fedora/CentOS/ `sudo yum install cmake gcovr`
+* Opensuse `yast2 --install cmake gcovr`
+
+Mac:
+
+* Via brew `brew install cmake gcovr`
+* Manually from https://cmake.org/download/
+* `pip install gcovr`
+
+Windows : 
+
+* https://cmake.org/download/
+* `pip install gcovr`
+
+Norminette:
+
+* `python3 -m pip install norminette`
 
 **`new`**
 
@@ -118,6 +145,8 @@ The `run` subcommand is intended to be used with one of the bellow options. Tryi
 `pilates libft run --unit` or `pilates libft run -u` for short. 
 The -u, --unit option will run unit tests against your libft files. There is no part one/two, bonus options etc. pilates will test against all `ft_*.c` found on top level directory.
 
+_Building and running the unit tests will create a new directory `build`._
+
 ##### Coverage
 
 You can optionally see the coverage of you code by passing the -c --coverage option.
@@ -132,7 +161,7 @@ You can optionally see the coverage of you code by passing the -c --coverage opt
 
 #### Report
 
-`pilates libft run -ur` generates a `report.txt` log file.
+`pilates libft run -ur` generates a `report.txt` log file. Report option can not be used alone.
 
 #### All
 
@@ -157,7 +186,7 @@ All commit messages should adhere to [conventional commits](https://www.conventi
 
 1. Open/assign your self to a ticket in discussions/issues.
 
-2. Fork/clone the repo, checkout `dev` branch and create and new branch named after the feature you are implementing/bug fixing, ie. `git checkout -b feat/libft_benchmarks` or `git checkout -b fix/libftmemeoryleaks`.
+2. Fork/clone the repo, checkout `dev` branch and then branch off to a new branch named after the feature you are implementing/bug fixing, ie. `git checkout -b feat/libft_benchmarks` or `git checkout -b fix/libftmemeoryleaks`.
 
 3. Push changes and open a pull request against `dev` branch.
 
@@ -204,11 +233,11 @@ All active students and alumni are welcome to contribute.
 
 _We are especially interested in forming a small "core" team of maintainers._
 
-* **Code** ~ A good place to start is to check for open issues (bugs) or in discussions for  unassigned feature request tickets. Once you have identified what you would like to contribute to assign yourself and let others know.
+* **Code** ~ A good place to start is to check for open [issues](https://github.com/study-group-99/pilates/issues) (bugs) or in [discussions](https://github.com/study-group-99/pilates/discussions/categories/feature-request) for  unassigned feature request tickets. Once you have identified what you would like to contribute to assign yourself and let others know.
 
-* **Bug reports** ~ Bug reports are **very** welcome. If you spot `pilates` misbehaving do open an issue describing the bug, your OS, and pilates version.
+* **Bug reports** ~ Bug reports are **very** welcome. If you spot `pilates` misbehaving do [open an issue](https://github.com/study-group-99/pilates/issues/new) describing the bug, your OS, and pilates version.
 
-* **Feature requests** ~ If `pilates` does not have the functionality you wish, open a ticket in discussions under `feature request` describing the clearest you can how the new feature should behave and what it accomplishes.
+* **Feature requests** ~ If `pilates` does not have the functionality you wish, [open a ticket](https://github.com/study-group-99/pilates/discussions/new) in discussions under `feature request` describing the clearest you can how the new feature should behave and what it accomplishes.
 
 * **Reviews** ~ If you would like to sharpen your code review skills contact someone that is already in org to send an invitation and start reviewing voluntarily any of the open pull requests.
 
