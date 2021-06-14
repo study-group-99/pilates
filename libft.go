@@ -29,7 +29,7 @@ pilates detected the usage of parameter name 'new' in the above functions.
 Our unit testing is written in C++ thus keyword 'new' can not be be used as argument name.
 Changing the above lines and equivalent functions is OK with Moulinette.
 
-If you try to run the tests anyway you will get an error. Please change 'new' to 'n' or anything else.
+If you try to run the tests anyway you will get an error. Please change 'new' to 'neew' or anything else.
 pilates can do this for you automagically by passing the '--fix-new' option like so 'pilates libft init --fix-new'
 	
 https://stackoverflow.com/questions/20653245/error-in-compiling-c-code-with-variable-name-new-with-g
@@ -238,9 +238,9 @@ func newFix() error {
 			return err
 		}
 		// replace 'new'
-		new := strings.ReplaceAll(string(ft), " new", " neww")
-		new = strings.ReplaceAll(new, "*new", "*neww")
-		new = strings.ReplaceAll(new, "\tnew", "\tneww")
+		new := strings.ReplaceAll(string(ft), " new", " neew")
+		new = strings.ReplaceAll(new, "*new", "*neew")
+		new = strings.ReplaceAll(new, "\tnew", "\tneew")
 		// write it
 		err = ioutil.WriteFile(name, []byte(new), 0)
 		if err != nil {
@@ -258,7 +258,7 @@ func libftInit(path string) error {
 
 	// try remove the 'build' folder
 	// this needs to be done to remove previous builds artifacts
-	os.Remove("build")
+	os.RemoveAll("build")
 
 	// if not, or if -f option is used create it
 	os.Mkdir(path, 0744)
