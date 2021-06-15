@@ -8,15 +8,26 @@ builds:
       - linux
       - windows
       - darwin
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
     main: ./cmd/pilates
     
 archives:
   - replacements:
-      darwin: Darwin
+      darwin: MacOS
       linux: Linux
       windows: Windows
       386: i386
       amd64: x86_64
+    format_overrides:
+    - goos: windows
+      format: zip
+    files:
+      - README.md
+      - LICENSE
 checksum:
   name_template: 'checksums.txt'
 snapshot:

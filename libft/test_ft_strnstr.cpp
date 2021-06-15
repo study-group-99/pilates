@@ -42,48 +42,48 @@ TEST(TestFtStrnstr, Extra) {
 TEST(TestFtStrnstr, NotFound) {
 	char s1[] = "FF";
 	char s2[] = "see FF your FF return FF now FF";
-
-	EXPECT_TRUE(0 <= ft_strnstr(s1, s2, 4));
+	char *got = ft_strnstr(s1, s2, 4);
+	EXPECT_EQ(NULL, got);
 }
 
 TEST(TestFtStrnstr, EmptyDestination) {
 	char s1[] = "";
 	char s2[] = "oh no not the empty string !";
 	size_t max = strlen(s2);
-
-	EXPECT_TRUE(0 >= ft_strnstr(s1, s2, max));
+	char *got = ft_strnstr(s1, s2, max);
+	EXPECT_EQ(NULL, got);
 }
 
 TEST(TestFtStrnstr, EmptySource) {
 	char s1[] = "oh no not the empty string !";
 	char s2[] = "";
 	size_t max = strlen(s1);
-
-	EXPECT_TRUE(0 < ft_strnstr(s1, s2, max));
+	char *got = ft_strnstr(s1, s2, max);
+	EXPECT_TRUE('o' == *got);
 }
 
 TEST(TestFtStrnstr, ZeroLength) {
 	char s1[] = "oh no not the empty string !";
 	char s2[] = "";
-	size_t max = 0;
-
-	EXPECT_TRUE(0 < ft_strnstr(s1, s2, max));
+	char *got = ft_strnstr(s1, s2, 0);
+	EXPECT_TRUE('o' == *got);
 }
 
 TEST(TestFtStrnstr, ZeroLength2) {
 	char s1[] = "";
 	char s2[] = "oh no not the empty string !";
-
-	EXPECT_TRUE(0 > ft_strnstr(s1, s2, 0));
+	char *got = ft_strnstr(s1, s2, 0);
+	EXPECT_TRUE(NULL == got);
 }
 
 TEST(TestFtStrnstr, Same) {
 	char s[] = "AAAAAAAAAAAAA";
 	size_t max = strlen(s);
-
-	EXPECT_TRUE(0 < ft_strnstr(s, s, max));
+	char *got = ft_strnstr(s, s, max);
+	EXPECT_TRUE('A' == *got);
 }
 
-TEST(TestFtStrnstr, Zero2) {
-	EXPECT_TRUE(0 < ft_strnstr("A", "A", 2));
+TEST(TestFtStrnstr, BiggerLength) {
+	char *got = ft_strnstr("A", "A", 2);
+	EXPECT_TRUE('A' == *got);
 }
