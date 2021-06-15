@@ -8,17 +8,16 @@ Common core tester.
 ## Contents
 
 - [Installation](#installation)
-	- [Windows](#windows)
 	- [Mac](#mac)
 	  - [Homebrew](#homebrew)
-	- [Linux](#linux)
+	- [Linux (+wsl)](#linux)
 	  - [Package](#package)
 	    - [deb](#deb)
 	    - [rpm](#rpm)
 	- [Go](#go)
 	  - [Install](#go-install)
 	  - [Build Source](#build-source)
-	- [Docker](#docker)
+	<!-- - [Docker](#docker) -->
 	- [Script](#script)
 - [Usage](#usage)
 	- [libft](#libft)
@@ -30,10 +29,6 @@ Common core tester.
 - [Credits](#credits)
 
 # Installation
-
-## Windows
-
-**Manual**
 
 ## Mac
 
@@ -47,7 +42,12 @@ Common core tester.
 
 **Manual**
 
-`usr/local/bin`
+**Path**
+
+~/.bashrc
+~/.profile
+
+`PATH="$HOME/.local/bin:$PATH"`
 
 ### Package
 
@@ -71,7 +71,7 @@ _Note: minimum go version required is 1.6+._
 
 `go build ./cmd/pilates`
 
-## Docker
+<!-- ## Docker -->
 
 ## Script
 
@@ -80,6 +80,13 @@ You can install `pilates` via an `install.sh` script.
 `curl -sfL https://raw.githubusercontent.com/study-group-99/pilates/main/install.sh | sh`
 
 This will download and install latest stable release. If you feel adventurous you can download the script and run locally pointing to latest beta ie. `sh install.sh pilates-v0.1.0-beta.1`. Please check [releases](https://github.com/study-group-99/pilates/releases) for latest beta version.
+
+**Path**
+
+~/.bashrc
+~/.profile
+
+`PATH="$HOME/.local/bin:$PATH"`
 
 # Usage
 

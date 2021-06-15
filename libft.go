@@ -339,11 +339,11 @@ func unitTest(report bool, file *os.File) {
 	genSpinner := spinner.New("Generating build")
 	genSpinner.Start()
 	cmd.Env = os.Environ()
-	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		fmt.Printf("error: %s\n", err)
+		genSpinner.Error(err.Error())
+	} else {
+		genSpinner.Success()
 	}
-	genSpinner.Success()
 
 	cmd = exec.Command("cmake", "--build", "build")
 	buildSpinner := spinner.New("Building C++ files")
@@ -351,11 +351,11 @@ func unitTest(report bool, file *os.File) {
 	cmd.Stderr = os.Stderr
 	cmd.Env = os.Environ()
 	if err := cmd.Run(); err != nil {
-		fmt.Printf("error: %s\n", err)
+		buildSpinner.Error(err.Error())
+	} else {
+		buildSpinner.Success()
 	}
-	buildSpinner.Success()
 
-	os.Chdir("build")
 	cmd = exec.Command("ctest", "--output-on-failure")
 	cmd.Stderr = os.Stderr
 	cmd.Env = os.Environ()
@@ -364,6 +364,8 @@ func unitTest(report bool, file *os.File) {
 	} else {
 		cmd.Stdout = os.Stdout
 	}
+
+	os.Chdir("build")
 	if err := cmd.Run(); err != nil {
 		fmt.Printf("error: %s\n", err)
 	}

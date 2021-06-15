@@ -40,7 +40,7 @@ TEST(TestFtSplit, NoSplit) {
 
 TEST(TestFtSplit, ZeroString) {
     char **got = ft_split("", '.');
-	EXPECT_EQ(NULL, *got) << "Input: char **got = ft_split("", '.');";
+	EXPECT_EQ(NULL, *got) << "Input: char **got = ft_split(\"\", '.');";
 }
 
 TEST(TestFtSplit, Basic1) {
