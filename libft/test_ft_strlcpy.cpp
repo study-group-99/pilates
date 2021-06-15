@@ -20,7 +20,7 @@ TEST(TestFtStrlcpy, BasicReturn) {
 
 	size_t got = ft_strlcpy(s2, s1, strlen(s1) + 1);
     
-	EXPECT_EQ(18, got) << "Input: char want[] = \"Hello there, Mate\"; char got[19]; ft_strlcpy(got, want, strlen(want) + 1);";
+	EXPECT_EQ(17, got) << "Input: char want[] = \"Hello there, Mate\"; char got[19]; ft_strlcpy(got, want, strlen(want) + 1);";
 }
 
 TEST(TestFtStrlcpy, SomeCharacters) {
