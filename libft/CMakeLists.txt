@@ -38,7 +38,7 @@ set(This libft)
 project(${This})
 
 set(GCC_COVERAGE_COMPILE_FLAGS "-g -O0 -coverage -fprofile-arcs -ftest-coverage")
-set(GCC_COVERAGE_LINK_FLAGS    "-coverage -lgcov")
+set(GCC_COVERAGE_LINK_FLAGS    "-coverage")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
 

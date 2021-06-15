@@ -5,6 +5,7 @@ on:
     types: [closed]
     branches:
       - main
+      - dev
 
 jobs:
   release:
