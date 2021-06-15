@@ -9,7 +9,7 @@ import (
 
 func main() {
 	// start a new cli
-	cli := clir.NewCli("pilates", "Ultimate Pilates Machine", "v0.0.10")
+	cli := clir.NewCli("pilates", "Ultimate Pilates Machine", "v0.2.1")
 	// register subcommands
 	pilates.RootCommand(cli)
 	pilates.LibftCommand(cli)
