@@ -80,12 +80,9 @@ You can install `pilates` via an `install.sh` script.
 
 This will download and install latest stable release. If you feel adventurous you can download the script and run locally pointing to latest beta ie. `sh install.sh pilates-v0.1.0-beta.1`. Please check [releases](https://github.com/study-group-99/pilates/releases) for latest beta version.
 
-**Path**
+_Path_
 
-~/.bashrc
-~/.profile
-
-`PATH="$HOME/.local/bin:$PATH"`
+_See relevant path instructions for your platform above._
 
 <!-- ## Docker -->
 
