@@ -29,7 +29,3 @@ TEST(TestFtLstmap, Basic) {
 	EXPECT_STREQ("OK !", (char *)result->next->next->content);
 	EXPECT_EQ(NULL, result->next->next->next);
 }
-
-// TEST(TestFtStrlcat, MustSegfault) {
-// 	EXPECT_EXIT((ft_lstmap(NULL, lstmap_f, NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_lstmap(NULL, lstmap_f, NULL);\n";
-// }

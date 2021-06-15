@@ -33,7 +33,3 @@ TEST(TestFtPutendl_Fd, NonAscii) {
 
 	EXPECT_STREQ(want, got.erase(strlen(want)).c_str()) << "Input: ft_putendl_fd(\"γειά σου ντέιβ\", 1);";
 }
-
-TEST(TestFtPutendl_Fd, MustSegfault) {
-	EXPECT_EXIT((ft_putendl_fd(NULL, 1), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_putendl_fd(NULL, 1);\n";
-}

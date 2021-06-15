@@ -32,7 +32,7 @@ TEST(TestFtMemccpy, unsignedChar) {
 
 	ft_memccpy(got, s, '\200', 30); memccpy(want, s, '\200', 30);
 
-	EXPECT_STREQ(want, got) << "Input: char s[] = \"string with\\200inside !\"; ft_memccpy(\"abcdefghijklmnopqrstuvwxyz\", s, '\\200', 21);\n";
+	EXPECT_STREQ(want, got) << "Input: char s[] = \"string with\\200inside !\"; ft_memccpy(\"abcdefghijklmnopqrstuvwxyz\", s, '\\200', 30);\n";
 }
 
 TEST(TestFtMemccpy, StopUnsignedChar) {
@@ -42,7 +42,7 @@ TEST(TestFtMemccpy, StopUnsignedChar) {
 
 	ft_memccpy(got, s, 0600, 30); memccpy(want, s, 0600, 30);
 
-	EXPECT_STREQ(want, got) << "Input: char s[] = \"string with\\200inside !\"; ft_memccpy(\"abcdefghijklmnopqrstuvwxyz\", s, '\\200', 21);\n";
+	EXPECT_STREQ(want, got) << "Input: char s[] = \"string with\\200inside !\"; ft_memccpy(\"abcdefghijklmnopqrstuvwxyz\", s, '0600', 30);\n";
 }
 
 TEST(TestFtMemccpy, BasicReturn) {
@@ -89,10 +89,4 @@ TEST(TestFtMemccpy, Struct) {
 
 	ft_memccpy(got, s, '\x42', sizeof(s)); memccpy(want, s, '\x42', sizeof(s));
 	EXPECT_STREQ(want, got) << "Input: too complex to return, check the source\n";
-}
-
-TEST(TestFtMemccpy, MustSegfault) {
-	EXPECT_EXIT((ft_memccpy((void *)"", "segfault", '\0', 17), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memccpy((void *)\"\", \"it should segfault\", '\0', 17);\n";
-	EXPECT_EXIT((ft_memccpy(NULL, "segfault", 'e', 17), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memccpy(NULL, \"segfault\", 'e', 17);\n";
-	EXPECT_EXIT((ft_memccpy((void *)"            ", NULL, ' ', 17), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memccpy((void *)\"            \", NULL, ' ', 17);\n";
 }

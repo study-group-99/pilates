@@ -10,7 +10,7 @@ TEST(TestFtStrjoin, SimpleString) {
 	char s2[] = "another text in string 2 aushd";
 	
 	char *got = ft_strjoin(s1, s2);
-	EXPECT_STREQ("Some text in string 1..another text in string 2 aushd", got);
+	EXPECT_STREQ("Some text in string 1..another text in string 2 aushd", got) << "Input: ft_strjoin(\"Some text in string 1..\", \"another text in string 2 aushd\");";
 }
 
 TEST(TestFtStrjoin, BothZeroString) {
@@ -18,7 +18,7 @@ TEST(TestFtStrjoin, BothZeroString) {
 	char s2[] = "";
 
 	char *got = ft_strjoin(s1, s2);
-	EXPECT_STREQ("", got);
+	EXPECT_STREQ("", got) << "Input: ft_strjoin(\"\", \"\");";
 }
 
 TEST(TestFtStrjoin, FirstZeroString) {
@@ -26,7 +26,7 @@ TEST(TestFtStrjoin, FirstZeroString) {
 	char s2[] = "another text in string 2 aushd";
 
 	char *got = ft_strjoin(s1, s2);
-	EXPECT_STREQ("another text in string 2 aushd", got);
+	EXPECT_STREQ("another text in string 2 aushd", got)  << "Input: ft_strjoin(\"\", \"another text in string 2 aushd\");";
 }
 
 TEST(TestFtStrjoin, SecondZeroString) {
@@ -34,7 +34,7 @@ TEST(TestFtStrjoin, SecondZeroString) {
 	char s2[] = "";
 
 	char *got = ft_strjoin(s1, s2);
-	EXPECT_STREQ("Some text in string 1..", got);
+	EXPECT_STREQ("Some text in string 1..", got) << "Input: ft_strjoin(\"Some text in string 1..\", \"\");";
 }
 
 TEST(TestFtStrjoin, Nested) {
@@ -43,8 +43,8 @@ TEST(TestFtStrjoin, Nested) {
 	char s3[] = "the dinosaur";
 
 	char *got = ft_strjoin(ft_strjoin(s1, s2), s3);
-	EXPECT_STREQ("my favorite animal is the dinosaur", got);
-}
+	EXPECT_STREQ("my favorite animal is the dinosaur", got) << "Input: 	char s1[] = \"my favorite animal is\"; char s2[] = " "; char s3[] = \"the dinosaur\"; char *got = ft_strjoin(ft_strjoin(s1, s2), s3);";
+	}
 
 TEST(TestFtStrjoin, Free) {
 	char s1[] = "my favorite animal is";
@@ -54,7 +54,7 @@ TEST(TestFtStrjoin, Free) {
 	char *tmp = ft_strjoin(s1, s2);
 	char *got = ft_strjoin(tmp, s3);
 	free(tmp);
-	EXPECT_STREQ("my favorite animal is the dinosaur", got);
+	EXPECT_STREQ("my favorite animal is the dinosaur", got) << "Input: 	char s1[] = \"my favorite animal is\"; char s2[] = " "; char s3[] = \"the dinosaur\"; char *tmp = ft_strjoin(s1, s2); char *got = ft_strjoin(tmp, s3); free(tmp);";
 }
 
 TEST(TestFtStrjoin, Overlap) {
@@ -62,11 +62,5 @@ TEST(TestFtStrjoin, Overlap) {
 	char *s = want + 20;
 
 	char *got = ft_strjoin(s, want);
-	EXPECT_STREQ("s my favorite animal is ", got);
-}
-
-TEST(TestFtStrjoin, MustSegfault) {
-	EXPECT_EXIT((ft_strjoin(NULL, "where is my "), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(NULL, \"where is my \");\n";
-	EXPECT_EXIT((ft_strjoin("where is my ", NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(\"where is my \", NULL);\n";
-	EXPECT_EXIT((ft_strjoin(NULL, NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strjoin(NULL, NULL);\n";
+	EXPECT_STREQ("s my favorite animal is ", got) << "Input: char want[] = \"my favorite animal is \"; char *s = want + 20; ft_strjoin(s, want);";
 }

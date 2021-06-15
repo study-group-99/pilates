@@ -44,7 +44,3 @@ TEST(TestFtMemchr, ZeroByte) {
 
     EXPECT_EQ(got, want) << "Input: ft_memchr((void *)\"  /|\\x12\\xff\\x09\\x42\\042\\42|\\This is Some\ntext3.\0    \", 'o', 30);\n";
 }
-
-TEST(TestFtMemchr, MustSegfault) {
-	EXPECT_EXIT((ft_memchr(NULL, '\0', 0x20), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_memchr(NULL, '\0', 0x20);\n";
-}

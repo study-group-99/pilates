@@ -37,7 +37,7 @@ TEST(TestFtStrtrim, TrimNothing) {
 
 TEST(TestFtStrtrim, Empty) {
 	char *got = ft_strtrim("", " \n\t");
-	EXPECT_STREQ("", got) << "Input: char *got = ft_strtrim(\"\", \" \n\t\");";
+	EXPECT_STREQ("", got) << "Input: char *got = ft_strtrim(\"\", \" \\n\\t\");";
 }
 
 TEST(TestFtStrtrim, EmptyInput) {
@@ -48,8 +48,4 @@ TEST(TestFtStrtrim, EmptyInput) {
 TEST(TestFtStrtrim, Memory) {
 	char *got = ft_strtrim("   \t  \n\n \t\t  \n\n\nHello \t  Please\n Trim me !\n   \n \n \t\t\n  ", " \n\t");
 	EXPECT_STREQ("Hello \t  Please\n Trim me !", got) << "Input: char *got = ft_strtrim(\"   \\t  \\n\\n \\t\\t  \\n\\n\\nHello \\t  Please\\n Trim me !\\n   \\n \\n \\t\\t\\n  \", \" \\n\\t\");";
-}
-
-TEST(TestFtStrtrim, MustSegfault) {
-	EXPECT_EXIT((ft_strtrim(NULL, " \n\t"), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strtrim(NULL, \" \n\t\");\n";
 }

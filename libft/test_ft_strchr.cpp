@@ -75,7 +75,3 @@ TEST(TestFtStrchr, Unicode) {
 
 	EXPECT_STREQ(want, got) << "Input: ft_strchr(\"īœ˙ˀ˘¯ˇ¸¯.œ«‘––™ª•¡¶¢˜ˀ\", L'–');";
 }
-
-TEST(TestFtStrchr, MustSegfault) {
-	EXPECT_EXIT((ft_strchr(NULL, '\0'), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strchr(NULL, '\0');\n";
-}

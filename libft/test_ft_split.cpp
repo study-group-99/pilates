@@ -40,7 +40,7 @@ TEST(TestFtSplit, NoSplit) {
 
 TEST(TestFtSplit, ZeroString) {
     char **got = ft_split("", '.');
-	EXPECT_EQ(NULL, *got) << "Input: char **got = ft_split("", '.');";
+	EXPECT_EQ(NULL, *got) << "Input: char **got = ft_split(\"\", '.');";
 }
 
 TEST(TestFtSplit, Basic1) {
@@ -150,9 +150,4 @@ TEST(TestFtSplit, Advanced6) {
 	char **got = ft_split("", '_');
 
     EXPECT_STREQ(NULL, *got) << "Input: ft_split(\"\", '_');";
-}
-
-TEST(TestFtSplit, MustSegfault) {
-	EXPECT_EXIT((ft_split(NULL, '_'), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_split(NULL, '_');\n";
-	EXPECT_EXIT((ft_split(NULL, 0), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_split(NULL, NULL);\n";
 }

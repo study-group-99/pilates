@@ -56,9 +56,3 @@ TEST(TestFtStrmapi, EmptyString) {
 	char *got = ft_strmapi("", f_strmapi);
 	EXPECT_STREQ("", got);
 }
-
-TEST(TestFtStrmapi, MustSegfault) {
-	EXPECT_EXIT((ft_strmapi(NULL, f_strmapi), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strmapi(NULL, f_strmapi);\n";
-	EXPECT_EXIT((ft_strmapi("segfault", NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strmapi(\"segfault\", NULL);\n";
-	EXPECT_EXIT((ft_strmapi(NULL, NULL), exit(0)),::testing::KilledBySignal(SIGSEGV),".*") << "Input: ft_strmapi(NULL, NULL);\n";
-}
