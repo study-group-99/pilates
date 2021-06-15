@@ -10,7 +10,7 @@ TEST(TestFtStrlen, SimpleText) {
     int want = strlen(s);
 	int got = ft_strlen(s);
 
-    EXPECT_EQ(want, got);
+    EXPECT_EQ(want, got) << "Input: ft_strlen(\"Test123\");";
 }
 
 TEST(TestFtStrlen, ZeroText) {
@@ -18,7 +18,7 @@ TEST(TestFtStrlen, ZeroText) {
     int want = strlen(s);
 	int got = ft_strlen(s);
 
-    EXPECT_EQ(want, got);
+    EXPECT_EQ(want, got) << "Input: ft_strlen(\"\");";
 }
 
 TEST(TestFtStrlen, WithSpecChar) {
@@ -26,13 +26,13 @@ TEST(TestFtStrlen, WithSpecChar) {
 	int want = strlen(s1);
 	int got = ft_strlen(s1);
 
-    EXPECT_EQ(want, got);
+    EXPECT_EQ(want, got) << "Input: ft_strlen(\"Té:_÷×ßŁst\\0T\");";
 
     char s2[] = "T\tT";
     want = strlen(s2);
 	got = ft_strlen(s2);
 
-    EXPECT_EQ(want, got);
+    EXPECT_EQ(want, got) << "Input: ft_strlen(\"T\\tT\");";
 }
 
 TEST(TestFtStrlen, SimpleText2) {
@@ -40,7 +40,7 @@ TEST(TestFtStrlen, SimpleText2) {
 	int want = strlen(s);
 	int got = ft_strlen(s);
 
-    EXPECT_EQ(want, got);
+    EXPECT_EQ(want, got) << "Input: ft_strlen(\"01234567, AAAAAA, abc\\xba e, ......, end of string !\");";
 }
 
 TEST(TestFtStrlen, Unicode) {
@@ -48,7 +48,7 @@ TEST(TestFtStrlen, Unicode) {
 	int want = strlen(s);
 	int got = ft_strlen(s);
 
-    EXPECT_EQ(want, got);
+    EXPECT_EQ(want, got) << "Input: ft_strlen(\"♫♪.ılılıll|̲̅̅●̲̅̅|̲̅̅=̲̅̅|̲̅̅●̲̅̅|llılılı.♫♪\");";
 }
 
 TEST(TestFtStrlen, NonAligned) {
@@ -60,5 +60,5 @@ TEST(TestFtStrlen, NonAligned) {
 	int want = strlen(s);
 	int got = ft_strlen(s);
 	
-    EXPECT_EQ(want, got);
+    EXPECT_EQ(want, got) << "Input: ft_strlen(\"YOLO\");";
 }

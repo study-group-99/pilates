@@ -32,7 +32,7 @@ TEST(TestFtMemccpy, unsignedChar) {
 
 	ft_memccpy(got, s, '\200', 30); memccpy(want, s, '\200', 30);
 
-	EXPECT_STREQ(want, got) << "Input: char s[] = \"string with\\200inside !\"; ft_memccpy(\"abcdefghijklmnopqrstuvwxyz\", s, '\\200', 21);\n";
+	EXPECT_STREQ(want, got) << "Input: char s[] = \"string with\\200inside !\"; ft_memccpy(\"abcdefghijklmnopqrstuvwxyz\", s, '\\200', 30);\n";
 }
 
 TEST(TestFtMemccpy, StopUnsignedChar) {
@@ -42,7 +42,7 @@ TEST(TestFtMemccpy, StopUnsignedChar) {
 
 	ft_memccpy(got, s, 0600, 30); memccpy(want, s, 0600, 30);
 
-	EXPECT_STREQ(want, got) << "Input: char s[] = \"string with\\200inside !\"; ft_memccpy(\"abcdefghijklmnopqrstuvwxyz\", s, '\\200', 21);\n";
+	EXPECT_STREQ(want, got) << "Input: char s[] = \"string with\\200inside !\"; ft_memccpy(\"abcdefghijklmnopqrstuvwxyz\", s, '0600', 30);\n";
 }
 
 TEST(TestFtMemccpy, BasicReturn) {

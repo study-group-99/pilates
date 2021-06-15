@@ -31,7 +31,7 @@ Changing the above lines and equivalent functions is OK with Moulinette.
 
 If you try to run the tests anyway you will get an error. Please change 'new' to 'neew' or anything else.
 pilates can do this for you automagically by passing the '--fix-new' option like so 'pilates libft init --fix-new'
-	
+
 https://stackoverflow.com/questions/20653245/error-in-compiling-c-code-with-variable-name-new-with-g
 `
 

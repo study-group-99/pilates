@@ -9,11 +9,11 @@ Common core tester.
 
 - [Installation](#installation)
 	- [Mac](#mac)
-	  - [Homebrew](#homebrew)
+	  <!-- - [Homebrew](#homebrew) -->
 	- [Linux (+wsl)](#linux)
-	  - [Package](#package)
+	  <!-- - [Package](#package)
 	    - [deb](#deb)
-	    - [rpm](#rpm)
+	    - [rpm](#rpm) -->
 	- [Go](#go)
 	  - [Install](#go-install)
 	  - [Build Source](#build-source)
@@ -34,44 +34,43 @@ Common core tester.
 
 **Manual**
 
-/Applications (or a custom location)
+* Download the latest stable (or beta) [release](https://github.com/study-group-99/pilates/releases).
 
-### Homebrew
+* Move the binary in `/usr/local/bin` (or a custom location).
+
+_If you opt for custom location you may need to include it in you [Path](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/#.Uydjga1dXDg)_
+
+ _You may need to restart any open Terminal sessions for the change to take effect._
+
+### Homebrew Tap
+
+[Coming soon.](https://github.com/study-group-99/pilates/discussions/21)
 
 ## Linux
 
 **Manual**
 
+* Download the latest stable (or beta) [release](https://github.com/study-group-99/pilates/releases).
+
+* Move the binary in `$HOME/.local/bin` (or a custom location).
+
 **Path**
 
-~/.bashrc
-~/.profile
+You may need to include the directory in your path.
 
-`PATH="$HOME/.local/bin:$PATH"`
+Open you `~/.bashrc` or `~/.profile` etc amd add the line
 
-### Package
+```PATH="$HOME/.local/bin:$PATH"```
 
-#### deb
+To load the changes run `source ~/.profile` or `source ~/.bashrc` etc.
 
-#### rpm
+### deb/rpm Packages
 
-## Go
+[Coming soon.](https://github.com/study-group-99/pilates/discussions/21)
 
-_Note: minimum go version required is 1.6+._
+<!-- #### deb -->
 
-### Go Install
-
-`go install github.com/study-group-99/pilates/cmd/pilates@v0.0.10-pre`
-
-### Build Source
-
-`git clone https://github.com/study-group-99/pilates.git`
-
-`cd pilates`
-
-`go build ./cmd/pilates`
-
-<!-- ## Docker -->
+<!-- #### rpm -->
 
 ## Script
 
@@ -87,6 +86,26 @@ This will download and install latest stable release. If you feel adventurous yo
 ~/.profile
 
 `PATH="$HOME/.local/bin:$PATH"`
+
+<!-- ## Docker -->
+
+## Go
+
+_Note: minimum go version required is 1.6+._
+
+### Go Install
+
+`go install github.com/study-group-99/pilates/cmd/pilates@v0.0.10-pre`
+
+_Remember that you need to have $GOPATH/bin in your path._
+
+### Build Source
+
+* Clone the repo `git clone https://github.com/study-group-99/pilates.git`
+
+* Change in the `pilates` directory `cd pilates`
+
+* Build the app `go build ./cmd/pilates`
 
 # Usage
 
@@ -108,17 +127,11 @@ Linux:
 
 * Debian/Ubuntu `sudo apt-get install cmake gcovr`
 * RHEL/Fedora/CentOS/ `sudo yum install cmake gcovr`
-* Opensuse `yast2 --install cmake gcovr`
 
 Mac:
 
 * Via brew `brew install cmake gcovr`
 * Manually from https://cmake.org/download/
-* `pip install gcovr`
-
-Windows : 
-
-* https://cmake.org/download/
 * `pip install gcovr`
 
 Norminette:
@@ -274,7 +287,7 @@ _We are especially interested in forming a small "core" team of maintainers._
 
 ## [Contributors](https://github.com/study-group-99/pilates/graphs/contributors)
 
-<!-- Reviewers:  -->
+Reviewers/Testers: <a href="https://github.com/ignan1">@ignan1</a>, <a href="https://github.com/Zyanite7">@Zyanite7</a>, <a href="https://github.com/LePlaYa">@LePlaYa</a>, <a href="https://github.com/dejanzivanov">@dejanzivanov</a>, <a href="https://github.com/Madasanya">@Madasanya</a>, <a href="https://github.com/Lillzz">@Lillzz</a>.
 
 ## Shoulders of giants
-Test cases for libft unit tests also came from: <a href="https://github.com/Ysoroko">@Ysoroko</a>, <a href="https://github.com/alelievr">@alelievr</a> & <a href="https://github.com/ska42">@ska42</a>.
+Test cases for libft unit tests also came from: <a href="https://github.com/berlintrabby">@berlintrabby</a>, <a href="https://github.com/alelievr">@alelievr</a> & <a href="https://github.com/ska42">@ska42</a>.
