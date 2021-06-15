@@ -17,3 +17,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GORELEASER }}
         WITH_V: true
+
