@@ -8,7 +8,7 @@ on:
 
 jobs:
   release:
-    if: contains(github.event.pull_request.labels.*.name, 'Update')
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
