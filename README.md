@@ -38,7 +38,7 @@ Common core tester.
 
 * Move the binary in `/usr/local/bin` (or a custom location).
 
-_If you opt for custom location you may need to include it in you [Path](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/#.Uydjga1dXDg)_
+_If you opt for custom location you may need to include it in you [Path](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/#.Uydjga1dXDg)._
 
  _You may need to restart any open Terminal sessions for the change to take effect._
 
@@ -284,7 +284,7 @@ _We are especially interested in forming a small "core" team of maintainers._
 
 ## [Contributors](https://github.com/study-group-99/pilates/graphs/contributors)
 
-Reviewers/Testers: <a href="https://github.com/ignan1">@ignan1</a>, <a href="https://github.com/Zyanite7">@Zyanite7</a>, <a href="https://github.com/LePlaYa">@LePlaYa</a>, <a href="https://github.com/dejanzivanov">@dejanzivanov</a>, <a href="https://github.com/Madasanya">@Madasanya</a>, <a href="https://github.com/Lillzz">@Lillzz</a>.
+Reviewers/Testers: <a href="https://github.com/ignan1">@ignan1</a>, <a href="https://github.com/Zyanite7">@Zyanite7</a>, <a href="https://github.com/LePlaYa">@LePlaYa</a>, <a href="https://github.com/dejanzivanov">@dejanzivanov</a>, <a href="https://github.com/Madasanya">@Madasanya</a>, <a href="https://github.com/Lillzz">@Lillzz</a>, <a href="https://github.com/berlintrabby">@berlintrabby</a>.
 
 ## Shoulders of giants
 Test cases for libft unit tests also came from: <a href="https://github.com/berlintrabby">@berlintrabby</a>, <a href="https://github.com/alelievr">@alelievr</a> & <a href="https://github.com/ska42">@ska42</a>.
