@@ -5,23 +5,17 @@ extern "C" {
 #include "../libft.h"
 }
 
-char test_function(unsigned int move_ascii, char c)
-{
-	return (c + move_ascii);
+char f_strmapi(unsigned i, char c) { return (c + i); }
+
+TEST(TestFtStrmapi, String) {
+	char s[] = "ABCD";
+	char want[] = "ACEG";
+
+	char *got = ft_strmapi(s, f_strmapi);
+	EXPECT_STREQ(want, got);
 }
 
-TEST(TestFtStrmapi, SimpleStr) {
-	char arr[] = "ABCD";
-	char arr_expected[] = "ACEG";
-	char *result;
-
-	result = ft_strmapi(arr, &test_function);
-	ASSERT_TRUE(result != NULL);
-	EXPECT_EQ(0, strcmp(result, arr_expected));
-	// free(result);
-}
-
-char	mapi(unsigned int i, char c)
+char f_mapi(unsigned int i, char c)
 {
 	static int indexArray[11] = {0};
 
@@ -37,26 +31,28 @@ char	mapi(unsigned int i, char c)
 		return (c);
 }
 
-TEST(TestFtStrmapi, SimpleStrWarTest) {
-	char	*str;
-	char	*strmapi;
+TEST(TestFtStrmapi, String2) {
+	char *s = (char *)malloc(sizeof(*s) * 12);
+	strcpy(s, "LoReM iPsUm");
+	char *got = ft_strmapi(s, f_mapi);
 
-	alarm(5);
-	str = (char *)malloc(sizeof(*str) * 12);
-	strcpy(str, "LoReM iPsUm");
-	strmapi = ft_strmapi(str, &mapi);
-
-	ASSERT_TRUE(strmapi != NULL);
-	ASSERT_STREQ("lOrEm IpSuM", strmapi);
+	EXPECT_STREQ("lOrEm IpSuM", got);
 }
 
-TEST(TestFtStrmapi, EmptyStr) {
-	char arr[] = "";
-	char arr_expected[] = "";
-	char *result;
+TEST(TestFtStrmapi, String3) {
+	char s[] = "override this !";
+	char b2[0xF0];
+	size_t size = strlen(s);
 
-	result = ft_strmapi(arr, &test_function);
-	ASSERT_TRUE(result != NULL);
-	EXPECT_EQ(0, strcmp(result, arr_expected));
-	// free(result);
+	for (size_t i = 0; i < size; i++)
+		b2[i] = f_strmapi(i, s[i]);
+	b2[size] = 0;
+	char *got = ft_strmapi(s, f_strmapi);
+
+	EXPECT_STREQ("owguvnjl(}rt\x7F-/", got);
+}
+
+TEST(TestFtStrmapi, EmptyString) {
+	char *got = ft_strmapi("", f_strmapi);
+	EXPECT_STREQ("", got);
 }

@@ -7,31 +7,28 @@ extern "C" {
 }
 
 
-TEST(TestFtLstsize, CheckThreeElem) {
+TEST(TestFtLstsize, Basic) {
 	t_list e1, e2, e3;
 	e1.next = &e2;
 	e2.next = &e3;
 	e3.next = NULL;
-	int	result;
-
-	result = ft_lstsize(&e1);
-	EXPECT_TRUE(result == 3);
+	int got = ft_lstsize(&e1);
+	
+	EXPECT_EQ(3, got);
 }
 
-TEST(TestFtLstsize, CheckNull) {
-	t_list *ptr;
-	ptr = NULL;
-	int	result;
+TEST(TestFtLstsize, Null) {
+	t_list *s;
+	s = NULL;
+	int got = ft_lstsize(s);
 
-	result = ft_lstsize(ptr);
-	EXPECT_TRUE(result == 0);
+	EXPECT_EQ(NULL, got);
 }
 
-TEST(TestFtLstsize, CheckOneElem) {
+TEST(TestFtLstsize, Basic2) {
 	t_list e1;
 	e1.next = NULL;
-	int	result;
-
-	result = ft_lstsize(&e1);
-	EXPECT_TRUE(result == 1);
+	int got = ft_lstsize(&e1);
+	
+	EXPECT_EQ(1, got);
 }

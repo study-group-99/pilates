@@ -6,49 +6,46 @@ extern "C" {
 }
 
 TEST(TestFtStrtrim, SimpleTrim) {
-    char s1[] = "This text is long";
-    char *c1;
+    char s[] = "This text is long";
 
-    c1 = ft_strtrim(s1, " ighlnoTs");
-    ASSERT_TRUE(c1 != 0);
-    EXPECT_EQ(0, strcmp(c1, "text"));
-    free(c1);
-    c1 = ft_strtrim(s1, "This ");
-    ASSERT_TRUE(c1 != 0);
-    EXPECT_EQ(0, strcmp(c1, "text is long"));
-    free(c1);
-    c1 = ft_strtrim(s1, "long ");
-    ASSERT_TRUE(c1 != 0);
-    EXPECT_EQ(0, strcmp(c1, "This text is"));
-    free(c1);
+    char *got = ft_strtrim(s, " ighlnoTs");
+    EXPECT_STREQ("text", got) << "Input: char *got = ft_strtrim(\"This text is long\", \" ighlnoTs\");";
+
+    got = ft_strtrim(s, "This ");
+    EXPECT_STREQ("text is long", got) << "Input: char *got = ft_strtrim(\"text\", \"This \");";
+
+    got = ft_strtrim(s, "long ");
+    EXPECT_STREQ("This text is", got) << "Input: char *got = ft_strtrim(\"This text is\", \"long \");";
 }
 
 TEST(TestFtStrtrim, TrimZeroStr) {
-    char s1[] = "";
-    char *c1;
-
-    c1 = ft_strtrim(s1, "abcd ");
-    ASSERT_TRUE(c1 != 0);
-    EXPECT_EQ(0, strcmp(c1, ""));
-    free(c1);
+    char *got = ft_strtrim("", "abcd ");
+    EXPECT_STREQ("", got) << "Input: char *got = ft_strtrim(\"\", \"abcd \");";
 }
 
 TEST(TestFtStrtrim, TrimEverything) {
-    char s1[] = "This text is long";
-    char *c1;
-
-    c1 = ft_strtrim(s1, " eighlnotTsx");
-    ASSERT_TRUE(c1 != 0);
-    EXPECT_EQ(0, strcmp(c1, ""));
-    free(c1);
+    char *got = ft_strtrim("This text is long", " eighlnotTsx");
+    EXPECT_STREQ("", got) << "Input: char *got = ft_strtrim(\"This text is long\", \" eighlnotTsx\");";
 }
 
 TEST(TestFtStrtrim, TrimNothing) {
-    char s1[] = "This text is long";
-    char *c1;
+    char want[] = "This text is long";
 
-    c1 = ft_strtrim(s1, " abd");
-    ASSERT_TRUE(c1 != 0);
-    EXPECT_EQ(0, strcmp(c1, "This text is long"));
-    free(c1);
+    char *got = ft_strtrim(want, " abd");
+    EXPECT_STREQ(want, got) << "Input: char *got = ft_strtrim(\"This text is long\", \" abd\");";
+}
+
+TEST(TestFtStrtrim, Empty) {
+	char *got = ft_strtrim("", " \n\t");
+	EXPECT_STREQ("", got) << "Input: char *got = ft_strtrim(\"\", \" \\n\\t\");";
+}
+
+TEST(TestFtStrtrim, EmptyInput) {
+	char *got = ft_strtrim("  \t \t \n   \n\n\n\t", " \n\t");
+	EXPECT_STREQ("", got) << "Input: char *got = ft_strtrim(\"  \\t \\t \\n   \\n\\n\\n\\t\", \" \\n\\t\");";
+}
+
+TEST(TestFtStrtrim, Memory) {
+	char *got = ft_strtrim("   \t  \n\n \t\t  \n\n\nHello \t  Please\n Trim me !\n   \n \n \t\t\n  ", " \n\t");
+	EXPECT_STREQ("Hello \t  Please\n Trim me !", got) << "Input: char *got = ft_strtrim(\"   \\t  \\n\\n \\t\\t  \\n\\n\\nHello \\t  Please\\n Trim me !\\n   \\n \\n \\t\\t\\n  \", \" \\n\\t\");";
 }

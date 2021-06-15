@@ -5,107 +5,85 @@ extern "C" {
 #include "../libft.h"
 }
 
-TEST(TestFtStrncmp, CompEmpty) {
-    size_t  n = 0;
-    char    *c1;
-    char    *c2;
-    int     res1;
-    int     res2;
-    
-    res1 = memcmp(c1, c2, 0);
-    res2 = ft_memcmp(c1, c2, 0);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = memcmp(c2, c1, 0);
-    res2 = ft_memcmp(c2, c1, 0);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
+TEST(TestFtMemcmp, Basic) {
+    char s1[] = "Somethi";
+    char s2[] = "Sometht";
+
+    int want = memcmp(s1, s2, 8);
+    int got = ft_memcmp(s1, s2, 8);
+    EXPECT_EQ(got < 0, want < 0) << "Input: ft_memcmp(\"Somethi\", \"Sometht\", 8);\n";
+
+	char s3[] = "\xff\0\0\xaa\0\xde\xffMACOSX\xff";
+	char s4[] = "\xff\0\0\xaa\0\xde\x00MBS";
+
+	want = memcmp(s1, s3, 9);
+	got = ft_memcmp(s1, s4, 9);
+	EXPECT_EQ(got > 0, want > 0) << "Input: ft_memcmp(\"\\xff\\0\\0\\xaa\\0\\xde\\xffMACOSX\\xff\", \"\\xff\\0\\0\\xaa\\0\\xde\\x00MBS\", 9);\n";
 }
 
-TEST(TestFtMemcmp, CompCharArr) {
-    size_t  n = 4;
-    char    c1[8] = "Somethi";
-    char    c2[8] = "Sometht";
-    int     res1;
-    int     res2;
+TEST(TestFtMemcmp, IntArray) {
+    int s1[] = {10, 20, 30, 40, 50};
+    int s2[] = {10, 20, 30, 40, 50};
+    int n = sizeof(s1)/sizeof(s1[0]);
+
+    int want = memcmp(s2, s1, n);
+    int got = ft_memcmp(s2, s1, n);
+    EXPECT_EQ(got, want) << "Input: int s1[] = {10, 20, 30, 40, 50}; int s2[] = {10, 20, 30, 40, 50}; int n = sizeof(s1)/sizeof(s1[0]); ft_memcmp(s2, s1, n);\n";
     
-    res1 = memcmp(c1, c2, 8);
-    res2 = ft_memcmp(c1, c2, 8);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = memcmp(c2, c1, 8);
-    res2 = ft_memcmp(c2, c1, 8);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = memcmp(c1, c2, 7);
-    res2 = ft_memcmp(c1, c2, 7);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = memcmp(c2, c1, 7);
-    res2 = ft_memcmp(c2, c1, 7);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = memcmp(c1, c2, 0);
-    res2 = ft_memcmp(c1, c2, 0);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = memcmp(c2, c1, 0);
-    res2 = ft_memcmp(c2, c1, 0);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
+	s1[1] = 0;
+    want = memcmp(s2, s1, n);
+    got = ft_memcmp(s2, s1, n);
+    EXPECT_EQ(got > 0, want > 0) << "Input: int s1[] = {10, 0, 30, 40, 50}; int s2[] = {10, 20, 30, 40, 50}; int n = sizeof(s1)/sizeof(s1[0]); ft_memcmp(s2, s1, n);\n";
 }
 
-TEST(TestFtMemcmp, CompIntArr) {
-    int c1[] = {10, 20, 30, 40, 50};
-    int c2[] = {10, 20, 30, 40, 50};
-    int n = sizeof(c1)/sizeof(c1[0]);
-    int res1;
-    int res2;
+TEST(TestFtMemcmp, Int) {
+    int s1 = -12345;
+    int s2 = -12345;
+    
+    int want = memcmp(&s2, &s1, sizeof(int));
+    int got = ft_memcmp(&s2, &s1, sizeof(int));
+    EXPECT_EQ(got, want) << "Input: int s1 = -12345; int s2 = -12345; ft_memcmp(&s2, &s1, sizeof(int));\n";
 
-    res1 = memcmp(c2, c1, n);
-    res2 = ft_memcmp(c2, c1, n);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    c1[1] = 0;
-    res1 = memcmp(c2, c1, n);
-    res2 = ft_memcmp(c2, c1, n);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
+    s1 = 155;
+    s2 = -35;
+    want = memcmp(&s2, &s1, sizeof(int));
+    got = ft_memcmp(&s2, &s1, sizeof(int));
+    EXPECT_EQ(got > 0, want > 0) << "Input: s1 = 155;  s2 = -35; ft_memcmp(&s2, &s1, sizeof(int);\n";
 }
 
-TEST(TestFtMemcmp, CompInt) {
-    int c1 = -12345;
-    int c2 = -12345;
-    int n = sizeof(int);
-    int res1;
-    int res2;
+TEST(TestFtMemcmp, CharInt) {
+    int s1[] = {104, 101, 108, 108, 111};
+    char s2[6] = "hello";
     
-    res1 = memcmp(&c2, &c1, n);
-    res2 = ft_memcmp(&c2, &c1, n);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = memcmp(&c1, &c2, n);
-    res2 = ft_memcmp(&c1, &c2, n);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    
-    c1 = 155;
-    c2 = -35;
-    res1 = memcmp(&c2, &c1, n);
-    res2 = ft_memcmp(&c2, &c1, n);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = memcmp(&c1, &c2, n);
-    res2 = ft_memcmp(&c1, &c2, n);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
+    int want = memcmp(s1, s2, 6);
+    int got = ft_memcmp(s1, s2, 6);
+    EXPECT_EQ(got < 0, want < 0) << "Input: int s1[] = {104, 101, 108, 108, 111}; char s2[6] = \"hello\"; ft_memcmp(s1, s2, 6);\n";
 }
 
-TEST(TestFtMemcmp, CompCharInt) {
-    int     n = 6;
-    int     c1[] = {104, 101, 108, 108, 111};
-    char    c2[n] = "hello";
-    int     res1;
-    int     res2;
-    
-    res1 = memcmp(c1, c2, n);
-    res2 = ft_memcmp(c1, c2, n);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = memcmp(c2, c1, n);
-    res2 = ft_memcmp(c2, c1, n);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
- 
-    n = sizeof(c1)/sizeof(c1[0]);
-    res1 = memcmp(c1, c2, n);
-    res2 = ft_memcmp(c1, c2, n);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
-    res1 = memcmp(c2, c1, n);
-    res2 = ft_memcmp(c2, c1, n);
-    EXPECT_TRUE((res1 < 0 == res2 < 0) && ((res1 == 0) == (res2 == 0)) && (res1 > 0 == res2 > 0));
+TEST(TestFtMemcmp, Zero) {
+    char s1[] = "atoms\0\0\0\0";
+	char s2[] = "atoms\0abc";
+
+	int want = memcmp(s1, s2, 8);
+	int	got = ft_memcmp(s1, s2, 8);
+
+    EXPECT_EQ(got < 0, want < 0) << "Input: char *s1 = \"atoms\\0\\0\\0\\0\"; char *s2 = \"atoms\\0abc\"; ft_memcmp(s1, s2, 8);\n";
+}
+
+TEST(TestFtMemcmp, Unsigned) {
+    char s1[] = "\xff\xaa\xde\200";
+	char s2[] = "\xff\xaa\xde\0";
+
+	int want = memcmp(s1, s2, 8);
+	int	got = ft_memcmp(s1, s2, 8);
+
+    EXPECT_EQ(got, want) << "Input: char *s1 = \"\\xff\\xaa\\xde\\200\"; char *s2 = \"\\xff\\xaa\\xde\\0\"; ft_memcmp(s1, s2, 8);\n";
+}
+
+TEST(TestFtMemcmp, Empty) {
+    char *s1, *s2;
+
+    int want = memcmp(s1, s2, 0);
+    int got = ft_memcmp(s1, s2, 0);
+    EXPECT_EQ(got, want) << "Input: char    *s1, *s2; ft_memcmp(s1, s2, 0);";
 }

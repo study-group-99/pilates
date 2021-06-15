@@ -6,42 +6,33 @@ extern "C" {
 #include "../libft.h"
 }
 
-TEST(TestFtCalloc, SetElementsChar) {
-    size_t  n = 4;
-    char    *a1 = (char*)ft_calloc(n, sizeof(char));
-    char    *a2 = (char*)calloc(n, sizeof(char));
-    char    s1[] = "Hi!\0";
-    
-    ASSERT_TRUE(a1 != 0);
-    
-    memcpy(a1, s1, n);
-    memcpy(a2, s1, n);
-    EXPECT_EQ(0, memcmp(a1, a2, n));
-    free(a1);
+TEST(TestFtCalloc, Null) {
+	char *got = (char *)ft_calloc(4, 20);
+	char *want = (char *)calloc(4, 20);
+
+	EXPECT_TRUE(got != NULL) << "Input: char *got = (char *)ft_calloc(4, 20);\n";
+	EXPECT_STREQ(want, got) << "Input: char *got = (char *)ft_calloc(4, 20);\n";
 }
 
-TEST(TestFtCalloc, SetElementsInt) {
-    size_t  n = 5;
-    int isrc1[] = {10, 20, 30, 40, 50};
-    int isrc2[] = {10, 20, 30, 40, 50};
-    int *idest1 = (int*)ft_calloc(n, sizeof(int));
-    int *idest2 = (int*)ft_calloc(n, sizeof(int));
+TEST(TestFtCalloc, Zero) {
+	void *got = (char *)ft_calloc(0, 0);
 
-    memcpy(idest1, isrc1, n*sizeof(int));
-    ft_memcpy(idest2, isrc2, n*sizeof(int));
-    EXPECT_EQ(0, memcmp(idest1, idest2, n*sizeof(int)));
-    free(idest1);
-    free(idest2);
+	EXPECT_TRUE(got != NULL) << "Input: char *got = (char *)ft_calloc(0, 0);\n";
 }
 
-TEST(TestFtCalloc, BitsSetZero) {
-    size_t  n = 4;
-    char    *a1 = (char*)ft_calloc(n, sizeof(char));
+TEST(TestFtCalloc, Basic) {
+	int	size = 8539;
+	void *got = ft_calloc(size, sizeof(int));
+	void *want = calloc(size, sizeof(int));
 
-    ASSERT_TRUE(a1 != 0);
-    EXPECT_EQ(0, *a1);
-    EXPECT_EQ(0, *(a1 + 1));
-    EXPECT_EQ(0, *(a1 + 2));
-    EXPECT_EQ(0, *(a1 + 3));
-    free(a1);
+	EXPECT_STREQ((const char*)got, (const char*)want) << "Input: void *got = ft_calloc(8539, sizeof(int));\n";
+}
+
+TEST(TestFtCalloc, Size) {
+    int got = 42 * 3;
+    int want = 42 * 3;
+
+	ft_calloc(got, sizeof(char)); calloc(want, sizeof(char));
+
+	EXPECT_EQ(got * sizeof(char), want * sizeof(char)) << "Input: int got = 42 * 3; ft_calloc(got, sizeof(char));\n";
 }

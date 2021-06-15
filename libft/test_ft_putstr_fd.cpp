@@ -2,33 +2,34 @@
 
 extern "C" {
 #include "../libft.h"
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 }
 
-// TEST(TestFtPutStr_Fd, PutStrIntoFile) {
-// 	char	out[] = "this is a test";
-// 	char	in;
-// 	int		fdo;
-// 	int		fdi;
-// 	int		i;
+TEST(TestFtPutStr_Fd, Basic) {
+	char want[] = "this is a test";
 
-// 	i = 0;
-// 	fdo = open("temp_file_to_test_putchar_fd.txt", O_CREAT|O_RDWR|O_TRUNC, 0666);
-// 	if (fdo != -1)
-// 	{
-// 		ft_putstr_fd(out, fdo);
-// 		close(fdo);
-// 	}
-// 	fdi = open("temp_file_to_test_putchar_fd.txt", O_RDWR);
-// 	if (fdi != -1)
-// 	{
-// 		i = read(fdi, &in, 1);
-// 		close(fdi);
-// 		remove("temp_file_to_test_putchar_fd.txt");
-// 	}
-// 	EXPECT_EQ(out, in);
-// 	EXPECT_EQ(1, i);
-// }
+	testing::internal::CaptureStdout();
+	ft_putstr_fd(want, 1);
+	std::string got = testing::internal::GetCapturedStdout();
+
+	EXPECT_STREQ(want, got.c_str()) << "Input: ft_putstr_fd(\"this is a test\", 1)";
+}
+
+TEST(TestFtPutStr_Fd, Ascii) {
+	char want[] = "string \x01 of \x63 non \x0a ascii \x12 chars\x1d";
+
+	testing::internal::CaptureStdout();
+	ft_putstr_fd(want, 1);
+	std::string got = testing::internal::GetCapturedStdout();
+
+	EXPECT_STREQ(want, got.c_str()) << "Input: ft_putstr_fd(\"string \\x01 of \\x63 non \\x0a ascii \\x12 chars\\x1d\", 1);";
+}
+
+TEST(TestFtPutStr_Fd, NonAscii) {
+	char want[] = "よくやった";
+
+	testing::internal::CaptureStdout();
+	ft_putstr_fd(want, 1);
+	std::string got = testing::internal::GetCapturedStdout();
+
+	EXPECT_STREQ(want, got.c_str()) << "Input: ft_putstr_fd( \"よくやった\", 1);";
+}
