@@ -141,7 +141,7 @@ pilates is using the `google test` framework which is written in C++. Consequent
 
 To circumvent this issue rename all arguments named `new` to something different in both `libft.h` and the equivalent `ft_*.c` file.
 
-pilates can do this for you automagically by running `libft init --fix-new`. Behind the scenes pilates will edit your `libft.h` and all `ft_*.c` files necessary, replacing `new` with `neew`.
+pilates can do this for you automagically by running `pilates libft init --fix-new`. Behind the scenes pilates will edit your `libft.h` and all `ft_*.c` files necessary, replacing `new` with `neew`.
 
 ### Init
 
