@@ -3,7 +3,27 @@
 </p>
  
 # Ultimate Pilates Engine
-Common core tester.
+A CLI (command line interface) common core tester.
+```
+$ pilates
+pilates v0.2.1 - Ultimate Pilates Machine
+
+pilates is an educational devops tool designed to help you along you curriculum.
+
+Available commands:
+
+   libft   Install and run unit tests, benchmarks, norm check, makefile check & memory leaks checks. 
+
+Flags:
+
+  -h, --help
+    	Get help on the 'pilates' command.
+  -u, --update
+    	Update Pilates to the latest version.
+  -v, --version
+    	Pilates CLI version.
+
+```
 
 ## Contents
 
