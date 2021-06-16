@@ -92,7 +92,7 @@ _Note: minimum go version required is 1.6+._
 
 ### Go Install
 
-`go install github.com/study-group-99/pilates/cmd/pilates@v0.0.10-pre`
+`go install github.com/study-group-99/pilates/cmd/pilates`
 
 _Remember that you need to have $GOPATH/bin in your path._
 
