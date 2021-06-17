@@ -8,7 +8,7 @@ A CLI (command line interface) common core tester.
 $ pilates
 pilates v0.2.1 - Ultimate Pilates Machine
 
-pilates is an educational devops tool designed to help you along you curriculum.
+pilates is an educational devops tool designed to help you along your curriculum.
 
 Available commands:
 
