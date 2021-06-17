@@ -3,7 +3,27 @@
 </p>
  
 # Ultimate Pilates Engine
-Common core tester.
+A CLI (command line interface) common core tester.
+```
+$ pilates
+pilates v0.2.1 - Ultimate Pilates Machine
+
+pilates is an educational devops tool designed to help you along your curriculum.
+
+Available commands:
+
+   libft   Install and run unit tests, benchmarks, norm check, makefile check & memory leaks checks. 
+
+Flags:
+
+  -h, --help
+    	Get help on the 'pilates' command.
+  -u, --update
+    	Update Pilates to the latest version.
+  -v, --version
+    	Pilates CLI version.
+
+```
 
 ## Contents
 
@@ -92,7 +112,7 @@ _Note: minimum go version required is 1.6+._
 
 ### Go Install
 
-`go install github.com/study-group-99/pilates/cmd/pilates@v0.0.10-pre`
+`go install github.com/study-group-99/pilates/cmd/pilates`
 
 _Remember that you need to have $GOPATH/bin in your path._
 
@@ -141,7 +161,7 @@ pilates is using the `google test` framework which is written in C++. Consequent
 
 To circumvent this issue rename all arguments named `new` to something different in both `libft.h` and the equivalent `ft_*.c` file.
 
-pilates can do this for you automagically by running `libft init --fix-new`. Behind the scenes pilates will edit your `libft.h` and all `ft_*.c` files necessary, replacing `new` with `neew`.
+pilates can do this for you automagically by running `pilates libft init --fix-new`. Behind the scenes pilates will edit your `libft.h` and all `ft_*.c` files necessary, replacing `new` with `neew`.
 
 ### Init
 

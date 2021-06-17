@@ -241,6 +241,7 @@ func newFix() error {
 		new := strings.ReplaceAll(string(ft), " new", " neew")
 		new = strings.ReplaceAll(new, "*new", "*neew")
 		new = strings.ReplaceAll(new, "\tnew", "\tneew")
+		new = strings.ReplaceAll(new, "!new", "!neew")
 		// write it
 		err = ioutil.WriteFile(name, []byte(new), 0)
 		if err != nil {

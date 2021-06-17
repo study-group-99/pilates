@@ -20,7 +20,7 @@ func NewExists() (bool, error) {
 	scanner := bufio.NewScanner(header)
 	for scanner.Scan() {
 		if strings.Contains(scanner.Text(), "*new") || strings.Contains(scanner.Text(), " new") ||
-			strings.Contains(scanner.Text(), "\tnew") {
+			strings.Contains(scanner.Text(), "\tnew") || strings.Contains(scanner.Text(), "!new") {
 			fmt.Println("problem with init: function contaning 'new':", scanner.Text())
 			newPresense = true
 		}
